@@ -239,7 +239,7 @@ class Menu extends Component {
             <ListItemIcon className={this.props.classes.icon}>
               <HomeIcon />
             </ListItemIcon>
-            <ListItemText className={this.props.classes.text} primary="Home" />
+            <ListItemText className={this.props.classes.text} primary="ホーム" />
           </ListItem>
 
           <ListItem
@@ -259,7 +259,7 @@ class Menu extends Component {
             <ListItemIcon className={this.props.classes.icon}>
               <LibraryBooksIcon />
             </ListItemIcon>
-            <ListItemText className={this.props.classes.text} primary="Content" />
+            <ListItemText className={this.props.classes.text} primary="コンテンツ" />
           </ListItem>
           <Collapse in={true} timeout="auto" unmountOnExit>
             <List component="nav" disablePadding>
@@ -272,7 +272,7 @@ class Menu extends Component {
                 <ListItemIcon className={this.props.classes.icon}>
                   <BackupIcon />
                 </ListItemIcon>
-                <ListItemText className={this.props.classes.text} primary="Import Content" />
+                <ListItemText className={this.props.classes.text} primary="コンテンツのインポート" />
               </ListItem>
               {this.props.resources.map(this.renderResource.bind(this))}
             </List>
@@ -281,7 +281,7 @@ class Menu extends Component {
             <ListItemIcon className={this.props.classes.icon}>
               <SettingsIcon />
             </ListItemIcon>
-            <ListItemText className={this.props.classes.text} primary="Setup" />
+            <ListItemText className={this.props.classes.text} primary="設定" />
           </ListItem>
           <Collapse in={true} timeout="auto" unmountOnExit>
             <List component="nav" disablePadding>
@@ -294,7 +294,7 @@ class Menu extends Component {
                 <ListItemIcon className={this.props.classes.icon}>
                   <ViewIcon />
                 </ListItemIcon>
-                <ListItemText className={this.props.classes.text} primary="App Settings" />
+                <ListItemText className={this.props.classes.text} primary="アプリ設定" />
               </ListItem>
 
               <ListItem
@@ -306,7 +306,7 @@ class Menu extends Component {
                 <ListItemIcon className={this.props.classes.icon}>
                   <ViewIcon />
                 </ListItemIcon>
-                <ListItemText className={this.props.classes.text} primary="Brand" />
+                <ListItemText className={this.props.classes.text} primary="ブランド設定" />
               </ListItem>
 
               {/* THEMES  */}
@@ -319,7 +319,7 @@ class Menu extends Component {
                 <ListItemIcon className={this.props.classes.icon}>
                   <ViewIcon />
                 </ListItemIcon>
-                <ListItemText className={this.props.classes.text} primary="Themes" />
+                <ListItemText className={this.props.classes.text} primary="デザインテーマ" />
               </ListItem>
 
               <ListItem
@@ -331,7 +331,7 @@ class Menu extends Component {
                 <ListItemIcon className={this.props.classes.icon}>
                   <ViewIcon />
                 </ListItemIcon>
-                <ListItemText className={this.props.classes.text} primary="Server Settings" />
+                <ListItemText className={this.props.classes.text} primary="サーバー設定" />
               </ListItem>
               <ListItem
                 className={classNames(this.props.classes.item, this.props.classes.nested)}
@@ -342,7 +342,7 @@ class Menu extends Component {
                 <ListItemIcon className={this.props.classes.icon}>
                   <ViewIcon />
                 </ListItemIcon>
-                <ListItemText className={this.props.classes.text} primary="Server Access" />
+                <ListItemText className={this.props.classes.text} primary="サーバーアクセス" />
               </ListItem>
               <ListItem
                 className={classNames(this.props.classes.item, this.props.classes.nested)}
@@ -353,7 +353,7 @@ class Menu extends Component {
                 <ListItemIcon className={this.props.classes.icon}>
                   <ViewIcon />
                 </ListItemIcon>
-                <ListItemText className={this.props.classes.text} primary="Content CDN" />
+                <ListItemText className={this.props.classes.text} primary="コンテンツCDN" />
               </ListItem>
             </List>
           </Collapse>

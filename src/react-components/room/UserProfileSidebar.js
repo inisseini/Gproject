@@ -23,6 +23,7 @@ export function UserProfileSidebar({
   displayName,
   pronouns,
   profile,
+  sendDiscordMessage,
   identityName,
   avatarPreview,
   hasMicPresence,
@@ -64,6 +65,7 @@ export function UserProfileSidebar({
         <h2 className={styles.displayName}>{identityName ? `${displayName} (${identityName})` : displayName}</h2>
         {pronouns && <span className={styles.pronouns}>{pronouns}</span>}
         {profile && <span className={styles.profile}>{profile}</span>}
+        {sendDiscordMessage && <span className={styles.profile}>{sendDiscordMessage}</span>}
         <div className={styles.avatarPreviewContainer}>{avatarPreview || <div />}</div>
         {hasMicPresence && (
           <div className={styles.sliderContainer}>
@@ -159,6 +161,7 @@ UserProfileSidebar.propTypes = {
   displayName: PropTypes.string,
   pronouns: PropTypes.string,
   profile: PropTypes.string,
+  sendDiscordMessage: PropTypes.string,
   identityName: PropTypes.string,
   avatarPreview: PropTypes.node,
   hasMicPresence: PropTypes.bool,

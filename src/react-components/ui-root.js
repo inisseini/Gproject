@@ -104,6 +104,14 @@ import { ChatContextProvider } from "./room/contexts/ChatContext";
 import ChatToolbarButton from "./room/components/ChatToolbarButton/ChatToolbarButton";
 import SeePlansCTA from "./room/components/SeePlansCTA/SeePlansCTA";
 
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+  UpdateCommand,
+} from '@aws-sdk/lib-dynamodb';
+
 const avatarEditorDebug = qsTruthy("avatarEditorDebug");
 
 const IN_ROOM_MODAL_ROUTER_PATHS = ["/media"];
@@ -827,6 +835,30 @@ class UIRoot extends Component {
   };
 
   renderEntryStartPanel = () => {
+    const Get = async () => {
+      const DBClient = new DynamoDBClient({
+        region: 'ap-northeast-1',
+        credentials: {
+          accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
+          secretAccessKey: '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',
+        },
+      });
+    
+      const docClient = DynamoDBDocumentClient.from(DBClient);
+      const command = new GetCommand({
+        TableName: 'roomParameter',
+        Key: {
+          key: location.href,
+        },
+      });
+  
+      console.log('URL=', location.href);
+      const response = await docClient.send(command);
+      console.log(response);
+    };
+
+    Get();
+
     const { hasAcceptedProfile, hasChangedNameOrPronounsOrProfile } = this.props.store.state.activity;
     const isLockedDownDemo = isLockedDownDemoRoom();
     const promptForNameAndAvatarBeforeEntry = this.props.hubIsBound

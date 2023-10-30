@@ -30,7 +30,8 @@ export default class ProfileEntryPanel extends Component {
     displayName: null,
     avatar: null,
     pronouns: null,
-    profile: null
+    profile: null,
+    sendDiscordMessage: null
   };
 
   constructor(props) {
@@ -44,8 +45,8 @@ export default class ProfileEntryPanel extends Component {
   }
 
   getStateFromProfile = () => {
-    const { displayName, avatarId, pronouns, profile } = this.props.store.state.profile;
-    return { displayName, avatarId, pronouns, profile };
+    const { displayName, avatarId, pronouns, profile, sendDiscordMessage } = this.props.store.state.profile;
+    return { displayName, avatarId, pronouns, profile, sendDiscordMessage };
   };
 
   storeUpdated = () => this.setState(this.getStateFromProfile());
@@ -53,7 +54,7 @@ export default class ProfileEntryPanel extends Component {
   saveStateAndFinish = e => {
     e && e.preventDefault();
 
-    const { displayName, pronouns, profile } = this.props.store.state.profile;
+    const { displayName, pronouns, profile, sendDiscordMessage } = this.props.store.state.profile;
     const { hasChangedNameOrPronounsOrProfile } = this.props.store.state.activity;
 
     const hasChangedNowOrPreviously =
@@ -70,7 +71,8 @@ export default class ProfileEntryPanel extends Component {
         displayName: this.state.displayName,
         avatarId: this.state.avatarId,
         pronouns: this.state.pronouns,
-        profile: this.state.profile
+        profile: this.state.profile,
+        sendDiscordMessage: this.state.sendDiscordMessage
       }
     });
     this.props.finished();
@@ -129,20 +131,25 @@ export default class ProfileEntryPanel extends Component {
   };
 
   render() {
+    console.log(this.props.store.schema);
     const avatarSettingsProps = {
       displayNameInputRef: inp => (this.nameInput = inp),
       pronounsInputRef: inp => (this.pronounsInput = inp),
       profileInputRef: inp => (this.profileInput = inp),
+      sendDiscordMessageInputRef: inp => (this.sendDiscordMessageInput = inp),
       disableDisplayNameInput: !!this.props.displayNameOverride,
       displayName: this.props.displayNameOverride ? this.props.displayNameOverride : this.state.displayName,
       pronouns: this.state.pronouns,
       profile: this.state.profile,
+      sendDiscordMessage: this.state.sendDiscordMessage,
       displayNamePattern: this.props.store.schema.definitions.profile.properties.displayName.pattern,
       pronounsPattern: this.props.store.schema.definitions.profile.properties.pronouns.pattern,
       profilePattern: this.props.store.schema.definitions.profile.properties.profile.pattern,
+      sendDiscordMessagePattern: this.props.store.schema.definitions.profile.properties.sendDiscordMessage.pattern,
       onChangeDisplayName: e => this.setState({ displayName: e.target.value }),
       onChangePronouns: e => this.setState({ pronouns: e.target.value }),
       onChangeProfile: e => this.setState({ profile: e.target.value }),
+      onChangeSendDiscordMessage: e => this.setState({ sendDiscordMessage: e.target.value }),
       avatarPreview: <AvatarPreview avatarGltfUrl={this.state.avatar && this.state.avatar.gltf_url} />,
       onChangeAvatar: e => {
         e.preventDefault();

@@ -10,17 +10,21 @@ export function AvatarSettingsContent({
   displayName,
   pronouns,
   profile,
+  sendDiscordMessage,
   displayNameInputRef,
   pronounsInputRef,
   profileInputRef,
+  sendDiscordMessageInputRef,
   disableDisplayNameInput,
   onChangeDisplayName,
   onChangePronouns,
   onChangeProfile,
+  onChangeSendDiscordMessage,
   avatarPreview,
   displayNamePattern,
   pronounsPattern,
   profilePattern,
+  sendDiscordMessagePattern,
   onChangeAvatar,
   ...rest
 }) {
@@ -57,6 +61,19 @@ export function AvatarSettingsContent({
           />
         }
         ref={profileInputRef}
+      />
+      <TextInputField
+        label={
+          <FormattedMessage
+            id="avatar-settings-content.sendDiscordMessage-label"
+            defaultMessage="入室時にDiscord通知を行う"
+          />
+        }
+        value={sendDiscordMessage}
+        pattern={sendDiscordMessagePattern}
+        spellCheck="false"
+        onChange={onChangeSendDiscordMessage}
+        ref={sendDiscordMessageInputRef}
       />
       <TextInputField
         label={<FormattedMessage id="avatar-settings-content.pronouns-label" defaultMessage="Pronouns (optional)" />}

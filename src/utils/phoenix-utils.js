@@ -4,6 +4,8 @@ import configs from "../utils/configs";
 import { sleep } from "../utils/async-utils";
 import { store } from "../utils/store-instance";
 import DiscordMessageSend from "./Discord-message-send";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 export function hasReticulumServer() {
   return !!configs.RETICULUM_SERVER;
@@ -203,63 +205,167 @@ export function fetchReticulumAuthenticated(url, method = "GET", payload) {
 }
 
 export async function createAndRedirectToNewHub(name, sceneId, replace) {
-  DiscordMessageSend("text", "ルーム作成申請が届きました 詳細は以下の通りです");
-  return;
-  const createUrl = getReticulumFetchUrl("/api/v1/hubs");
-  const payload = { hub: { name: name || generateHubName() } };
+  //DiscordMessageSend("text", "ルーム作成申請が届きました 詳細は以下の通りです");
+  //return;
 
-  if (sceneId) {
-    payload.hub.scene_id = sceneId;
-  }
+  const passwardConfirm = confirm("パスワードを設定しますか？");
+  if (passwardConfirm) {
+    const passwardInput = prompt("4桁の数字(半角)を入力してください");
+    if (isNaN(passwardInput)) {
+      alert("パスワードは4桁の数字(半角)で入力してください");
+      return;
+    } else if (!isNaN(passwardInput)) {
+      const length = passwardInput.toString().length;
+      if (length !== 4) return;
 
-  const headers = { "content-type": "application/json" };
-  if (store.state && store.state.credentials.token) {
-    headers.authorization = `bearer ${store.state.credentials.token}`;
-  }
+      const createUrl = getReticulumFetchUrl("/api/v1/hubs");
+      const payload = { hub: { name: name || generateHubName() } };
 
-  let res = await fetch(createUrl, {
-    body: JSON.stringify(payload),
-    headers,
-    method: "POST"
-  }).then(r => r.json());
+      if (sceneId) {
+        payload.hub.scene_id = sceneId;
+      }
 
-  if (res.error === "invalid_token") {
-    // Clear the invalid token from store.
-    store.update({ credentials: { token: null, email: null } });
+      const headers = { "content-type": "application/json" };
+      if (store.state && store.state.credentials.token) {
+        headers.authorization = `bearer ${store.state.credentials.token}`;
+      }
 
-    // Create hub anonymously
-    delete headers.authorization;
-    res = await fetch(createUrl, {
+      let res = await fetch(createUrl, {
+        body: JSON.stringify(payload),
+        headers,
+        method: "POST"
+      }).then(r => r.json());
+
+      if (res.error === "invalid_token") {
+        // Clear the invalid token from store.
+        store.update({ credentials: { token: null, email: null } });
+
+        // Create hub anonymously
+        delete headers.authorization;
+        res = await fetch(createUrl, {
+          body: JSON.stringify(payload),
+          headers,
+          method: "POST"
+        }).then(r => r.json());
+      }
+
+      const hub = res;
+      let url = hub.url;
+
+      const creatorAssignmentToken = hub.creator_assignment_token;
+      if (creatorAssignmentToken) {
+        store.update({
+          creatorAssignmentTokens: [{ hubId: hub.hub_id, creatorAssignmentToken: creatorAssignmentToken }]
+        });
+
+        // Don't need to store the embed token if there's no creator assignment token, since that means
+        // we are the owner and will get the embed token on page load.
+        const embedToken = hub.embed_token;
+
+        if (embedToken) {
+          store.update({ embedTokens: [{ hubId: hub.hub_id, embedToken: embedToken }] });
+        }
+      }
+
+      if (isLocalClient()) {
+        url = `/hub.html?hub_id=${hub.hub_id}`;
+      }
+
+      const DBClient = new DynamoDBClient({
+        region: "ap-northeast-1",
+        credentials: {
+          accessKeyId: "AKIA6O7CLSZWBGWOEKTK",
+          secretAccessKey: "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"
+        }
+      });
+
+      const docClient = DynamoDBDocumentClient.from(DBClient);
+
+      const handleSubmit = async () => {
+        const command = new UpdateCommand({
+          TableName: "roomParameter",
+          Key: {
+            URL: url
+          },
+          ExpressionAttributeNames: {
+            "#pass": "passward"
+          },
+          ExpressionAttributeValues: {
+            ":pass": passwardInput
+          },
+          UpdateExpression: "SET #pass = :pass"
+        });
+
+        //const response = await docClient.send(command);
+
+        if (replace) {
+          document.location.replace(url);
+        } else {
+          document.location = url;
+        }
+      };
+
+      handleSubmit();
+    }
+  } else {
+    const createUrl = getReticulumFetchUrl("/api/v1/hubs");
+    const payload = { hub: { name: name || generateHubName() } };
+
+    if (sceneId) {
+      payload.hub.scene_id = sceneId;
+    }
+
+    const headers = { "content-type": "application/json" };
+    if (store.state && store.state.credentials.token) {
+      headers.authorization = `bearer ${store.state.credentials.token}`;
+    }
+
+    let res = await fetch(createUrl, {
       body: JSON.stringify(payload),
       headers,
       method: "POST"
     }).then(r => r.json());
-  }
 
-  const hub = res;
-  let url = hub.url;
+    if (res.error === "invalid_token") {
+      // Clear the invalid token from store.
+      store.update({ credentials: { token: null, email: null } });
 
-  const creatorAssignmentToken = hub.creator_assignment_token;
-  if (creatorAssignmentToken) {
-    store.update({ creatorAssignmentTokens: [{ hubId: hub.hub_id, creatorAssignmentToken: creatorAssignmentToken }] });
-
-    // Don't need to store the embed token if there's no creator assignment token, since that means
-    // we are the owner and will get the embed token on page load.
-    const embedToken = hub.embed_token;
-
-    if (embedToken) {
-      store.update({ embedTokens: [{ hubId: hub.hub_id, embedToken: embedToken }] });
+      // Create hub anonymously
+      delete headers.authorization;
+      res = await fetch(createUrl, {
+        body: JSON.stringify(payload),
+        headers,
+        method: "POST"
+      }).then(r => r.json());
     }
-  }
 
-  if (isLocalClient()) {
-    url = `/hub.html?hub_id=${hub.hub_id}`;
-  }
+    const hub = res;
+    let url = hub.url;
 
-  if (replace) {
-    document.location.replace(url);
-  } else {
-    document.location = url;
+    const creatorAssignmentToken = hub.creator_assignment_token;
+    if (creatorAssignmentToken) {
+      store.update({
+        creatorAssignmentTokens: [{ hubId: hub.hub_id, creatorAssignmentToken: creatorAssignmentToken }]
+      });
+
+      // Don't need to store the embed token if there's no creator assignment token, since that means
+      // we are the owner and will get the embed token on page load.
+      const embedToken = hub.embed_token;
+
+      if (embedToken) {
+        store.update({ embedTokens: [{ hubId: hub.hub_id, embedToken: embedToken }] });
+      }
+    }
+
+    if (isLocalClient()) {
+      url = `/hub.html?hub_id=${hub.hub_id}`;
+    }
+
+    if (replace) {
+      document.location.replace(url);
+    } else {
+      document.location = url;
+    }
   }
 }
 

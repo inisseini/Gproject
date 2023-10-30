@@ -20,7 +20,7 @@ export function UserProfileSidebarContainer({
 
   const {
     id: userId,
-    profile: { displayName, identityName, avatarId, pronouns, profile },
+    profile: { displayName, identityName, avatarId, pronouns, profile, sendDiscordMessage },
     roles
   } = user;
   const mayKick = hubChannel.canOrWillIfCreator("kick_users");
@@ -113,6 +113,7 @@ export function UserProfileSidebarContainer({
       displayName={displayName}
       pronouns={pronouns}
       profile={profile}
+      sendDiscordMessage={sendDiscordMessage}
       identityName={identityName}
       avatarPreview={<img src={avatarThumbnailUrl} />}
       isSignedIn={isSignedIn}

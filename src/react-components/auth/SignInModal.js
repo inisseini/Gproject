@@ -91,8 +91,8 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
         e.preventDefault();
         /*alert("無効なメールアドレスです。");
         return;*/
-        alert("無効なメールアドレスです。検証用にアクセスを許可します。");
         onSubmitEmail(email);
+        alert("無効なメールアドレスです。検証用にアクセスを許可します。");
       } else if (mailList.test(email)) {
         e.preventDefault();
         onSubmitEmail(email);
