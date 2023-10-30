@@ -11,6 +11,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import HomeIcon from "@material-ui/icons/Home";
+import StarIcon from "@material-ui/icons/Star";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import BackupIcon from "@material-ui/icons/Backup";
 import ViewIcon from "@material-ui/icons/ViewList";
@@ -133,6 +134,7 @@ class Menu extends Component {
           <ListItem className={this.props.classes.logo}>
             <img className={this.props.classes.logo} src={HubsLogo} />
           </ListItem>
+          
           <ListItem
             className={this.props.classes.item}
             component={NavLink}
@@ -226,6 +228,7 @@ class Menu extends Component {
           <ListItem className={this.props.classes.logo}>
             <img className={this.props.classes.logo} src={HubsLogo} />
           </ListItem>
+
           <ListItem
             className={this.props.classes.item}
             component={NavLink}
@@ -238,6 +241,20 @@ class Menu extends Component {
             </ListItemIcon>
             <ListItemText className={this.props.classes.text} primary="Home" />
           </ListItem>
+
+          <ListItem
+            className={this.props.classes.item}
+            component={NavLink}
+            activeStyle={{ backgroundColor: "#D0D0D0" }}
+            key="metacampus"
+            to="/metacampus"
+          >
+            <ListItemIcon className={this.props.classes.icon}>
+              <StarIcon />
+            </ListItemIcon>
+            <ListItemText className={this.props.classes.text} primary="MetaCampUs" />
+          </ListItem>
+
           <ListItem className={this.props.classes.item}>
             <ListItemIcon className={this.props.classes.icon}>
               <LibraryBooksIcon />

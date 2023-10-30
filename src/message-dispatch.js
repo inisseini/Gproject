@@ -6,12 +6,13 @@ import { SOUND_CHAT_MESSAGE, SOUND_QUACK, SOUND_SPECIAL_QUACK } from "./systems/
 import ducky from "./assets/models/DuckyMesh.glb";
 import { EventTarget } from "event-target-shim";
 import { ExitReason } from "./react-components/room/ExitedRoomScreen";
-import { LogMessageType } from "./react-components/room/ChatSidebar";
+import { LogMessageType, SystemMessage } from "./react-components/room/ChatSidebar";
 import { createNetworkedEntity } from "./utils/create-networked-entity";
 import { add, testAsset, respawn } from "./utils/chat-commands";
 import { isLockedDownDemoRoom } from "./utils/hub-utils";
 import { loadState, clearState } from "./utils/entity-state-utils";
 import { shouldUseNewLoader } from "./utils/bit-utils";
+import DiscordMessageSend from "./utils/Discord-message-send";
 
 let uiRoot;
 // Handles user-entered messages
@@ -40,6 +41,7 @@ export default class MessageDispatch extends EventTarget {
     }
 
     this.presenceLogEntries.push(entry);
+
     this.remountUI({ presenceLogEntries: this.presenceLogEntries });
     if (entry.type === "chat" && this.scene.is("loaded")) {
       this.scene.systems["hubs-systems"].soundEffectsSystem.playSoundOneShot(SOUND_CHAT_MESSAGE);
@@ -60,8 +62,36 @@ export default class MessageDispatch extends EventTarget {
   receive(message) {
     if (isLockedDownDemoRoom()) return;
 
-    this.addToPresenceLog(message);
-    this.dispatchEvent(new CustomEvent("message", { detail: message }));
+    const isSlash = message.body !== undefined ? message.body.includes("/") : false;
+    if (isSlash) {
+      const chatBodyList = message.body.split("/");
+      if (
+        chatBodyList[0] === "systemMessage" &&
+        window.APP.hubChannel.store.state.profile.displayName === chatBodyList[4]
+      ) {
+        const request = chatBodyList[2] + "さんがあなたにフレンド申請をしています";
+        const requestMessage = { type: "chat", body: request, maySpawn: true, type: "chat" };
+        this.addToPresenceLog(requestMessage);
+        this.dispatchEvent(new CustomEvent("message", { detail: requestMessage }));
+      } else if (
+        chatBodyList[0] === "systemMessage" &&
+        window.APP.hubChannel.store.state.profile.displayName !== chatBodyList[4]
+      ) {
+        return;
+      } else if (chatBodyList[0] === "Discord") {
+        console.log(message);
+        const messageContent = { type: "chat", body: message.body.slice(8), maySpawn: true, type: "chat" };
+        DiscordMessageSend("text", messageContent.body);
+        this.addToPresenceLog(messageContent);
+        this.dispatchEvent(new CustomEvent("message", { detail: messageContent }));
+      } else {
+        this.addToPresenceLog(message);
+        this.dispatchEvent(new CustomEvent("message", { detail: message }));
+      }
+    } else {
+      this.addToPresenceLog(message);
+      this.dispatchEvent(new CustomEvent("message", { detail: message }));
+    }
   }
 
   log = (messageType, props) => {

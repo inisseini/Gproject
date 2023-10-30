@@ -15,6 +15,7 @@ import styles from "./ChatSidebar.scss";
 import { formatMessageBody } from "../../utils/chat-message";
 import { FormattedMessage, useIntl, defineMessages, FormattedRelativeTime } from "react-intl";
 import { permissionMessage } from "./PermissionNotifications";
+import DiscordMessageSend from "../../utils/Discord-message-send";
 
 export function SpawnMessageButton(props) {
   return (

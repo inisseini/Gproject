@@ -9,14 +9,18 @@ import { FormattedMessage } from "react-intl";
 export function AvatarSettingsContent({
   displayName,
   pronouns,
+  profile,
   displayNameInputRef,
   pronounsInputRef,
+  profileInputRef,
   disableDisplayNameInput,
   onChangeDisplayName,
   onChangePronouns,
+  onChangeProfile,
   avatarPreview,
   displayNamePattern,
   pronounsPattern,
+  profilePattern,
   onChangeAvatar,
   ...rest
 }) {
@@ -33,10 +37,26 @@ export function AvatarSettingsContent({
         description={
           <FormattedMessage
             id="avatar-settings-content.display-name-description"
-            defaultMessage="Alphanumerics, hyphens, underscores, and tildes. At least 3 characters, no more than 32"
+            defaultMessage="Alphanumerics, Japanese, hyphens, underscores, and tildes. At least 3 characters, no more than 32"
           />
         }
         ref={displayNameInputRef}
+      />
+      <TextInputField
+        label={
+          <FormattedMessage id="avatar-settings-content.display-profile-label" defaultMessage="Profile (optional)" />
+        }
+        value={profile}
+        pattern={profilePattern}
+        spellCheck="false"
+        onChange={onChangeProfile}
+        description={
+          <FormattedMessage
+            id="avatar-settings-content.display-profile-description"
+            defaultMessage="Alphanumerics, hyphens, underscores, and tildes. No more than 32"
+          />
+        }
+        ref={profileInputRef}
       />
       <TextInputField
         label={<FormattedMessage id="avatar-settings-content.pronouns-label" defaultMessage="Pronouns (optional)" />}
@@ -61,13 +81,17 @@ AvatarSettingsContent.propTypes = {
   className: PropTypes.string,
   displayName: PropTypes.string,
   pronouns: PropTypes.string,
+  profile: PropTypes.string,
   displayNameInputRef: PropTypes.func,
   pronounsInputRef: PropTypes.func,
+  profileInputRef: PropTypes.func,
   disableDisplayNameInput: PropTypes.bool,
   displayNamePattern: PropTypes.string,
   pronounsPattern: PropTypes.string,
+  profilePattern: PropTypes.string,
   onChangeDisplayName: PropTypes.func,
   onChangePronouns: PropTypes.func,
+  onChangeProfile: PropTypes.func,
   avatarPreview: PropTypes.node,
   onChangeAvatar: PropTypes.func
 };

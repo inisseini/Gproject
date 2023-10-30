@@ -346,6 +346,16 @@ function mountUI(props = {}) {
     qsTruthy("allow_idle") || (process.env.NODE_ENV === "development" && !qs.get("idle_timeout"));
   const forcedVREntryType = qsVREntryType;
 
+  function NonBusinessHoursRoot() {
+    return <p style={{ zIndex: "100000000" }}>運用時間外です。</p>;
+  }
+
+  const hour = new Date().getHours();
+  if (0 < hour < 8) {
+    /*root.render(<NonBusinessHoursRoot />);
+    return;*/
+  }
+
   root.render(
     <WrappedIntlProvider>
       <ThemeProvider store={store}>
@@ -531,8 +541,8 @@ export async function updateEnvironmentForHub(hub, entryManager) {
   }
 }
 
-export async function updateUIForHub(hub, hubChannel, showBitECSBasedClientRefreshPrompt = false) {
-  remountUI({ hub, entryDisallowed: !hubChannel.canEnterRoom(hub), showBitECSBasedClientRefreshPrompt });
+export async function updateUIForHub(hub, hubChannel) {
+  remountUI({ hub, entryDisallowed: !hubChannel.canEnterRoom(hub) });
 }
 
 function onConnectionError(entryManager, connectError) {
@@ -1375,17 +1385,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const userInfo = hubChannel.presence.state[session_id];
     const displayName = (userInfo && userInfo.metas[0].profile.displayName) || "API";
 
-    let showBitECSBasedClientRefreshPrompt = false;
-
-    if (!!hub.user_data?.hubs_use_bitecs_based_client !== !!window.APP.hub.user_data?.hubs_use_bitecs_based_client) {
-      showBitECSBasedClientRefreshPrompt = true;
-      setTimeout(() => {
-        document.location.reload();
-      }, 5000);
-    }
-
     window.APP.hub = hub;
-    updateUIForHub(hub, hubChannel, showBitECSBasedClientRefreshPrompt);
+    updateUIForHub(hub, hubChannel);
 
     if (
       stale_fields.includes("scene") ||

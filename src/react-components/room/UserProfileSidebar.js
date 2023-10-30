@@ -22,6 +22,7 @@ export function UserProfileSidebar({
   userId,
   displayName,
   pronouns,
+  profile,
   identityName,
   avatarPreview,
   hasMicPresence,
@@ -37,6 +38,7 @@ export function UserProfileSidebar({
   onMute,
   canKick,
   onKick,
+  onSendFriendRequest,
   showBackButton,
   onBack,
   onClose,
@@ -61,6 +63,7 @@ export function UserProfileSidebar({
       <Column center padding>
         <h2 className={styles.displayName}>{identityName ? `${displayName} (${identityName})` : displayName}</h2>
         {pronouns && <span className={styles.pronouns}>{pronouns}</span>}
+        {profile && <span className={styles.profile}>{profile}</span>}
         <div className={styles.avatarPreviewContainer}>{avatarPreview || <div />}</div>
         {hasMicPresence && (
           <div className={styles.sliderContainer}>
@@ -142,6 +145,9 @@ export function UserProfileSidebar({
             <FormattedMessage id="user-profile-sidebar.kick-button" defaultMessage="Kick" />
           </Button>
         )}
+        <Button preset="cancel" onClick={onSendFriendRequest}>
+          <FormattedMessage id="user-profile-sidebar.friend-button" defaultMessage="Send Friend Request" />
+        </Button>
       </Column>
     </Sidebar>
   );
@@ -152,6 +158,7 @@ UserProfileSidebar.propTypes = {
   userId: PropTypes.string,
   displayName: PropTypes.string,
   pronouns: PropTypes.string,
+  profile: PropTypes.string,
   identityName: PropTypes.string,
   avatarPreview: PropTypes.node,
   hasMicPresence: PropTypes.bool,
@@ -167,6 +174,7 @@ UserProfileSidebar.propTypes = {
   onMute: PropTypes.func,
   canKick: PropTypes.bool,
   onKick: PropTypes.func,
+  onSendFriendRequest: PropTypes.func,
   showBackButton: PropTypes.bool,
   onBack: PropTypes.func,
   onClose: PropTypes.func

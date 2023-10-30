@@ -65,6 +65,8 @@
     ]
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.438.0",
+    "@aws-sdk/lib-dynamodb": "^3.438.0",
     "@braintree/sanitize-url": "^6.0.0",
     "@draft-js-plugins/counter": "^4.1.2",
     "@draft-js-plugins/editor": "^4.1.3",

@@ -152,7 +152,6 @@ class UIRoot extends Component {
     subscriptions: PropTypes.object,
     initialIsFavorited: PropTypes.bool,
     showSignInDialog: PropTypes.bool,
-    showBitECSBasedClientRefreshPrompt: PropTypes.bool,
     signInMessage: PropTypes.object,
     onContinueAfterSignIn: PropTypes.func,
     showSafariMicDialog: PropTypes.bool,
@@ -828,9 +827,11 @@ class UIRoot extends Component {
   };
 
   renderEntryStartPanel = () => {
-    const { hasAcceptedProfile, hasChangedNameOrPronouns } = this.props.store.state.activity;
+    const { hasAcceptedProfile, hasChangedNameOrPronounsOrProfile } = this.props.store.state.activity;
     const isLockedDownDemo = isLockedDownDemoRoom();
-    const promptForNameAndAvatarBeforeEntry = this.props.hubIsBound ? !hasAcceptedProfile : !hasChangedNameOrPronouns;
+    const promptForNameAndAvatarBeforeEntry = this.props.hubIsBound
+      ? !hasAcceptedProfile
+      : !hasChangedNameOrPronounsOrProfile;
 
     // TODO: What does onEnteringCanceled do?
     return (
@@ -1697,14 +1698,6 @@ class UIRoot extends Component {
               />
             )}
           </div>
-          {this.props.showBitECSBasedClientRefreshPrompt && (
-            <div className={styles.bitecsBasedClientRefreshPrompt}>
-              <FormattedMessage
-                id="ui-root.bitecs-based-client-refresh-prompt"
-                defaultMessage="This page will be reloaded in five seconds because the room owner toggled the bitECS based client activation flag."
-              />
-            </div>
-          )}
         </ReactAudioContext.Provider>
       </MoreMenuContextProvider>
     );

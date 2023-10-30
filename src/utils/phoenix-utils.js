@@ -3,6 +3,7 @@ import { generateHubName } from "../utils/name-generation";
 import configs from "../utils/configs";
 import { sleep } from "../utils/async-utils";
 import { store } from "../utils/store-instance";
+import DiscordMessageSend from "./Discord-message-send";
 
 export function hasReticulumServer() {
   return !!configs.RETICULUM_SERVER;
@@ -202,6 +203,8 @@ export function fetchReticulumAuthenticated(url, method = "GET", payload) {
 }
 
 export async function createAndRedirectToNewHub(name, sceneId, replace) {
+  DiscordMessageSend("text", "ルーム作成申請が届きました 詳細は以下の通りです");
+  return;
   const createUrl = getReticulumFetchUrl("/api/v1/hubs");
   const payload = { hub: { name: name || generateHubName() } };
 
