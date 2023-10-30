@@ -69,10 +69,30 @@ export default class MessageDispatch extends EventTarget {
         chatBodyList[0] === "systemMessage" &&
         window.APP.hubChannel.store.state.profile.displayName === chatBodyList[4]
       ) {
+        console.log("test", window.APP.hubChannel.store);
         const request = chatBodyList[2] + "さんがあなたにフレンド申請をしています";
+        /*
         const requestMessage = { type: "chat", body: request, maySpawn: true, type: "chat" };
         this.addToPresenceLog(requestMessage);
         this.dispatchEvent(new CustomEvent("message", { detail: requestMessage }));
+        */
+        const friendConfirm = confirm(request);
+        if(friendConfirm) {
+          const me = window.APP.hubChannel.store.state.profile.displayName;
+          const message = "systemMessage/from/" + me + "/to/" + chatBodyList[2] + "/sendFriendRequest";
+          document.getElementById("avatar-rig").messageDispatch.dispatch(message);
+
+          const friendList = localStorage.getItem("friends");
+          if(friendList) {
+            const newFriendList = friendList.push(chatBodyList[2]);
+            console.log("newFriendlist=", newFriendList);
+            localStorage.setItem("friends", newFriendList)
+          } else {
+            localStorage.setItem("friends", [chatBodyList[2]])
+          }
+          const newlist = localStorage.getItem("friends");
+          console.log("new=", newlist);
+        }  
       } else if (
         chatBodyList[0] === "systemMessage" &&
         window.APP.hubChannel.store.state.profile.displayName !== chatBodyList[4]

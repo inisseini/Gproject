@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
@@ -835,29 +835,69 @@ class UIRoot extends Component {
   };
 
   renderEntryStartPanel = () => {
-    const Get = async () => {
-      const DBClient = new DynamoDBClient({
-        region: 'ap-northeast-1',
-        credentials: {
-          accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
-          secretAccessKey: '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',
-        },
-      });
-    
-      const docClient = DynamoDBDocumentClient.from(DBClient);
+    const DBClient = new DynamoDBClient({
+      region: 'ap-northeast-1',
+      credentials: {
+        accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
+        secretAccessKey: '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',
+      },
+    });
+  
+    const docClient = DynamoDBDocumentClient.from(DBClient);
+  
+    const GetGeneral = async () => {
       const command = new GetCommand({
-        TableName: 'roomParameter',
+        TableName: 'generalParameter',
         Key: {
-          key: location.href,
+          key: 'settings',
         },
       });
   
-      console.log('URL=', location.href);
       const response = await docClient.send(command);
-      console.log(response);
+
+      const hour = new Date().getHours();
+
+      if(response.Item.openingTime < hour && hour < response.Item.closingTime) {
+        console.log("ようこそMetaCampUsへ");
+      } else {
+        return <p style={{ zIndex: "100000000" }}>運用時間外です。</p>;
+      }
     };
 
-    Get();
+    const GetRoom = async () => {
+      const command = new GetCommand({
+        TableName: 'roomParameter',
+        Key: {
+          URL: location.href,
+        },
+      });
+  
+      const response = await docClient.send(command);
+      return response.Item.password;
+    };
+
+    GetGeneral();
+
+    let first = true;
+
+    GetRoom().then(passwordResult => {
+      if(first && passwordResult && passwordResult !== "") {
+        const passwordInput = prompt("パスワードが設定されています　4桁の数字(半角)を入力してください");
+        if (isNaN(passwordInput)) {
+          alert("パスワードが間違っています");
+          location.href = "/";
+        } else if (!isNaN(passwordInput)) {
+          if(passwordInput !== passwordResult) {
+            alert("パスワードが間違っています")
+            location.href = "/";
+          } else {
+            console.log('正しいパスワードが入力されました')
+            first = false
+          }
+        }
+      }
+    })
+    
 
     const { hasAcceptedProfile, hasChangedNameOrPronounsOrProfile } = this.props.store.state.activity;
     const isLockedDownDemo = isLockedDownDemoRoom();

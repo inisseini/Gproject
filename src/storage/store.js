@@ -67,6 +67,7 @@ export const SCHEMA = {
         avatarId: { type: "string" },
         pronouns: { type: "string", pattern: "^([a-zA-Z]{1,32}\\/){0,4}[a-zA-Z]{1,32}$" },
         profile: { type: "string", pattern: "([^\x01-\x7E]|w){0,300}$" },
+        friendContent: { type: "string" },
         sendDiscordMessage: { type: "string" },
         // personalAvatarId is obsolete, but we need it here for backwards compatibility.
         personalAvatarId: { type: "string" }

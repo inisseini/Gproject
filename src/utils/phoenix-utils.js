@@ -208,14 +208,14 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
   //DiscordMessageSend("text", "ルーム作成申請が届きました 詳細は以下の通りです");
   //return;
 
-  const passwardConfirm = confirm("パスワードを設定しますか？");
-  if (passwardConfirm) {
-    const passwardInput = prompt("4桁の数字(半角)を入力してください");
-    if (isNaN(passwardInput)) {
+  const passwordConfirm = confirm("パスワードを設定しますか？");
+  if (passwordConfirm) {
+    const passwordInput = prompt("4桁の数字(半角)を入力してください");
+    if (isNaN(passwordInput)) {
       alert("パスワードは4桁の数字(半角)で入力してください");
       return;
-    } else if (!isNaN(passwardInput)) {
-      const length = passwardInput.toString().length;
+    } else if (!isNaN(passwordInput)) {
+      const length = passwordInput.toString().length;
       if (length !== 4) return;
 
       const createUrl = getReticulumFetchUrl("/api/v1/hubs");
@@ -282,21 +282,15 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
       const docClient = DynamoDBDocumentClient.from(DBClient);
 
       const handleSubmit = async () => {
-        const command = new UpdateCommand({
+        const command = new PutCommand({
           TableName: "roomParameter",
-          Key: {
-            URL: url
-          },
-          ExpressionAttributeNames: {
-            "#pass": "passward"
-          },
-          ExpressionAttributeValues: {
-            ":pass": passwardInput
-          },
-          UpdateExpression: "SET #pass = :pass"
+          Item: {
+            URL: url,
+            password: passwordInput
+          }
         });
 
-        //const response = await docClient.send(command);
+        const response = await docClient.send(command);
 
         if (replace) {
           document.location.replace(url);
@@ -361,11 +355,35 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
       url = `/hub.html?hub_id=${hub.hub_id}`;
     }
 
-    if (replace) {
-      document.location.replace(url);
-    } else {
-      document.location = url;
-    }
+    const DBClient = new DynamoDBClient({
+      region: "ap-northeast-1",
+      credentials: {
+        accessKeyId: "AKIA6O7CLSZWBGWOEKTK",
+        secretAccessKey: "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"
+      }
+    });
+
+    const docClient = DynamoDBDocumentClient.from(DBClient);
+
+    const handleSubmit = async () => {
+      const command = new PutCommand({
+        TableName: "roomParameter",
+        Item: {
+          URL: url,
+          password: ""
+        }
+      });
+
+      const response = await docClient.send(command);
+
+      if (replace) {
+        document.location.replace(url);
+      } else {
+        document.location = url;
+      }
+    };
+
+    handleSubmit();
   }
 }
 

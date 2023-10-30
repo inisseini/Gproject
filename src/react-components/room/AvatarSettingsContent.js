@@ -10,6 +10,7 @@ export function AvatarSettingsContent({
   displayName,
   pronouns,
   profile,
+  friendContent,
   sendDiscordMessage,
   displayNameInputRef,
   pronounsInputRef,
@@ -19,11 +20,13 @@ export function AvatarSettingsContent({
   onChangeDisplayName,
   onChangePronouns,
   onChangeProfile,
+  onChangefriendContent,
   onChangeSendDiscordMessage,
   avatarPreview,
   displayNamePattern,
   pronounsPattern,
   profilePattern,
+  friendContentPattern,
   sendDiscordMessagePattern,
   onChangeAvatar,
   ...rest
@@ -58,6 +61,22 @@ export function AvatarSettingsContent({
           <FormattedMessage
             id="avatar-settings-content.display-profile-description"
             defaultMessage="Alphanumerics, hyphens, underscores, and tildes. No more than 32"
+          />
+        }
+        ref={profileInputRef}
+      />
+      <TextInputField
+        label={
+          <FormattedMessage id="avatar-settings-content.display-friendContent-label" defaultMessage="フレンド限定表示内容" />
+        }
+        value={friendContent}
+        pattern={friendContentPattern}
+        spellCheck="false"
+        onChange={onChangefriendContent}
+        description={
+          <FormattedMessage
+            id="avatar-settings-content.display-friendContent-description"
+            defaultMessage="フレンドにのみ表示される情報です"
           />
         }
         ref={profileInputRef}
@@ -106,6 +125,7 @@ AvatarSettingsContent.propTypes = {
   displayNamePattern: PropTypes.string,
   pronounsPattern: PropTypes.string,
   profilePattern: PropTypes.string,
+  friendContentPattern: PropTypes.string,
   onChangeDisplayName: PropTypes.func,
   onChangePronouns: PropTypes.func,
   onChangeProfile: PropTypes.func,

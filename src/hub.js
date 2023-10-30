@@ -140,7 +140,7 @@ import "./components/avatar-inspect-collider";
 import "./components/video-texture-target";
 import "./components/mirror";
 
-import React from "react";
+import React, {useState} from "react";
 import { createRoot } from "react-dom/client";
 import { Router, Route } from "react-router-dom";
 import { createBrowserHistory, createMemoryHistory } from "history";
@@ -346,46 +346,40 @@ function mountUI(props = {}) {
     qsTruthy("allow_idle") || (process.env.NODE_ENV === "development" && !qs.get("idle_timeout"));
   const forcedVREntryType = qsVREntryType;
 
-  function NonBusinessHoursRoot() {
-    return <p style={{ zIndex: "100000000" }}>運用時間外です。</p>;
-  }
+  
+    root.render(
+      <WrappedIntlProvider>
+        <ThemeProvider store={store}>
+          <Router history={history}>
+            <Route
+              render={routeProps =>
+                props.showOAuthScreen ? (
+                  <OAuthScreenContainer oauthInfo={props.oauthInfo} />
+                ) : props.roomUnavailableReason ? (
+                  <ExitedRoomScreenContainer reason={props.roomUnavailableReason} />
+                ) : (
+                  <UIRoot
+                    {...{
+                      scene,
+                      isBotMode,
+                      disableAutoExitOnIdle,
+                      forcedVREntryType,
+                      store,
+                      mediaSearchStore,
+                      ...props,
+                      ...routeProps
+                    }}
+                  />
+                )
+              }
+            />
+          </Router>
+        </ThemeProvider>
+      </WrappedIntlProvider>
+    );
+  
 
-  const hour = new Date().getHours();
-  if (0 < hour < 8) {
-    /*root.render(<NonBusinessHoursRoot />);
-    return;*/
-  }
-
-  root.render(
-    <WrappedIntlProvider>
-      <ThemeProvider store={store}>
-        <Router history={history}>
-          <Route
-            render={routeProps =>
-              props.showOAuthScreen ? (
-                <OAuthScreenContainer oauthInfo={props.oauthInfo} />
-              ) : props.roomUnavailableReason ? (
-                <ExitedRoomScreenContainer reason={props.roomUnavailableReason} />
-              ) : (
-                <UIRoot
-                  {...{
-                    scene,
-                    isBotMode,
-                    disableAutoExitOnIdle,
-                    forcedVREntryType,
-                    store,
-                    mediaSearchStore,
-                    ...props,
-                    ...routeProps
-                  }}
-                />
-              )
-            }
-          />
-        </Router>
-      </ThemeProvider>
-    </WrappedIntlProvider>
-  );
+  
 }
 
 export function remountUI(props) {

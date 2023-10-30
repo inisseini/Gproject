@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { Sidebar } from "../sidebar/Sidebar";
 import { CloseButton } from "../input/CloseButton";
@@ -13,6 +13,23 @@ import { ReactComponent as VolumeHigh } from "../icons/VolumeHigh.svg";
 import { ReactComponent as VolumeMuted } from "../icons/VolumeMuted.svg";
 import useAvatarVolume from "./hooks/useAvatarVolume";
 import { calcLevel, calcGainMultiplier, MAX_VOLUME_LABELS } from "../../utils/avatar-volume-utils";
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+  UpdateCommand,
+} from '@aws-sdk/lib-dynamodb';
+
+const DBClient = new DynamoDBClient({
+  region: 'ap-northeast-1',
+  credentials: {
+    accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
+    secretAccessKey: '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',
+  },
+});
+
+const docClient = DynamoDBDocumentClient.from(DBClient);
 
 const MIN = 0;
 const MAX = MAX_VOLUME_LABELS - 1;
@@ -23,6 +40,7 @@ export function UserProfileSidebar({
   displayName,
   pronouns,
   profile,
+  friendContent,
   sendDiscordMessage,
   identityName,
   avatarPreview,
@@ -55,6 +73,27 @@ export function UserProfileSidebar({
   );
   const newLevel = calcLevel(multiplier);
 
+  const [canShow, setShow] = useState(false);
+
+  const checkRelationship = () => {
+    const Get = async () => {
+      const command = new GetCommand({
+        TableName: 'accounts',
+        Key: {
+          key: 'settings',
+        },
+      });
+  
+      const response = await docClient.send(command);
+      setValues({
+        openingTime: response.Item.openingTime,
+        closingTime: response.Item.closingTime,
+      });
+    };
+
+    Get();
+  }
+
   return (
     <Sidebar
       beforeTitle={showBackButton ? <BackButton onClick={onBack} /> : <CloseButton onClick={onClose} />}
@@ -65,6 +104,8 @@ export function UserProfileSidebar({
         <h2 className={styles.displayName}>{identityName ? `${displayName} (${identityName})` : displayName}</h2>
         {pronouns && <span className={styles.pronouns}>{pronouns}</span>}
         {profile && <span className={styles.profile}>{profile}</span>}
+        {/*!canShow && <button onClick={checkRelationship}>フレンド限定内容を見る</button>*/}
+        {friendContent && <span className={styles.profile}>{friendContent}</span>}
         {sendDiscordMessage && <span className={styles.profile}>{sendDiscordMessage}</span>}
         <div className={styles.avatarPreviewContainer}>{avatarPreview || <div />}</div>
         {hasMicPresence && (
@@ -161,6 +202,7 @@ UserProfileSidebar.propTypes = {
   displayName: PropTypes.string,
   pronouns: PropTypes.string,
   profile: PropTypes.string,
+  friendContent: PropTypes.string,
   sendDiscordMessage: PropTypes.string,
   identityName: PropTypes.string,
   avatarPreview: PropTypes.node,

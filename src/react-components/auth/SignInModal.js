@@ -8,6 +8,14 @@ import { TextInputField } from "../input/TextInputField";
 import { Column } from "../layout/Column";
 import { LegalMessage } from "./LegalMessage";
 
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+  UpdateCommand,
+} from '@aws-sdk/lib-dynamodb';
+
 export const SignInStep = {
   submit: "submit",
   waitForVerification: "waitForVerification",
@@ -83,18 +91,38 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
   const [email, setEmail] = useState(initialEmail);
 
   const mailList =
-    /waseda.jp|w-as.jp|u-tokyo.ac.jp|titech.ac.jp|	tuat.ac.jp|ocha.ac.jp|kuhs.ac.jp|ynu.ac.jp|yokohama-cu.ac.jp|tmd.ac.jp|keio.ac.jp|tmu.ac.jp|keio.jpn|shibaura-it.ac.jp|ow.shibaura-it.ac.jp|s.tsukuba.ac.jp|u.tsukuba.ac.jp|sic.shibaura-it.ac.jp|wasedajg.ed.jp|wasedasaga.jp|chiba-u.jp|student.chiba-u.jp|faculty.chiba-u.jp|student.gs.chiba-u.jp|office.gs.chiba-u.jp|faculty.gs.chiba-u.jp/;
+    /waseda.jp|w-as.jp|u-tokyo.ac.jp|titech.ac.jp|	tuat.ac.jp|ocha.ac.jp|kuhs.ac.jp|ynu.ac.jp|yokohama-cu.ac.jp|tmd.ac.jp|keio.ac.jp|tmu.ac.jp|keio.jpn|shibaura-it.ac.jp|ow.shibaura-it.ac.jp|s.tsukuba.ac.jp|u.tsukuba.ac.jp|sic.shibaura-it.ac.jp|wasedajg.ed.jp|wasedasaga.jp|chiba-u.jp|student.chiba-u.jp|faculty.chiba-u.jp|student.gs.chiba-u.jp|office.gs.chiba-u.jp|faculty.gs.chiba-u.jp|vleap.jp|gmail.com/;
+
+    const DBClient = new DynamoDBClient({
+      region: 'ap-northeast-1',
+      credentials: {
+        accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
+        secretAccessKey: '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',
+      },
+    });
+  
+    const docClient = DynamoDBDocumentClient.from(DBClient);
 
   const onSubmitForm = useCallback(
     e => {
       if (!mailList.test(email)) {
         e.preventDefault();
-        /*alert("無効なメールアドレスです。");
-        return;*/
-        onSubmitEmail(email);
-        alert("無効なメールアドレスです。検証用にアクセスを許可します。");
+        alert("無効なメールアドレスです。");
+        return;
       } else if (mailList.test(email)) {
         e.preventDefault();
+        const CreateAccountData = async () => {
+          const command = new PutCommand({
+            TableName: 'accounts',
+            Item: {
+              mail: email,
+            },
+          });
+      
+          const response = await docClient.send(command);
+        };
+    
+        CreateAccountData();
         onSubmitEmail(email);
       }
     },
