@@ -217,7 +217,10 @@ class UIRoot extends Component {
     sidebarId: null,
     presenceCount: 0,
     chatPrefix: "",
-    chatAutofocus: false
+    chatAutofocus: false,
+
+    password: null,
+    firstConfirm: true
   };
 
   constructor(props) {
@@ -857,10 +860,14 @@ class UIRoot extends Component {
 
       const hour = new Date().getHours();
 
-      if(response.Item.openingTime < hour && hour < response.Item.closingTime) {
+      console.log(hour, response.Item.openingTime, response.Item.closingTime);
+      if(Number(response.Item.openingTime) <= hour && hour <= Number(response.Item.closingTime)) {
         console.log("ようこそMetaCampUsへ");
       } else {
-        return <p style={{ zIndex: "100000000" }}>運用時間外です。</p>;
+        const message = "運用時間外です。またお越しください。運用時間は" + String(response.Item.openingTime) + "時から" + String(response.Item.closingTime) + "時です。" 
+        alert(message)
+        location.href = "/";
+        //return <p style={{ zIndex: "100000000" }}>運用時間外です。</p>;
       }
     };
 
@@ -873,31 +880,29 @@ class UIRoot extends Component {
       });
   
       const response = await docClient.send(command);
-      return response.Item.password;
+      this.state.password = response.Item.password;
     };
 
     GetGeneral();
+    GetRoom();
 
-    let first = true;
-
-    GetRoom().then(passwordResult => {
-      if(first && passwordResult && passwordResult !== "") {
-        const passwordInput = prompt("パスワードが設定されています　4桁の数字(半角)を入力してください");
-        if (isNaN(passwordInput)) {
-          alert("パスワードが間違っています");
+    console.log('password=', this.state.password);
+    
+    if(this.state.firstConfirm && this.state.password && this.state.password !== "") {
+      this.state.firstConfirm = false;
+      const passwordInput = prompt("パスワードが設定されています　4桁の数字(半角)を入力してください");
+      if (isNaN(passwordInput)) {
+        alert("パスワードが間違っています");
+        location.href = "/";
+      } else if (!isNaN(passwordInput)) {
+        if(passwordInput !== this.state.password) {
+          alert("パスワードが間違っています")
           location.href = "/";
-        } else if (!isNaN(passwordInput)) {
-          if(passwordInput !== passwordResult) {
-            alert("パスワードが間違っています")
-            location.href = "/";
-          } else {
-            console.log('正しいパスワードが入力されました')
-            first = false
-          }
+        } else {
+          console.log('正しいパスワードが入力されました')
         }
       }
-    })
-    
+    }
 
     const { hasAcceptedProfile, hasChangedNameOrPronounsOrProfile } = this.props.store.state.activity;
     const isLockedDownDemo = isLockedDownDemoRoom();

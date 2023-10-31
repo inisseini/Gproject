@@ -78,11 +78,16 @@ export default class MessageDispatch extends EventTarget {
         */
         const friendConfirm = confirm(request);
         if(friendConfirm) {
+          const friendList = localStorage.getItem("friends");
+          if(friendList.includes(chatBodyList[2])) {
+            return;
+          }
+
           const me = window.APP.hubChannel.store.state.profile.displayName;
           const message = "systemMessage/from/" + me + "/to/" + chatBodyList[2] + "/sendFriendRequest";
           document.getElementById("avatar-rig").messageDispatch.dispatch(message);
 
-          const friendList = localStorage.getItem("friends");
+          
           if(friendList) {
             const newFriendList = friendList.push(chatBodyList[2]);
             console.log("newFriendlist=", newFriendList);

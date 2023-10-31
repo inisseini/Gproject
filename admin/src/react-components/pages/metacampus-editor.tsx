@@ -83,7 +83,7 @@ const metacampusSystemEditorComponent = ({ classes }) => {
           <input
             type='num'
             name='openingTime'
-            defaultValue={values.openingTime}
+            placeholder={String(values.openingTime)}
             required
           />
         </label>
@@ -92,7 +92,7 @@ const metacampusSystemEditorComponent = ({ classes }) => {
           <input
             type='num'
             name='closingTime'
-            defaultValue={values.closingTime}
+            placeholder={String(values.closingTime)}
             required
           />
         </label>

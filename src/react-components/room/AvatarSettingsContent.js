@@ -15,6 +15,7 @@ export function AvatarSettingsContent({
   displayNameInputRef,
   pronounsInputRef,
   profileInputRef,
+  friendContentInputRef,
   sendDiscordMessageInputRef,
   disableDisplayNameInput,
   onChangeDisplayName,
@@ -79,7 +80,7 @@ export function AvatarSettingsContent({
             defaultMessage="フレンドにのみ表示される情報です"
           />
         }
-        ref={profileInputRef}
+        ref={friendContentInputRef}
       />
       <TextInputField
         label={

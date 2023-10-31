@@ -76,7 +76,7 @@ export function UserProfileSidebar({
   const [canShow, setShow] = useState(false);
 
   const checkRelationship = () => {
-    const Get = async () => {
+    /*const Get = async () => {
       const command = new GetCommand({
         TableName: 'accounts',
         Key: {
@@ -90,8 +90,16 @@ export function UserProfileSidebar({
         closingTime: response.Item.closingTime,
       });
     };
-
-    Get();
+    
+    Get();*/
+    
+    const me = window.APP.hubChannel.store.state.profile.displayName;
+    if(me === displayName) return
+    const friendList = localStorage.getItem("friends");
+    const result =friendList.includes(displayName)
+    if(result) {
+      setShow(true);
+    }
   }
 
   return (
@@ -104,8 +112,8 @@ export function UserProfileSidebar({
         <h2 className={styles.displayName}>{identityName ? `${displayName} (${identityName})` : displayName}</h2>
         {pronouns && <span className={styles.pronouns}>{pronouns}</span>}
         {profile && <span className={styles.profile}>{profile}</span>}
-        {/*!canShow && <button onClick={checkRelationship}>フレンド限定内容を見る</button>*/}
-        {friendContent && <span className={styles.profile}>{friendContent}</span>}
+        {!canShow && <button onClick={checkRelationship}>フレンド限定内容を見る</button>}
+        {canShow && friendContent && <span className={styles.profile}>{friendContent}</span>}
         {sendDiscordMessage && <span className={styles.profile}>{sendDiscordMessage}</span>}
         <div className={styles.avatarPreviewContainer}>{avatarPreview || <div />}</div>
         {hasMicPresence && (

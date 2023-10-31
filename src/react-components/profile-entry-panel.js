@@ -154,7 +154,7 @@ export default class ProfileEntryPanel extends Component {
       onChangeDisplayName: e => this.setState({ displayName: e.target.value }),
       onChangePronouns: e => this.setState({ pronouns: e.target.value }),
       onChangeProfile: e => this.setState({ profile: e.target.value }),
-      friendContent: e => this.setState({ friendContent: e.target.value }),
+      onChangefriendContent: e => this.setState({ friendContent: e.target.value }),
       onChangeSendDiscordMessage: e => this.setState({ sendDiscordMessage: e.target.value }),
       avatarPreview: <AvatarPreview avatarGltfUrl={this.state.avatar && this.state.avatar.gltf_url} />,
       onChangeAvatar: e => {
