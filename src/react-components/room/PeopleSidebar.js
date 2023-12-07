@@ -20,6 +20,8 @@ import { List, ButtonListItem } from "../layout/List";
 import { FormattedMessage, defineMessage, useIntl } from "react-intl";
 import { PermissionNotification } from "./PermissionNotifications";
 
+import userDemoImg from "../../assets/images/OOKAWA9V9A6918_TP_V4.jpg";
+
 const toolTipDescription = defineMessage({
   id: "people-sidebar.muted-tooltip",
   defaultMessage: "User is {mutedState}"
@@ -151,41 +153,61 @@ export function PeopleSidebar({
             const VoiceIcon = getVoiceIconComponent(person.micPresence);
 
             return (
-              <ButtonListItem
-                className={styles.person}
-                key={person.id}
-                type="button"
-                onClick={e => onSelectPerson(person, e)}
-              >
-                {person.hand_raised && <HandRaisedIcon />}
-                {<DeviceIcon title={getDeviceLabel(person.context, intl)} />}
-                {!person.context.discord && VoiceIcon && <VoiceIcon title={getVoiceLabel(person.micPresence, intl)} />}
-                {!person.isMe && (
-                  <ToolTip
-                    classProp="tooltip"
-                    location="bottom"
-                    description={getToolTipDescription(
-                      store._preferences?.avatarVoiceLevels?.[person.profile.displayName]?.muted
+              <div className={styles.person} key={person.id} type="button" onClick={e => onSelectPerson(person, e)}>
+                <div className={styles.icon}>
+                  <img src={userDemoImg} />
+                </div>
+                <div className={styles.detail}>
+                  <p>{getPersonName(person, intl)}</p>
+                  <div className={styles.detailIcons}>
+                    {person.hand_raised && <HandRaisedIcon />}
+                    {<DeviceIcon title={getDeviceLabel(person.context, intl)} />}
+                    {!person.context.discord && VoiceIcon && (
+                      <VoiceIcon title={getVoiceLabel(person.micPresence, intl)} />
                     )}
-                  >
-                    {store._preferences?.avatarVoiceLevels?.[person.profile.displayName]?.muted ? (
-                      <UserSoundOffIcon />
-                    ) : (
-                      <UserSoundOnIcon />
+                    {!person.isMe && (
+                      <ToolTip
+                        classProp="tooltip"
+                        location="bottom"
+                        description={getToolTipDescription(
+                          store._preferences?.avatarVoiceLevels?.[person.profile.displayName]?.muted
+                        )}
+                      >
+                        {store._preferences?.avatarVoiceLevels?.[person.profile.displayName]?.muted ? (
+                          <UserSoundOffIcon />
+                        ) : (
+                          <UserSoundOnIcon />
+                        )}
+                      </ToolTip>
                     )}
-                  </ToolTip>
-                )}
-                <p>{getPersonName(person, intl)}</p>
-                {person.roles.owner && (
-                  <StarIcon
-                    title={intl.formatMessage({ id: "people-sidebar.moderator-label", defaultMessage: "Moderator" })}
-                    className={styles.moderatorIcon}
-                    width={12}
-                    height={12}
-                  />
-                )}
-                <p className={styles.presence}>{getPresenceMessage(person.presence, intl)}</p>
-              </ButtonListItem>
+                    {person.roles.owner && (
+                      <StarIcon
+                        title={intl.formatMessage({
+                          id: "people-sidebar.moderator-label",
+                          defaultMessage: "Moderator"
+                        })}
+                        className={styles.moderatorIcon}
+                        width={12}
+                        height={12}
+                      />
+                    )}
+                    <p className={styles.presence}>{getPresenceMessage(person.presence, intl)}</p>
+                  </div>
+                </div>
+                <div className={styles.status}>
+                  {person.isMe ? (
+                    <>
+                      <p className="position">運営</p>
+                      <p className="friend">フレンド申請</p>
+                    </>
+                  ) : (
+                    <>
+                      <p>メンター</p>
+                      <p>フレンド</p>
+                    </>
+                  )}
+                </div>
+              </div>
             );
           })}
       </List>

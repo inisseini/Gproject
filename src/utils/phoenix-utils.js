@@ -281,25 +281,53 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
 
       const docClient = DynamoDBDocumentClient.from(DBClient);
 
-      const handleSubmit = async () => {
-        const command = new PutCommand({
-          TableName: "roomParameter",
-          Item: {
-            URL: url,
-            password: passwordInput
+      const roomNameConfirm = confirm("ルームに名前を設定しますか？")
+      const roomNameInput = prompt("4桁の数字(半角)を入力してください");
+      if(roomNameConfirm && roomNameInput) {
+        const handleSubmit = async () => {
+          const command = new PutCommand({
+            TableName: "roomParameter",
+            Item: {
+              URL: url,
+              password: passwordInput,
+              permanent: false,
+              name: roomNameInput
+            }
+          });
+  
+          const response = await docClient.send(command);
+  
+          if (replace) {
+            document.location.replace(url);
+          } else {
+            document.location = url;
           }
-        });
-
-        const response = await docClient.send(command);
-
-        if (replace) {
-          document.location.replace(url);
-        } else {
-          document.location = url;
-        }
-      };
-
-      handleSubmit();
+        };
+  
+        handleSubmit();
+      } else if(roomNameConfirm && !roomNameInput) {
+        const handleSubmit = async () => {
+          const command = new PutCommand({
+            TableName: "roomParameter",
+            Item: {
+              URL: url,
+              password: passwordInput,
+              permanent: false,
+              name: false
+            }
+          });
+  
+          const response = await docClient.send(command);
+  
+          if (replace) {
+            document.location.replace(url);
+          } else {
+            document.location = url;
+          }
+        };
+  
+        handleSubmit();
+      }
     }
   } else {
     const createUrl = getReticulumFetchUrl("/api/v1/hubs");
@@ -365,25 +393,56 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
 
     const docClient = DynamoDBDocumentClient.from(DBClient);
 
-    const handleSubmit = async () => {
-      const command = new PutCommand({
-        TableName: "roomParameter",
-        Item: {
-          URL: url,
-          password: ""
-        }
-      });
-
-      const response = await docClient.send(command);
-
-      if (replace) {
-        document.location.replace(url);
-      } else {
-        document.location = url;
+   
+    const roomNameConfirm = confirm("ルームに名前を設定しますか？")
+    const roomNameInput = prompt("4桁の数字(半角)を入力してください");
+      if(roomNameConfirm && roomNameInput) {
+        const handleSubmit = async () => {
+          const command = new PutCommand({
+            TableName: "roomParameter",
+            Item: {
+              URL: url,
+              password: "",
+              permanent: false,
+              name: roomNameInput
+            }
+          });
+    
+          const response = await docClient.send(command);
+    
+          if (replace) {
+            document.location.replace(url);
+          } else {
+            document.location = url;
+          }
+        };
+    
+        handleSubmit();
+      } else if(roomNameConfirm && !roomNameInput) {
+        const handleSubmit = async () => {
+          const command = new PutCommand({
+            TableName: "roomParameter",
+            Item: {
+              URL: url,
+              password: "",
+              permanent: false,
+              name: false
+            }
+          });
+    
+          const response = await docClient.send(command);
+    
+          if (replace) {
+            document.location.replace(url);
+          } else {
+            document.location = url;
+          }
+        };
+    
+        handleSubmit();
       }
-    };
 
-    handleSubmit();
+    
   }
 }
 

@@ -6,6 +6,8 @@ import { TextInputField } from "../input/TextInputField";
 import { Column } from "../layout/Column";
 import { FormattedMessage } from "react-intl";
 
+import userDemoImg from "../../assets/images/OOKAWA9V9A6918_TP_V4.jpg";
+
 export function AvatarSettingsContent({
   displayName,
   pronouns,
@@ -32,8 +34,13 @@ export function AvatarSettingsContent({
   onChangeAvatar,
   ...rest
 }) {
+  console.log('avatarsettingscontent original');
   return (
     <Column as="form" className={styles.content} {...rest}>
+      <div className={styles.icon}>
+        <img src={userDemoImg} />
+      </div>
+      <button className={styles.iconButton}>アイコン変更</button>
       <TextInputField
         disabled={disableDisplayNameInput}
         label={<FormattedMessage id="avatar-settings-content.display-name-label" defaultMessage="Display Name" />}
@@ -52,17 +59,17 @@ export function AvatarSettingsContent({
       />
       <TextInputField
         label={
-          <FormattedMessage id="avatar-settings-content.display-profile-label" defaultMessage="Profile (optional)" />
+          <><FormattedMessage id="avatar-settings-content.display-profile-label" defaultMessage="Profile (optional)" /><br/><p>全体に公開するプロフィールです。</p></>
         }
         value={profile}
         pattern={profilePattern}
         spellCheck="false"
         onChange={onChangeProfile}
         description={
-          <FormattedMessage
+          <><FormattedMessage
             id="avatar-settings-content.display-profile-description"
             defaultMessage="Alphanumerics, hyphens, underscores, and tildes. No more than 32"
-          />
+          /><br/><p>フレンドにのみ公開するプロフィールです。本名や所属大学・組織を記入することを推奨します。</p></>
         }
         ref={profileInputRef}
       />

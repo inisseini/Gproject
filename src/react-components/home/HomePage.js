@@ -72,13 +72,14 @@ export function HomePage() {
           ) : (
             <SignInButton mobile />
           )}
-          <div className={styles.logoContainer}>
-            <AppLogo />
-          </div>
           <div className={styles.appInfo}>
             <div className={styles.appDescription}>{configs.translation("app-description")}</div>
             {canCreateRooms && <CreateRoomButton />}
             <PWAButton />
+          </div>
+          {/*
+          <div className={styles.logoContainer}>
+            <AppLogo />
           </div>
           <div className={styles.heroImageContainer}>
             <img
@@ -91,9 +92,10 @@ export function HomePage() {
               )}
               src={configs.image("home_background")}
             />
-          </div>
+          </div>*/}
         </div>
       </Container>
+      {/* 
       {configs.feature("show_feature_panels") && (
         <Container className={classNames(styles.features, styles.colLg, styles.centerLg)}>
           <Column padding gap="xl" className={styles.card}>
@@ -183,7 +185,10 @@ export function HomePage() {
         <Column center>
           <SocialBar />
         </Column>
-      ) : null}
+      ) : null}*/}
+      <div style={{width:"100%", display: "flex", justifyContent: "center"}}>
+        <a href="/MQU3Mkg/rewarding-caring-land" style={{padding:"10px 20px", backgroundColor: "#F9F9F9", borderRadius: "5px"}}>入場する</a>
+      </div>
     </PageContainer>
   );
 }
