@@ -21,6 +21,7 @@ import { FormattedMessage, defineMessage, useIntl } from "react-intl";
 import { PermissionNotification } from "./PermissionNotifications";
 
 import userDemoImg from "../../assets/images/OOKAWA9V9A6918_TP_V4.jpg";
+import configs from "../../utils/configs";
 
 const toolTipDescription = defineMessage({
   id: "people-sidebar.muted-tooltip",
@@ -126,6 +127,15 @@ export function PeopleSidebar({
     return intl.formatMessage(toolTipDescription, { mutedState: isMuted ? "muted" : "not muted" });
   }
 
+  const onSendFriendRequest = (target) => {
+    const confirm = confirm('フレンド申請をしてよろしいですか？');
+    if(confirm){
+
+      const message = "systemMessage/from/" + me + "/to/" + target + "/sendFriendRequest";
+      document.getElementById("avatar-rig").messageDispatch.dispatch(message);
+    }
+  }
+
   return (
     <Sidebar
       title={
@@ -195,17 +205,13 @@ export function PeopleSidebar({
                   </div>
                 </div>
                 <div className={styles.status}>
-                  {person.isMe ? (
+                      {configs.isAdmin() ? <p className="position">運営</p> : undefined}
+                  {!person.isMe ? (
                     <>
-                      <p className="position">運営</p>
-                      <p className="friend">フレンド申請</p>
+                      {localStorage.getItem("friends").includes(getPersonName(person, intl)) ? <p className="friend">フレンドです</p> : 
+                      <button className="friend" onClick={() => onSendFriendRequest(getPersonName(person, intl))}>フレンド申請</button>}
                     </>
-                  ) : (
-                    <>
-                      <p>メンター</p>
-                      <p>フレンド</p>
-                    </>
-                  )}
+                  ) : undefined}
                 </div>
               </div>
             );

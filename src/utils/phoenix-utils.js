@@ -282,7 +282,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
       const docClient = DynamoDBDocumentClient.from(DBClient);
 
       const roomNameConfirm = confirm("ルームに名前を設定しますか？")
-      const roomNameInput = prompt("4桁の数字(半角)を入力してください");
+      const roomNameInput = prompt("入力してください");
       if(roomNameConfirm && roomNameInput) {
         const handleSubmit = async () => {
           const command = new PutCommand({
@@ -395,7 +395,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
 
    
     const roomNameConfirm = confirm("ルームに名前を設定しますか？")
-    const roomNameInput = prompt("4桁の数字(半角)を入力してください");
+    const roomNameInput = prompt("入力してください");
       if(roomNameConfirm && roomNameInput) {
         const handleSubmit = async () => {
           const command = new PutCommand({

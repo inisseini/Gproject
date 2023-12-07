@@ -7,6 +7,7 @@ import { AvatarSettingsContent } from "./AvatarSettingsContent";
 import { FormattedMessage } from "react-intl";
 
 export function AvatarSettingsSidebar({ className, showBackButton, onBack, onClose, ...rest }) {
+  console.log('avatarsettingsSIDEBAR');
   return (
     <Sidebar
       title={<FormattedMessage id="avatar-settings-sidebar.title" defaultMessage="Avatar Settings" />}

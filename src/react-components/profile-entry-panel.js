@@ -167,6 +167,7 @@ export default class ProfileEntryPanel extends Component {
     };
 
     if (this.props.containerType === "sidebar") {
+      console.log('avatarsettingsGENERAL');
       return <AvatarSettingsSidebar {...avatarSettingsProps} showBackButton={this.props.showBackButton} />;
     }
 
