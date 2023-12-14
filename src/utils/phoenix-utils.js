@@ -282,8 +282,8 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
       const docClient = DynamoDBDocumentClient.from(DBClient);
 
       const roomNameConfirm = confirm("ルームに名前を設定しますか？")
-      const roomNameInput = prompt("入力してください");
-      if(roomNameConfirm && roomNameInput) {
+      if(roomNameConfirm) {
+        const roomNameInput = prompt("入力してください");
         const handleSubmit = async () => {
           const command = new PutCommand({
             TableName: "roomParameter",
@@ -305,7 +305,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
         };
   
         handleSubmit();
-      } else if(roomNameConfirm && !roomNameInput) {
+      } else if(!roomNameConfirm) {
         const handleSubmit = async () => {
           const command = new PutCommand({
             TableName: "roomParameter",
@@ -395,8 +395,8 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
 
    
     const roomNameConfirm = confirm("ルームに名前を設定しますか？")
-    const roomNameInput = prompt("入力してください");
-      if(roomNameConfirm && roomNameInput) {
+      if(roomNameConfirm) {
+        const roomNameInput = prompt("入力してください");
         const handleSubmit = async () => {
           const command = new PutCommand({
             TableName: "roomParameter",
@@ -418,7 +418,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
         };
     
         handleSubmit();
-      } else if(roomNameConfirm && !roomNameInput) {
+      } else if(!roomNameConfirm) {
         const handleSubmit = async () => {
           const command = new PutCommand({
             TableName: "roomParameter",
