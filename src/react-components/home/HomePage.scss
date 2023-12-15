@@ -295,27 +295,36 @@ img {
       }
       .accountMenu {
         position: absolute;
-        z-index: 10;
+        z-index: 100;
         width: 100%;
         top: 120%;
+        min-height: 100px;
         left: 0;
         background-color: var(--accentGreen);
         border-radius: 5px;
         background-image: radial-gradient(#8b8b8b 10%, transparent 30%);
         background-size: 5px 5px;
-        
-        ::before {
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          top: 5px;
-          left: 5px;
-          content: '';
-          z-index: 50;
-          background-color: #ffffff;
-          border: 2px solid var(--accentGreen);
-          box-sizing: border-box;
+        padding: 10px 15px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px 0;
+        .accountMenuCloseButton {
+          background-color: var(--accentOrange);
+          color: #ffffff;
+          padding: 10px 15px;
+          border: none;
           border-radius: 5px;
+          width: 80px;
+          height: 40px;
+          margin-left: calc(50% - 40px);
+        }
+
+        .profile {
+          background-color: #ffffff;
+          border-radius: 5px;
+          padding: 10px 15px;
+          text-align: center;
         }
       }
     }
@@ -384,7 +393,7 @@ img {
           padding: 10px 0;
           text-align: center;
           position: relative;
-          z-index: 200;
+          z-index: 20;
           margin: -25px auto 50px auto;
           ::before {
             width: 100%;

@@ -31,9 +31,12 @@ import Entry from '../../assets/images/entry.png';
 import Discord from '../../assets/images/skill-icons_discord.png';
 
 import { Button } from "../input/Button";
+import { AvatarSettingsContent } from "../room/AvatarSettingsContent";
 
 export function HomePage() {
-  console.log('test',window.APP.store.state);
+  const store = window.APP.store;
+  store.initProfile();
+  console.log('test store=', store.state);
   const auth = useContext(AuthContext);
   const intl = useIntl();
 
@@ -66,6 +69,12 @@ export function HomePage() {
   const email = auth.email;
 
   const [isAccountMenuOpen, setAccountMenu] = useState(false);
+  const [accountContent, setAccountContent] = useState({
+    profile: false,
+    friends: false,
+    nortification: false,
+    myAccount: false,
+  })
   return (
     
     <PageContainer className={styles.homePage}>
@@ -80,22 +89,58 @@ export function HomePage() {
           {auth.isSignedIn ?
             <ul>
             <a>
-              <li>
+              <li onClick={() => {
+                setAccountMenu(true);
+                setAccountContent((m) => ({
+                  ...m,
+                  profile: true,
+                  friends: false,
+                  nortification: false,
+                  myAccount: false
+                }))  
+              }}>
                 <img src={Profile} />
               </li>
             </a>
             <a>
-              <li>
+              <li onClick={() => {
+                setAccountMenu(true);
+                setAccountContent((m) => ({
+                  ...m,
+                  profile: false,
+                  friends: true,
+                  nortification: false,
+                  myAccount: false
+                }))  
+              }}>
                 <img src={Friends} />
               </li>
             </a>
             <a>
-              <li>
+              <li onClick={() => {
+                setAccountMenu(true);
+                setAccountContent((m) => ({
+                  ...m,
+                  profile: false,
+                  friends: false,
+                  nortification: true,
+                  myAccount: false
+                }))  
+              }}>
                 <img src={Nortification} />
               </li>
             </a>
             <a>
-              <li>
+              <li onClick={() => {
+                setAccountMenu(true);
+                setAccountContent((m) => ({
+                  ...m,
+                  profile: false,
+                  friends: false,
+                  nortification: false,
+                  myAccount: true
+                }))  
+              }}>
                 <img src={MyAccount} />
               </li>
             </a>
@@ -113,7 +158,17 @@ export function HomePage() {
           
           {isAccountMenuOpen ?
             <div className="accountMenu">
-              <button onClick={() => setAccountMenu(false)}></button>
+              <button className="accountMenuCloseButton" onClick={() => setAccountMenu(false)}>閉じる</button>
+              {accountContent.profile ?
+              <div className="profile">
+                <AvatarSettingsContent
+                  displayName={window.APP.store.state.profile.displayName}
+                  profile={window.APP.store.profile}
+                  pronouns={window.APP.store.state.pronouns}
+                  sendDiscordMessage={window.APP.store.state.sendDiscordMessage}
+                />
+              </div>
+              : undefined}
             </div>
           : undefined}
         </div>
