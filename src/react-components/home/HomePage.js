@@ -75,6 +75,16 @@ export function HomePage() {
     nortification: false,
     myAccount: false,
   })
+
+  const onSignOut = () => {
+
+    const logOutConfirm = confirm("ログアウトしますか？")
+    if(logOutConfirm) {
+      auth.signOut()
+    } else {
+      return
+    }
+  }
   return (
     
     <PageContainer className={styles.homePage}>
@@ -144,7 +154,7 @@ export function HomePage() {
                 <img src={MyAccount} />
               </li>
             </a>
-            <a href="#" onClick={auth.signOut} >
+            <a href="#" onClick={onSignOut} >
               <li className='orange'>
                 <img src={LogOut} />
               </li>
@@ -182,11 +192,18 @@ export function HomePage() {
           <h2 className='title'>ENTER</h2>
           <div className='enterBox'>
             <img src={Entry} />
+            {auth.isSignedIn ?
             <a href="/MQU3Mkg/rewarding-caring-land">
               <div className='entryButton'>
                 <p>クリックして入場</p>
               </div>
             </a>
+             : 
+             
+            <div className='entryButton'>
+              <p>ログインしてください</p>
+            </div>
+             }
             <p>
               MetaCampUsのハブとなるワールドです。
               <br />

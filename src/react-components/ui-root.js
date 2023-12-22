@@ -104,6 +104,8 @@ import { ChatContextProvider } from "./room/contexts/ChatContext";
 import ChatToolbarButton from "./room/components/ChatToolbarButton/ChatToolbarButton";
 import SeePlansCTA from "./room/components/SeePlansCTA/SeePlansCTA";
 
+import { createAndRedirectToNewHub } from "../utils/phoenix-utils";
+
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
@@ -1219,10 +1221,7 @@ class UIRoot extends Component {
             label: <FormattedMessage id="more-menu.create-room" defaultMessage="Create Room" />,
             icon: AddIcon,
             onClick: () =>
-              this.showNonHistoriedDialog(LeaveRoomModal, {
-                destinationUrl: "/",
-                reason: LeaveReason.createRoom
-              })
+              createAndRedirectToNewHub(null, null, true)
           },
           !isLockedDownDemo && {
             id: "user-profile",
