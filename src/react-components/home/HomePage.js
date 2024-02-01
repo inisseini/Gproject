@@ -115,6 +115,7 @@ export function HomePage() {
     let item_length = num.length;
     //rouletteの半径を計算
     let r = roulette.clientWidth/2;
+    console.log('test', r);
     //360度÷配置要素数
     let deg = 360.0/item_length;
     //さっきの角度をラジアンに変更
@@ -330,8 +331,8 @@ export function HomePage() {
               <div className="container">
                 <h2 className='title'>WORLDS</h2>
                 <br/><br/>
-                <div className='content'>
-                  <div className={worldsDetail.publicOpen ? "public" : "public off"}>
+                <div className={worldsDetail.publicOpen || worldsDetail.privateOpen ? "content" : "content offContent"}>
+                  <div className={worldsDetail.publicOpen ? "public" : "public offPublic"}>
                       <div className="publicLabel">
                         <span>オープンワールド</span>
                         <p>
@@ -346,10 +347,10 @@ export function HomePage() {
                           }
                         }>詳細</button>
                       </div>
-                      <div id="publicRoulette">
+                      <div id="publicRoulette" className={worldsDetail.publicOpen ? "" : "offPublic"}>
                       </div>
                   </div>
-                  <div className={worldsDetail.publicOpen ? "private" : "private off"}>  
+                  <div className={worldsDetail.privateOpen ? "private" : "private offPrivate"}>  
                     <div className="privateLabel">
                       <span>プライベートワールド</span>
                       <p>
@@ -359,12 +360,12 @@ export function HomePage() {
                       </p>
                       <button onClick={() => 
                         {
-                          setWorldsDetail({...worldsDetail, publicOpen: true})
+                          setWorldsDetail({...worldsDetail, privateOpen: true})
                           openWorlds('private')
                         }
                       }>詳細</button>
                     </div>
-                    <div id="privateRoulette"></div>
+                    <div id="privateRoulette" className={worldsDetail.privateOpen ? "" : "offPrivate"}></div>
                   </div>
                 </div>
 

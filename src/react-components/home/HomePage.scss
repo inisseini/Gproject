@@ -513,10 +513,12 @@ button {
 
       .Scroll {
         overflow-y: auto;
+        overflow-x: hidden;
         display: flex;
         flex-direction: column;
         gap: 20px 0;
         flex-grow: 1;
+        width: 90%;
         max-width: 600px;
         .scrollHeader {
           display: flex;
@@ -576,77 +578,143 @@ button {
         }
         .scrollWorlds {
           display: flex;
+          flex-direction: column;
           justify-content: center;
           margin-bottom: 50px;
-          .public {
-            .publicLabel {
-              background-color: #ffffff;
-              border-radius: 10px;
-              width: 80%;
-              margin: 0 auto;
-              padding: 20px 10px;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              span {
-                color: var(--accentGreen);
-                font-weight: bold;
-                text-align: center;
-              }
-              button {
-                background-color: var(--accentOrange);
-                color: #ffffff;
-                padding: 8px 20px;
-                border-radius: 50px;
-                border: none;
-                margin: 10px auto 0 auto;
-              }
+          .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px 5px;
+            &.offContent {
+              flex-direction: row;
             }
-            .off {
-              width: 50%;
-              flex-grow: 1;
+            .public {
+              width: 100%;
               .publicLabel {
                 display: none;
               }
-            }
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-          }
-          .private {
-            .privateLabel {
-              background-color: #ffffff;
-              border-radius: 10px;
-              width: 80%;
-              margin: 0 auto;
-              padding: 20px 10px;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              span {
-                color: var(--accentGreen);
-                font-weight: bold;
+              
+              #publicRoulette {
+                display: block;
+                width: 300px;
+                aspect-ratio: 1/1;
+                content: '';
+                background-color: #ee7342;
+                margin: 0 auto;
+                position: relative;
+                z-index: 1;
+                flex-shrink: 0;
+                flex-grow: 1;
+                &.offPublic {
+                  opacity: 0;
+                }
+              }
+              &.offPublic {
+                width: 50%;
+                .publicLabel {
+                  background-color: #ffffff;
+                  border-radius: 10px;
+                  width: 100%;
+                  margin: 0 auto;
+                  padding: 20px 10px;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  flex-shrink: 0;
+                  z-index: 2;
+                  span {
+                    color: var(--accentGreen);
+                    font-weight: bold;
+                    text-align: center;
+                  }
+                  button {
+                    background-color: var(--accentOrange);
+                    color: #ffffff;
+                    padding: 8px 20px;
+                    border-radius: 50px;
+                    border: none;
+                    margin: 10px auto 0 auto;
+                  }
+                }
+              }
+              .cil{
+                width: 80px;
+                height: 80px; 
+                background-color: rgb(250, 255, 180);
+                border-radius: 50%;/* 円*/
+                line-height: 80px;
                 text-align: center;
-              }
-              button {
-                background-color: var(--accentOrange);
-                color: #ffffff;
-                padding: 8px 20px;
-                border-radius: 50px;
-                border: none;
-                margin: 10px auto 0 auto;
-              }
+                display: block;
+                position: absolute;
             }
-            .off {
-              width: 50%;
-              flex-grow: 1;
+              display: flex;
+              justify-content: space-between;
+              width: 100%;
+            }
+            .private {
+              width: 100%;
               .privateLabel {
                 display: none;
               }
+              
+              #privateRoulette {
+                display: block;
+                width: 100%;
+                aspect-ratio: 1/1;
+                content: '';
+                background-color: #ee7342;
+                margin: 0 auto;
+                position: relative;
+                flex-shrink: 0;
+                flex-grow: 1;
+                z-index: 1;
+                &.offPrivate {
+                  opacity: 0;
+                }
+              }
+              &.offPrivate {
+                width: 50%;
+                .privateLabel {
+                  background-color: #ffffff;
+                  border-radius: 10px;
+                  width: 100%;
+                  margin: 0 auto;
+                  padding: 20px 10px;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  flex-shrink: 0;
+                  z-index: 2;
+                  span {
+                    color: var(--accentGreen);
+                    font-weight: bold;
+                    text-align: center;
+                  }
+                  button {
+                    background-color: var(--accentOrange);
+                    color: #ffffff;
+                    padding: 8px 20px;
+                    border-radius: 50px;
+                    border: none;
+                    margin: 10px auto 0 auto;
+                  }
+                }
+              }
+              .cil{
+                width: 80px;
+                height: 80px; 
+                background-color: rgb(250, 255, 180);
+                border-radius: 50%;/* 円*/
+                line-height: 80px;
+                text-align: center;
+                display: block;
+                position: absolute;
             }
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
+              display: flex;
+              justify-content: space-between;
+              width: 100%;
+            }
           }
         }
         .scrollGTIE {
