@@ -21,7 +21,8 @@ import { AppLogo } from "../misc/AppLogo";
 import { isHmc } from "../../utils/isHmc";
 import maskEmail from "../../utils/mask-email";
 
-import Logo from '../../assets/images/gtie_rgb_02.png'
+import GTIELogo from '../../assets/images/gtie_rgb_02.png';
+import MetaCampUsLogo from '../../assets/images/metaCampUsLogo.png';
 import Profile from '../../assets/images/mingcute_profile-fill.png';
 import Friends from '../../assets/images/fa-solid_user-friends.png';
 import Nortification from '../../assets/images/Vector.png';
@@ -32,6 +33,10 @@ import Discord from '../../assets/images/skill-icons_discord.png';
 import ProducedBy from '../../assets/images/producedby.png';
 import GTIEBackground from '../../assets/images/GTIE.png';
 import Glass from '../../assets/images/glass.png';
+import School from '../../assets/images/school.png';
+import Manual from '../../assets/images/manual.png';
+import Rule from '../../assets/images/rule.png';
+import Mail from '../../assets/images/mail.png';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoffee } from "@fortawesome/free-solid-svg-icons";
@@ -70,76 +75,6 @@ export function HomePage() {
     if (qs.has("new")) {
       createAndRedirectToNewHub(null, null, true);
     }
-
-    function doSwap() {
-      document.querySelectorAll("#nav li").forEach(function(item) {
-        if (item.classList.contains("active")) {
-          swap(item);
-        } else {
-          swapBack(item);
-        }
-      });
-    }
-    
-    function clear() {
-      document.querySelectorAll("#nav li").forEach(function(item) {
-        item.classList.remove("active");
-      });
-    }
-    
-    document.querySelectorAll("#nav li").forEach(function(item) {
-      item.addEventListener("click", function() {
-        clear();
-        item.classList.add("active");
-        doSwap();
-        rotate('.dial', item);
-      });
-    });
-    
-    function rotate(m, o) {
-      const id = "#" + o.getAttribute("id");
-      const menu = document.querySelector(m);
-      
-      menu.classList.remove('r0', 'lr1', 'lr2', 'rr1', 'rr2');
-      
-      if (id === "#email") menu.classList.add("lr2");
-      if (id === "#photo") menu.classList.add('lr1');
-      if (id === "#cloud") menu.classList.add('r0');
-      if (id === "#portfolio") menu.classList.add('rr1');
-      if (id === "#settings") menu.classList.add('rr2');
-    }
-    
-    function swap(o) {
-      const id = "#" + o.getAttribute("id");
-      const cimg = document.querySelector(id + " img");
-      const burl = "http://grantcr.com/files/";
-      const ext = ".png";
-      let nimg;
-    
-      if (id === "#email") nimg = burl + "iemailh" + ext;
-      if (id === "#photo") nimg = burl + "photosh" + ext;
-      if (id === "#cloud") nimg = burl + "icloudh" + ext;
-      if (id === "#portfolio") nimg = burl + "portfolioh" + ext;
-      if (id === "#settings") nimg = burl + "settingsh" + ext;
-    
-      if (nimg) cimg.setAttribute("src", nimg);
-    }
-    
-    function swapBack(o) {
-      const id = "#" + o.getAttribute("id");
-      const cimg = document.querySelector(id + " img");
-      const burl = "http://grantcr.com/files/";
-      const ext = ".png";
-      let nimg;
-    
-      if (id === "#email") nimg = burl + "iemail" + ext;
-      if (id === "#photo") nimg = burl + "iphoto" + ext;
-      if (id === "#cloud") nimg = burl + "icloud" + ext;
-      if (id === "#portfolio") nimg = burl + "portfolio" + ext;
-      if (id === "#settings") nimg = burl + "settings" + ext;
-    
-      if (nimg) cimg.setAttribute("src", nimg);
-    }
   }, []);
 
   const canCreateRooms = !configs.feature("disable_room_creation") || auth.isAdmin;
@@ -163,6 +98,44 @@ export function HomePage() {
     }
   }
 
+  const [worldsDetail, setWorldsDetail] = useState({
+    publicOpen: false,
+    privateOpen: false,
+    publicChoosen: 1,
+    privateChoosen: 1
+  });
+
+  const openWorlds = (access) => {
+    //要素の表示、円周上に表示させる
+    let num = access === 'public' ? [0,1] : [0,1,2,3];
+    //HTMLに表示
+    let roulette = access === 'public' ? document.getElementById("publicRoulette") : document.getElementById("privateRoulette");
+    console.log('test', num, roulette);
+    /*円形に並べる*/
+    let item_length = num.length;
+    //rouletteの半径を計算
+    let r = roulette.clientWidth/2;
+    //360度÷配置要素数
+    let deg = 360.0/item_length;
+    //さっきの角度をラジアンに変更
+    let rad = (deg*Math.PI/180.0);
+    
+    //要素追加して表示させる
+    for(var i = 0; i < num.length; i++ ){
+      //div要素の追加
+      let div = document.createElement('div');
+      div.className = "cil";
+      div.id = "cil"+ i;
+      div.innerHTML= num[i] ;
+      const x = Math.cos(rad * i) * r + r;
+      const y = Math.sin(rad * i) * r + r;
+      let circle = roulette.appendChild(div);
+      circle.style.left = x + "px";
+      circle.style.top = y + "px";
+      // console.log(x);
+    } 
+  }
+
 
   return (
     
@@ -172,7 +145,8 @@ export function HomePage() {
       <div className={styles.App}>
         <header>
           <div className='Logo'>
-            <img src={Logo} />
+            <img src={MetaCampUsLogo}/>
+            <img src={GTIELogo} />
           </div>
           <div className='Account'>
             {auth.isSignedIn ?
@@ -271,6 +245,7 @@ export function HomePage() {
           <div className='Enter'>
             <h2 className='title'>ENTER</h2>
             <div className='enterBox'>
+              <div>
               <img src={Entry} />
               {auth.isSignedIn ?
               <a href="/MQU3Mkg/rewarding-caring-land">
@@ -284,22 +259,46 @@ export function HomePage() {
                 <p>ログインしてください</p>
               </div>
               }
+              </div>
               <p>
                 MetaCampUsのハブとなるワールドです。
                 <br />
                 初めての方もリピートの方もまずはここから始めてみましょう！！
-              </p>
-              <br />
-              <p>
+           
+              <br /><br/>
+            
                 操作説明やチュートリアルはワールド内に用意されています。
-                <br />
+                <br /><br/>
                 必要なものはアカウントのみです。
               </p>
+              <div className="details">
+                <div className="schoolList">
+                  <img src={School}/>
+                  <p>参加大学一覧</p>
+                  <div className="list">
+                    aaaa
+                  </div>
+                </div>
+                <div className="manualAndRule">
+                  <div className="manual">
+                    <img src={Manual}/>
+                    <p>操作説明</p>
+                  </div>
+                  <div className="rule">
+                    <img src={Rule}/>
+                    <p>規約</p>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="ground">© 2024- GTIE</div>
           </div>
           <div className='Scroll'>
-            <div className="scrollHeader"></div>
+            <div className="scrollHeader">
+              <div className="logo">
+              <img src={MetaCampUsLogo}/>
+              <img src={GTIELogo}/></div>
+            </div>
             <div className="scrollHero"></div>
             <div className="scrollAbout">
               <div className="container">
@@ -330,53 +329,43 @@ export function HomePage() {
             <div className="scrollWorlds">
               <div className="container">
                 <h2 className='title'>WORLDS</h2>
+                <br/><br/>
                 <div className='content'>
-                <div id="mainB">
-                  <div className="bg">
-                    <div className="bg1">
-
+                  <div className={worldsDetail.publicOpen ? "public" : "public off"}>
+                      <div className="publicLabel">
+                        <span>オープンワールド</span>
+                        <p>
+                          参加者全員がお楽しみいただけるワールドです。
+                          <br/><br/>
+                          まずはこのワールドから探索しましょう！！
+                        </p>
+                        <button onClick={() => 
+                          {
+                            setWorldsDetail({...worldsDetail, publicOpen: true})
+                            openWorlds('public')
+                          }
+                        }>詳細</button>
+                      </div>
+                      <div id="publicRoulette">
+                      </div>
+                  </div>
+                  <div className={worldsDetail.publicOpen ? "private" : "private off"}>  
+                    <div className="privateLabel">
+                      <span>プライベートワールド</span>
+                      <p>
+                        限られたメンバーだけが入室できるワールドです。
+                        <br/><br/>
+                        グループ活動やイベントにご活用いただけます！！
+                      </p>
+                      <button onClick={() => 
+                        {
+                          setWorldsDetail({...worldsDetail, publicOpen: true})
+                          openWorlds('private')
+                        }
+                      }>詳細</button>
                     </div>
+                    <div id="privateRoulette"></div>
                   </div>
-                </div>
-                <div className="over">
-                  <div className="dial">
-                    <div className="grad">
-                        
-                    </div>
-                  </div>
-                  <div className="container">
-                  <div className="nav">
-                    <ul id="nav">
-                      <li id="email">
-                        <a>
-                          <img src="http://grantcr.com/files/iemail.png" />
-                        </a>
-                      </li>
-                      <li id="photo">
-                        <a>
-                          <img src="http://grantcr.com/files/iphoto.png" />
-                        </a>
-                      </li>
-                      <li id="cloud" className="active">
-                        <a>
-                          <img src="http://grantcr.com/files/icloud.png" />
-                        </a>
-                      </li>
-                      <li id="portfolio">
-                        <a>
-                          <img src="http://grantcr.com/files/portfolio.png" />
-                        </a>
-                      </li>
-                      <li id="settings">
-                        <a>
-                          <img src="http://grantcr.com/files/settings.png" />
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  </div>
-                </div>
-
                 </div>
 
               </div>
@@ -419,6 +408,7 @@ export function HomePage() {
                   <a className='articleDetail'>詳細</a>
                 </div>
 
+                {/* 
                 <div className='article'>
                   <h3 className='articleTitle'>
                     2023-12-08 アップデートのお知らせ
@@ -439,14 +429,20 @@ export function HomePage() {
                     <p>図書館ワールドが追加されました</p>
                   </div>
                   <a className='articleDetail'>詳細</a>
-                </div>
+                </div>*/}
               </div>
+              {/*
               <div className='paging'>
                 <span className='dot accent'></span>
                 <span className='dot'></span>
                 <span className='dot'></span>
                 <span className='dot'></span>
               </div>
+               */}
+            </div>
+            <div className="contact">
+              <img src={Mail}/>
+              <p>お問い合わせはこちら</p>
             </div>
             <div className="ground">
             Ver. β 1.0
