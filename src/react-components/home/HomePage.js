@@ -23,6 +23,8 @@ import maskEmail from "../../utils/mask-email";
 
 import GTIELogo from '../../assets/images/gtie_rgb_02.png';
 import MetaCampUsLogo from '../../assets/images/metaCampUsLogo.png';
+import Menu from '../../assets/images/menu.png';
+import Hero from '../../assets/images/hero.png';
 import Profile from '../../assets/images/mingcute_profile-fill.png';
 import Friends from '../../assets/images/fa-solid_user-friends.png';
 import Nortification from '../../assets/images/Vector.png';
@@ -98,10 +100,13 @@ export function HomePage() {
     }
   }
 
+  const [mobileMenu, setMobileMenu] = useState(false);
+
   const [enterDetail, setEnterDetail] = useState({
     list: false,
     manual: false,
-    rule: false
+    rule: false,
+    details: false
   });
 
   const [worldsDetail, setWorldsDetail] = useState({
@@ -150,6 +155,7 @@ export function HomePage() {
       
       <Container>
       <div className={styles.App}>
+        <div className="bg"></div>
         <header>
           <div className='Logo'>
             <img src={MetaCampUsLogo}/>
@@ -248,10 +254,10 @@ export function HomePage() {
           </a>
         </header>
         <div className="contentContainer">
-        <div className='content'>
-          <div className='Enter'>
-            <h2 className='title'>ENTER</h2>
+        <div className={mobileMenu ? 'content mobile' : 'content'}>
+          <div className={mobileMenu ? 'Enter mobile' : 'Enter'}>
             <div className='enterBox'>
+            <h2 className='title'>ENTER</h2>
               <div>
               <img src={Entry} />
               {auth.isSignedIn ?
@@ -267,10 +273,11 @@ export function HomePage() {
               </div>
               }
               </div>
+
               {enterDetail.list ? 
-                undefined
+                <p className={mobileMenu && enterDetail.details ? 'description open' : 'description'}>参加大学一覧</p>
               : enterDetail.manual ?
-                <p className="description">
+                <p className={mobileMenu && enterDetail.details ? 'description open' : 'description'}>
                   MetaCampUs Japan 利用規約<br/><br/>
 
                   0.総則<br/><br/>
@@ -468,7 +475,7 @@ export function HomePage() {
                   本規約は、2023年11月1日から実施します。
                 </p>
               : enterDetail.rule ? 
-                <p className="description">
+                <p className={mobileMenu && enterDetail.details ? 'description open' : 'description'}>
                   MetaCampUs操作方法
                     <br/><br/>
                   【共通】
@@ -529,7 +536,7 @@ export function HomePage() {
                   退室するには、ブラウザを閉じてください。
                 </p>
               :
-                <p className="description">
+                <p className={mobileMenu && enterDetail.details ? 'description open' : 'description'}>
                   MetaCampUsのハブとなるワールドです。
                   <br />
                   初めての方もリピートの方もまずはここから始めてみましょう！！
@@ -541,8 +548,9 @@ export function HomePage() {
                   必要なものはアカウントのみです。
                 </p>
               }
-              <div className="details">
-                <div className="schoolList" onClick={() => setEnterDetail({list: !enterDetail.list, manual: false, rule: false})}>
+              
+              <div className={mobileMenu && enterDetail.details ? 'details open' : 'details'}>
+                <div className="schoolList" onClick={() => setEnterDetail({list: !enterDetail.list, manual: false, rule: false, details: enterDetail.details})}>
                   <img src={School}/>
                   <p>{enterDetail.list ? '閉じる' : '参加大学一覧'}</p>
                   <div className="list">
@@ -550,26 +558,44 @@ export function HomePage() {
                   </div>
                 </div>
                 <div className="manualAndRule">
-                  <div className="manual" onClick={() => setEnterDetail({list: false, manual: !enterDetail.manual, rule: false})}>
+                  <div className="manual" onClick={() => setEnterDetail({list: false, manual: !enterDetail.manual, rule: false, details: enterDetail.details})}>
                     <img src={Manual}/>
                     <p>{enterDetail.manual ? '閉じる' : '操作説明'}</p>
                   </div>
-                  <div className="rule" onClick={() => setEnterDetail({list: false, manual: false, rule: !enterDetail.rule})}>
+                  <div className="rule" onClick={() => setEnterDetail({list: false, manual: false, rule: !enterDetail.rule, details: enterDetail.details})}>
                     <img src={Rule}/>
                     <p>{enterDetail.rule ? '閉じる' : '規約'}</p>
                   </div>
                 </div>
               </div>
+              
+              
+              {mobileMenu ?
+              <div className="detailsOpen" onClick={()=> setEnterDetail({...enterDetail, details: !enterDetail.details})}>{enterDetail.details ?  '閉じる' : '詳　細'}</div>
+              : undefined}
             </div>
             <div className="ground">© 2024- GTIE</div>
           </div>
-          <div className='Scroll'>
             <div className="scrollHeader">
               <div className="logo">
               <img src={MetaCampUsLogo}/>
               <img src={GTIELogo}/></div>
+              <div className="menu" onClick={()=> setMobileMenu(!mobileMenu)}>
+                <img src={Menu}/>
+              </div>
             </div>
-            <div className="scrollHero"></div>
+          <div className={mobileMenu ? 'Scroll mobile' : 'Scroll'}>
+            <div className="scrollHero">
+              <img src={Hero}/>
+              <div className="container">
+                <p>
+                「<span>やりたい</span>」が<span>カタチ</span>になるコミュニティ「MetaCampUs」
+                </p>
+                <p>
+                MCUは、どんなバカげた<span>挑戦</span>も、ここから<span>カタチ</span>になっていくのを応援します
+                </p>
+              </div>
+            </div>
             <div className="scrollAbout">
               <div className="container">
                 <br/>
@@ -702,13 +728,13 @@ export function HomePage() {
               <div className="ground"></div>
             </div>
           </div>
-          <div className='IndexAndNews'>
+          <div className={mobileMenu ? 'IndexAndNews mobile' : 'IndexAndNews' }>
             <div className='Index'>
               <ul>
-                <li className='accent'>-CONCEPT</li>
-                <li>-FEATURE</li>
-                <li>-WORLD</li>
-                <li>-CONTACT</li>
+                <li><h2 className="title accent">-CONCEPT</h2></li>
+                <li><h2 className="title">-FEATURE</h2></li>
+                <li><h2 className="title">-WORLD</h2></li>
+                <li><h2 className="title">-CONTACT</h2></li>
               </ul>
             </div>
             <div className='News'>
@@ -757,7 +783,7 @@ export function HomePage() {
             </div>
             <a href="https://tkwfo2rbzm4we3wggzsygu4dxy0qatpf.lambda-url.ap-northeast-1.on.aws/" className="contact" target="_blank" rel="noopener noreferrer">
               <img src={Mail}/>
-              <p>お問い合わせはこちら</p>
+              <p>お問い合わせ</p>
             </a>
             <div className="ground">
             Ver. β 1.0

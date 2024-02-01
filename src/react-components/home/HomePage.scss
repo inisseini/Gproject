@@ -16,10 +16,6 @@
     color: #000000;
   }
 
-  @media (min-width: theme.$breakpoint-lg) {
-    align-items: center;
-    justify-content: flex-start;
-  }
 
   & > section {
     margin: 2em auto;
@@ -37,7 +33,7 @@
     align-self: flex-start;
   }
 
-  @media (min-width: theme.$breakpoint-lg) {
+  @media (max-width: theme.$breakpoint-md) {
     display: none;
   }
 }
@@ -47,7 +43,7 @@
   flex-direction: column;
   align-items: center;
   flex: 1;
-  @media(min-width: theme.$breakpoint-lg) {
+  @media(max-width: theme.$breakpoint-md) {
     display: none;
   }
 }
@@ -62,7 +58,7 @@
   align-items: center;
   flex: 1;
 
-  @media (min-width: theme.$breakpoint-lg) {
+  @media (max-width: theme.$breakpoint-md) {
     flex-direction: row;
   }
 }
@@ -70,7 +66,7 @@
 :local(.hero-image-container) {
 
   img {
-    @media (min-width: theme.$breakpoint-lg) {
+    @media (max-width: theme.$breakpoint-md) {
       border-radius: 16px;
     }
   }
@@ -87,7 +83,7 @@
     margin-bottom: 20px;
   }
   
-  @media (min-width: theme.$breakpoint-lg) {
+  @media (max-width: theme.$breakpoint-md) {
     margin-bottom: 0;
     margin-left: 16px;
     justify-content: flex-start;
@@ -102,13 +98,13 @@
 :local(.app-description) {
   white-space: pre-wrap;
   align-self: auto;
-  font-size: theme.$font-size-lg;
+  font-size: theme.$font-size-md;
   font-weight: theme.$font-weight-medium;
   text-align: center;
   margin: 0 24px 20px 24px;
   line-height: 1.25;
 
-  @media (min-width: theme.$breakpoint-lg) {
+  @media (max-width: theme.$breakpoint-md) {
     text-align: left;
     margin: 0 16px 48px 0px;
     max-width: 860px;
@@ -140,7 +136,7 @@
       margin-bottom: 0;
     }
 
-    @media(min-width: theme.$breakpoint-lg) {
+    @media(max-width: theme.$breakpoint-md) {
       margin-right: 24px;
       margin-bottom: 0;
       flex-direction: row;
@@ -180,10 +176,10 @@
   justify-content: space-evenly !important;
 }
 
-:local(.col-lg) {
+:local(.col-md) {
   flex-direction: column;
 
-  @media(min-width: theme.$breakpoint-lg) {
+  @media(max-width: theme.$breakpoint-md) {
     flex-direction: row;
   }
 }
@@ -196,8 +192,8 @@
   flex: 1;
 }
 
-:local(.center-lg) {
-  @media(max-width: theme.$breakpoint-lg) {
+:local(.center-md) {
+  @media(max-width: theme.$breakpoint-md) {
     text-align: center;
     align-items: center;
   }
@@ -209,17 +205,30 @@
   --accentOrange: #ee7342;
 }
 
+@font-face {
+  font-family: 'mamelon';
+  src: url(../../assets/fonts/Mamelon-3.5HiRegular.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Jua';
+  src: url(../../assets/fonts/Jua-Regular.ttf) format('truetype');
+}
+
 * {
   margin: 0;
   padding: 0;
   list-style: none;
   text-decoration: none;
+  font-family: 'mamelon';
 }
 
 body {
   --sb-track-color: #ffffff;
   --sb-thumb-color: #069472;
   --sb-size: 10px;
+
+  
 
   scrollbar-color: var(--sb-thumb-color) 
                    var(--sb-track-color);
@@ -256,6 +265,17 @@ button {
   flex-direction: column;
   justify-content: space-between;
   background-color: var(--mainGreen);
+  .bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    content: '';
+    width: 100dvw;
+    height: 100dvh;
+    background: url("../../assets/images/backGround.gif");
+    background-size:cover;
+    opacity: 0.2;
+  }
   header {
     flex-grow: 1;
     display: flex;
@@ -269,7 +289,7 @@ button {
     padding: 10px 15px;
     z-index: 10;
     
-    @media (min-width: theme.$breakpoint-md) {
+    @media (max-width: theme.$breakpoint-md) {
       display: none;
     }
     .Logo {
@@ -401,7 +421,7 @@ button {
     width: 100dvw;
     height: calc(100dvh - 120px);
     
-    @media (min-width: theme.$breakpoint-md) {
+    @media (max-width: theme.$breakpoint-md) {
       height: 100dvh;
     }
     position: fixed;
@@ -417,20 +437,28 @@ button {
       max-width: 2000px;
       margin: 0 auto;
       align-items: stretch;
+      &.mobile {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 60px;
+        overflow-y: scroll;
+      }
       .title {
         color: var(--accentOrange);
         font-size: 30px;
         text-align: center;
+        font-family: 'Jua';
+        @media (max-width: theme.$breakpoint-md) {
+          font-size: 20px;
+        }
       }
       .Enter {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        width: 400px;
+        width: 90%;
+        max-width: 400px;
         flex-shrink: 0;
-        @media (min-width: theme.$breakpoint-md) {
-          display: none;
-        }
         .enterBox {
           height: 90%;
           max-height: 800px;
@@ -517,6 +545,69 @@ button {
           height: 15px;
           text-align: center;
         }
+        @media (max-width: theme.$breakpoint-md) {
+          display: none;
+          position: relative;
+          flex-shrink: 1;
+          &.mobile {
+            width: 90%;
+            max-width: 400px;
+            margin-top: 100px;
+            display: flex;
+            margin: 0 auto;
+            .ground {
+              display: none;
+            }
+            .details {
+              display: none;
+              &.open {display: block;}
+            }
+            .detailsOpen {
+              margin: 0 auto;
+              background-color: var(--mainGreen);
+              padding: 10px 20px;
+              border-radius: 10px;
+              color: var(--accentOrange);
+              margin-top: 50px;
+            }
+            .description {
+              display: none;
+              &.open {display: block;}
+            }
+            .title {
+              position: absolute;
+              top: 50px;
+              left: 50%;
+              transform: translate(-50%, 0);
+            }
+          }
+        }
+      }
+
+      .scrollHeader {
+        width: 100%;
+        max-width: 500px;
+        display: none;
+        @media (max-width: theme.$breakpoint-md) {
+          display: flex;
+          position: fixed;
+          top: 10px;
+          left: 50%;
+          transform: translate(-50%, 0);
+        }
+        justify-content: space-between;
+        .logo {
+          display: flex;
+          justify-content: center;
+          img {
+            height: 40px;
+          }
+        }
+        .menu {
+          img {
+            width: 45px;
+          }
+        }
       }
 
       .Scroll {
@@ -528,22 +619,37 @@ button {
         flex-grow: 1;
         width: 90%;
         max-width: 600px;
-        .scrollHeader {
-          display: flex;
-          justify-content: space-between;
-          @media (min-width: theme.$breakpoint-md) {
-            display: none;
-          }
-          .logo {
+        .scrollHero {
+          width: 100%;
+          position: relative;
+          .container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
-            img {
-              height: 40px;
+            gap: 30% 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            p {
+              font-size: 25px;
+              font-weight: bold;
+              width: 100%;
+              span {
+                color: var(--accentOrange);
+              }
+              &:nth-child(0) {
+                text-align: left;
+              }
+              
+              &:nth-child(1) {
+                text-align: right;
+              }
             }
           }
-        }
-        .scrollHero {
-          display: none;
         }
         .scrollAbout {
           margin: 10px 15px 0 15px;
@@ -766,23 +872,38 @@ button {
             content: '';
           }
         }
+        
+        @media (max-width: theme.$breakpoint-md) {
+          max-width: 400px;
+          .scrollHero {
+            font-size: 18px;
+            width: 80%;
+            margin: 100px auto 50px auto;
+          }
+          &.mobile {
+            display: none;
+          }
+        }
       }
 
       .IndexAndNews {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        
-        @media (min-width: theme.$breakpoint-md) {
-          display: none;
-        }
+        width: 90%;
+        max-width: 350px;
+        margin: 0 auto;
         .Index {
           font-size: 25px;
           margin-bottom: 20px;
           color: #8b8b8b;
-          padding: 10px 15px;
-          .accent {
-            color: var(--accentOrange);
+          padding: 10px 20px;
+          .title {
+            color: #8b8b8b;
+            text-align: left;
+            &.accent {
+              color: var(--accentOrange);
+            }
           }
         }
 
@@ -879,6 +1000,17 @@ button {
           width: 100%;
           height: 15px;
           text-align: center;
+        }
+
+        @media (max-width: theme.$breakpoint-md) {
+          display: none;
+          &.mobile {
+            display: flex;
+            overflow-y: scroll;
+            .ground {
+              display: none;
+            }
+          }
         }
       }
     }
