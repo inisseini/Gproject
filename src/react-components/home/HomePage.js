@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import classNames from "classnames";
 import configs from "../../utils/configs";
@@ -40,13 +40,20 @@ import Manual from '../../assets/images/manual.png';
 import Rule from '../../assets/images/rule.png';
 import Mail from '../../assets/images/mail.png';
 
+import Entrance from '../../assets/images/EntranceWorld.png';
+import SideStreet from '../../assets/images/SideStreet.png';
+import Proffession from '../../assets/images/ProfessorsRoom.png';
+import Audio from '../../assets/images/AudiovisualRoom.png';
+import Event from '../../assets/images/EventWorld.png';
+import Meeting from '../../assets/images/MeetingWorld.png';
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "../input/Button";
 import { AvatarSettingsContent } from "../room/AvatarSettingsContent";
  
-import gsap from "gsap";
+import emailjs from '@emailjs/browser';
 
 export function HomePage() {
   const store = window.APP.store;
@@ -102,6 +109,8 @@ export function HomePage() {
 
   const [mobileMenu, setMobileMenu] = useState(false);
 
+  const [contactOpen, setContact] = useState(false);
+
   const [enterDetail, setEnterDetail] = useState({
     list: false,
     manual: false,
@@ -110,8 +119,8 @@ export function HomePage() {
   });
 
   const [worldsDetail, setWorldsDetail] = useState({
-    publicOpen: false,
-    privateOpen: false,
+    publicOpen: true,
+    privateOpen: true,
     publicChoosen: 0,
     privateChoosen: 0
   });
@@ -147,6 +156,31 @@ export function HomePage() {
       // console.log(x);
     } 
   }
+  
+  const form = useRef();
+  const sendEmail = async (event) => {
+    console.log('test', 'send');
+    event.preventDefault();
+    if (!form.current) return;
+
+    try {
+      await emailjs.sendForm(
+        // 「Email Services」を開くと「Service ID」が表示されています
+        'service_dk259sp',
+        // 「Email Templates」を開くと「Template ID」が表示されています
+        'template_2cbupca',
+        form.current,
+        // 「Account」を開くと「Public Key」が表示されています
+        '8R4wcYdqF0sKxpQL3'
+      );
+
+      console.log('test メールが送信されました！返信をお待ち下さい。');
+    } catch (error) {
+      console.log(
+        'test メール送信時にエラーが発生しました！お手数ですが再度送信してください。'
+      );
+    }
+  }
 
 
   return (
@@ -161,6 +195,7 @@ export function HomePage() {
             <img src={MetaCampUsLogo}/>
             <img src={GTIELogo} />
           </div>
+          {/* 
           <div className='Account'>
             {auth.isSignedIn ?
               <ul>
@@ -247,7 +282,7 @@ export function HomePage() {
                 : undefined}
               </div>
             : undefined}
-          </div>
+          </div>*/}
           <a href="https://discord.gg/yKU98w9DHd" className='Discord' target="_blank" rel="noopener noreferrer">
             <img src={Discord} />
             <p>Discordサーバーに参加する →</p>
@@ -261,7 +296,7 @@ export function HomePage() {
               <div>
               <img src={Entry} />
               {auth.isSignedIn ?
-              <a href="/MQU3Mkg/rewarding-caring-land">
+              <a href="#"> {/*/MQU3Mkg/rewarding-caring-land */}
                 <div className='entryButton'>
                   <p>クリックして入場</p>
                 </div>
@@ -638,7 +673,7 @@ export function HomePage() {
                         <button onClick={() => 
                           {
                             setWorldsDetail({...worldsDetail, publicOpen: true})
-                            openWorlds('public')
+                            //openWorlds('public')
                           }
                         }>詳細</button>
                       </div>
@@ -658,6 +693,9 @@ export function HomePage() {
                             各店でみんなと話し込みましょう！！
                           </p>
                         : undefined}
+                        
+                        <img className="Entrance" src={Entrance}/>
+                        <img className="SideStreet" src={SideStreet}/>
                       </div>
                   </div>
                   <div className={worldsDetail.privateOpen ? "private" : "private offPrivate"}>  
@@ -671,7 +709,7 @@ export function HomePage() {
                       <button onClick={() => 
                         {
                           setWorldsDetail({...worldsDetail, privateOpen: true})
-                          openWorlds('private')
+                          //openWorlds('private')
                         }
                       }>詳細</button>
                     </div>
@@ -705,6 +743,10 @@ export function HomePage() {
                           各店でみんなと話し込みましょう！！
                         </p>
                       : undefined}
+                      <img className="profession" src={Proffession}/>
+                      <img className="audio" src={Audio}/>
+                      <img className="meeting" src={Meeting}/>
+                      <img className="event" src={Event}/>
                     </div>
                   </div>
                 </div>
@@ -781,10 +823,25 @@ export function HomePage() {
               </div>
                */}
             </div>
-            <a href="https://tkwfo2rbzm4we3wggzsygu4dxy0qatpf.lambda-url.ap-northeast-1.on.aws/" className="contact" target="_blank" rel="noopener noreferrer">
+            {contactOpen ?
+              <form className="contactForm" ref={form} onSubmit={sendEmail}>
+                <label>名前</label>
+                <input type="text" name="user_name" />
+                <label>メールアドレス</label>
+                <input type="email" name="user_email" />
+                <label>送信内容</label>
+                <textarea name="message" />
+                <input type="submit" value="提出" />
+              </form>
+            : 
+            
+            <div className="contact" onClick={() => setContact(!contactOpen)}>
               <img src={Mail}/>
               <p>お問い合わせ</p>
-            </a>
+              <div>
+            </div>
+            </div>
+            }
             <div className="ground">
             Ver. β 1.0
             </div>

@@ -714,14 +714,44 @@ button {
                 width: 300px;
                 aspect-ratio: 1/1;
                 content: '';
-                background-color: #ee7342;
                 margin: 0 auto;
                 position: relative;
                 z-index: 1;
                 flex-shrink: 0;
                 flex-grow: 1;
+                opacity: 0.7;
                 &.offPublic {
                   opacity: 0;
+                }
+                p {
+                  width: 80%;
+                  aspect-ratio: 1/1;
+                  background-color: #ffffff;
+                  border-radius: 10px;
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  z-index: 10;
+                  padding: 20px;
+                  opacity: 1!important;
+                  color: var(--accentOrange);
+                }
+                .Entrance {
+                  width: 300px;
+                  height: 300px;
+                  border-radius: 50%;
+                  position: absolute;
+                  top: -5%;
+                  left: -5%;
+                }
+                .SideStreet {
+                  width: 300px;
+                  height: 300px;
+                  border-radius: 50%;
+                  position: absolute;
+                  bottom: -5%;
+                  right: -5%;
                 }
               }
               &.offPublic {
@@ -753,8 +783,8 @@ button {
                 }
               }
               .cil{
-                width: 80px;
-                height: 80px; 
+                width: 300px;
+                height: 300px; 
                 background-color: rgb(250, 255, 180);
                 border-radius: 50%;/* 円*/
                 line-height: 80px;
@@ -774,17 +804,63 @@ button {
               
               #privateRoulette {
                 display: block;
-                width: 100%;
+                width: 300px;
                 aspect-ratio: 1/1;
                 content: '';
-                background-color: #ee7342;
                 margin: 0 auto;
                 position: relative;
+                z-index: 1;
                 flex-shrink: 0;
                 flex-grow: 1;
-                z-index: 1;
-                &.offPrivate {
+                opacity: 0.7;
+                &.offPublic {
                   opacity: 0;
+                }
+                p {
+                  width: 80%;
+                  aspect-ratio: 1/1;
+                  background-color: #ffffff;
+                  border-radius: 10px;
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  z-index: 10;
+                  padding: 20px;
+                  opacity: 1!important;
+                  color: var(--accentOrange);
+                }
+                .event {
+                  width: 200px;
+                  height: 200px;
+                  border-radius: 50%;
+                  position: absolute;
+                  top: -2%;
+                  left: -2%;
+                }
+                .audio {
+                  width: 200px;
+                  height: 200px;
+                  border-radius: 50%;
+                  position: absolute;
+                  bottom: -2%;
+                  right: -2%;
+                }
+                .profession {
+                  width: 200px;
+                  height: 200px;
+                  border-radius: 50%;
+                  position: absolute;
+                  top: -2%;
+                  right: -2%;
+                }
+                .meeting {
+                  width: 200px;
+                  height: 200px;
+                  border-radius: 50%;
+                  position: absolute;
+                  bottom: -2%;
+                  left: -2%;
                 }
               }
               &.offPrivate {
@@ -843,7 +919,7 @@ button {
             margin: 0 auto;
           }
           p {
-            width: 80%;
+            width: 70%;
             max-width: 300px;
             position: absolute;
             top: 60%;
@@ -984,6 +1060,7 @@ button {
           max-width: 300px;
           margin: 0 auto;
           text-wrap: nowrap;
+          cursor: pointer;
           img {
             width: 35px
           }
@@ -991,6 +1068,38 @@ button {
             display: flex;
             flex-direction: column;
             justify-content: center;
+          }
+        }
+
+        .contactForm {
+          width: 80%;
+          max-width: 250px;
+          margin: 10px auto;
+          display: flex;
+          flex-direction: column;
+          gap: 3px 0;
+          overflow-y: auto;
+          color: var(--accentGreen);
+          labal {
+            color: var(--accentOrange);
+          }
+          input,
+          textarea {
+            border-radius: 10px;
+            border: 1px solid var(--accentGreen);
+            background-color: var(--mainGreen);
+            padding: 5px 15px;
+          }
+          textarea {
+            aspect-ratio: 1.2/1;
+          }
+          input[type = 'submit'] {
+            background-color: var(--accentOrange);
+            color: #ffffff;
+            border: none;
+            border-radius: 0;
+            display: inline-block;
+            padding: 5px 15px;
           }
         }
 
