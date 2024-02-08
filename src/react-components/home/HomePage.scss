@@ -381,6 +381,11 @@ button {
           margin-left: calc(50% - 40px);
         }
 
+        .popUpAccountMenu {
+          height: 100%;
+          text-align: center;
+        }
+
         .profile {
           background-color: #ffffff;
           border-radius: 5px;
@@ -622,6 +627,7 @@ button {
         .scrollHero {
           width: 100%;
           position: relative;
+          margin-top: 50px;
           .container {
             display: flex;
             flex-direction: column;
