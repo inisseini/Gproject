@@ -118,6 +118,11 @@ export function HomePage() {
     details: false
   });
 
+  const [worldDetail, setworldDetail] = useState({
+    public: 0,
+    private: 0
+  });
+
   const [worldsDetail, setWorldsDetail] = useState({
     publicOpen: true,
     privateOpen: true,
@@ -320,7 +325,26 @@ export function HomePage() {
 
                 {enterDetail.list ? 
                   <p className={mobileMenu && enterDetail.details ? 'description open' : 'description'}>
-                    参加大学一覧
+                    参加大学一覧<br/><br/>
+
+                    東京大学<br/>
+                    早稲田大学<br/>
+                    東京工業大学<br/>
+                    筑波大学<br/>
+                    千葉大学<br/>
+                    東京農工大学<br/>
+                    お茶の水女子大学<br/>
+                    神奈川県立保健福祉大学<br/>
+                    横浜国立大学<br/>
+                    横浜市立大学<br/>
+                    東京医科歯科大学<br/>
+                    慶應義塾大学<br/>
+                    東京都立大学<br/>
+                    芝浦工業大学<br/>
+                    東京理科大学<br/>
+                    茨城大学<br/>
+                    電気通信大学<br/>
+                    東海大学
 
                   </p>
                 : enterDetail.rule ?

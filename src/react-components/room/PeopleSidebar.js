@@ -208,7 +208,7 @@ export function PeopleSidebar({
                       {configs.isAdmin() ? <p className="position">運営</p> : undefined}
                   {!person.isMe ? (
                     <>
-                      {localStorage.getItem("friends").includes(getPersonName(person, intl)) ? <p className="friend">フレンドです</p> : 
+                      {localStorage.getItem("friends")?.includes(getPersonName(person, intl)) ? <p className="friend">フレンドです</p> : 
                       <button className="friend" onClick={() => onSendFriendRequest(getPersonName(person, intl))}>フレンド申請</button>}
                     </>
                   ) : undefined}
