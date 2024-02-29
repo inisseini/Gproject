@@ -143,45 +143,28 @@ export function HomePage() {
     xhr.send(request)
   }
 
-  const ScrollIndexContainer = ({ index, onIntersection, children }) => {
-    const refParent = useRef();
-  
-    useEffect(() => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            if (onIntersection !== undefined) {
-              onIntersection(index);
-            }
-          }
-        },
-        { threshold: 0.8 },
-      );
-  
-      if (refParent.current === null) return;
-  
-      observer.observe(refParent.current);
-  
-      const { current } = refParent;
-  
-      return () => {
-        observer.unobserve(current);
-      };
-  
-    }, []);
-  
-    return <div ref={refParent}>{children}</div>;
-  };
-
-  const ref = useRef();
   const [progress, setProgress] = useState(0);
-  const intersectCallback = (index) => {
-    setProgress(index);
-  };
 
-  useEffect(() => {
-    console.log(progress);
-  }, [progress])
+  const intersectionCallback = (entries) => {
+    if(entries[0].isIntersecting) {
+      const key = Number(entries[0].target.dataset.key);
+      if(progress !== key) setProgress(key);
+    }
+  }
+
+  const scrollAnchor = document.querySelectorAll(".scrollAnchor");
+
+  const options = {
+    threshold: 1.0,
+    root: document.getElementsByClassName("contentContainer")[0],
+    rooMargin: "0% 0% -50% 0"
+  }
+
+  let observe = new IntersectionObserver(intersectionCallback, options);
+  scrollAnchor.forEach(function(value) {
+    observe.observe(value);
+  })
+  
 
   return (
     
@@ -657,8 +640,7 @@ export function HomePage() {
             </div>
             <div className={mobileMenu ? 'Scroll mobile' : 'Scroll'}>
 
-              <ScrollIndexContainer index={0} onIntersection={intersectCallback}>
-              <div className="scrollHero" ref={ref} key={0}>
+              <div className="scrollHero scrollAnchor" data-key={0}>
                 <img src={Hero}/>
                 <div className="container">
                   <p>
@@ -668,9 +650,8 @@ export function HomePage() {
                   MCUは、どんなバカげた<span>挑戦</span>も、ここから<span>カタチ</span>になっていくのを応援します
                   </p>
                 </div>
-              </div></ScrollIndexContainer>
-              <ScrollIndexContainer index={1} onIntersection={intersectCallback}>
-              <div className="scrollAbout" ref={ref} key={1}>
+              </div>
+              <div className="scrollAbout scrollAnchor" data-key={1}>
                 <div className="container">
                   <br/>
                   <h2 className='title'>ABOUT</h2>
@@ -679,9 +660,8 @@ export function HomePage() {
                   <br/><br/>
                   メタバース上のキャンパスに通いコミュニティに参加することで、普段のキャンパスライフにはない新たな出会いや気づきが生まれます。</p>
                 </div>
-              </div></ScrollIndexContainer>
-              <ScrollIndexContainer index={2} onIntersection={intersectCallback}>
-              <div className="scrollFeature" ref={ref} key={2}>
+              </div>
+              <div className="scrollFeature scrollAnchor" data-key={2}>
                 <div className="container">
                   <br/>
                   <h2 className='title'>FEATURE</h2>
@@ -696,9 +676,8 @@ export function HomePage() {
                   ・<span>触発</span>：仲間や先輩達の熱にあてられ、自分もできる、という根拠のない自信。
                   </p>
                 </div>
-              </div></ScrollIndexContainer>
-              <ScrollIndexContainer index={3} onIntersection={intersectCallback}>
-              <div className="scrollWorlds" ref={ref} key={3}>
+              </div>
+              <div className="scrollWorlds scrollAnchor" data-key={3}>
                 <div className="container">
                   <h2 className='title'>WORLDS</h2>
                   <br/><br/>
@@ -793,7 +772,7 @@ export function HomePage() {
                   </div>
 
                 </div>
-              </div></ScrollIndexContainer>
+              </div>
               <div className="scrollGTIE">
                 <img className="ProducedBy" src={ProducedBy}/>
                 <div className="GTIE">
