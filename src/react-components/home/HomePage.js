@@ -139,8 +139,9 @@ export function HomePage() {
 
     xhr.open("POST","https://vgdr5k3cwrrk4c7ehcebdsp4he0okmgj.lambda-url.ap-northeast-1.on.aws/", true);
     xhr.setRequestHeader('content-type', 'application/json');
-    const request = {"name": form.current.user_name, "mail": form.current.user_email, "message": form.current.message}
+    const request = {"name": form.current.user_name.value, "mail": form.current.user_email.value, "message": form.current.message.value}
     xhr.send(request)
+    alert("メールを送信しました。")
   }
 
   const [progress, setProgress] = useState(0);
