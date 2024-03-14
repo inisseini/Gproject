@@ -176,35 +176,6 @@ export function PeopleSidebar({
     }
   }
 
-  const CheckIcon = async(username) => {
-    const DBClient = new DynamoDBClient({
-      region: 'ap-northeast-1',
-      credentials: {
-        accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
-        secretAccessKey: '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',
-      },
-    });
-
-    const docClient = DynamoDBDocumentClient.from(DBClient);
-
-    const command = new GetCommand({
-      TableName: 'user-table',
-      Item: {
-        userName: username
-      },
-    });
-
-    const response = await docClient.send(command);
-    const isIcon = response.Item.icon;
-
-    if(!isIcon) {
-      return (
-        <img src={userDemoImg}/>
-      )
-    }
-  }
-
-
   return (
     <Sidebar
       title={
@@ -234,7 +205,7 @@ export function PeopleSidebar({
             return (
               <div className={styles.person} key={person.id} type="button" onClick={e => onSelectPerson(person, e)}>
                 <div className={styles.icon}>
-                  <img src={userDemoImg} />
+                  <img src={'https://metacampusassets.s3.ap-northeast-1.amazonaws.com/' + getPersonName(person, intl).split(' ')[0] + '.jpg'} alt onError={(e) => this.src=''}/>
                 </div>
                 <div className={styles.detail}>
                   <p>{getPersonName(person, intl)}</p>

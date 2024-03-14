@@ -61,13 +61,14 @@ export function AvatarSettingsContent({
       'https://2vdssaox3xixy7rfz4tr3lh3my0wfslu.lambda-url.ap-northeast-1.on.aws/', // 関数URL
       {
         body: JSON.stringify(input),
-        mode: 'cors',
         method: 'POST',
       }
     ).then((res) => res.json());
   
     return response;
   };
+
+  const iconContainerBaseURL = 'https://metacampusassets.s3.ap-northeast-1.amazonaws.com/' + displayName + '.jpg';
   
   const uploadToClient = (event) => {
     if (event.target.files[0]) {
@@ -106,9 +107,9 @@ export function AvatarSettingsContent({
     img.id = 'uploadedImg';
   };
 
-  const iconContainerBaseURL = 'https://metacampusassets.s3.ap-northeast-1.amazonaws.com/' + displayName + '.jpg';
-
   const imagecheck = (url) => {
+    const child = document.getElementById('uploadedImg');
+    if(child) return;
     var newImage = new Image();
  
     // 画像があった時の処理
@@ -122,6 +123,7 @@ export function AvatarSettingsContent({
       console.log('アイコン無' + url);
     }
     newImage.src = url;
+    newImage.id = 'uploadedImg'
   }
 
   imagecheck(iconContainerBaseURL);
@@ -129,8 +131,9 @@ export function AvatarSettingsContent({
   return (
     <Column as="form" className={styles.content} {...rest}>
       <div id='iconContainer' className={styles.icon}>
-        <input type='file' onChange={uploadToClient} />
       </div>
+      
+      <input type='file' onChange={uploadToClient} />
       <TextInputField
         disabled={disableDisplayNameInput}
         label={<FormattedMessage id="avatar-settings-content.display-name-label" defaultMessage="Display Name" />}

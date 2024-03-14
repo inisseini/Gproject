@@ -133,7 +133,7 @@ export default class MessageDispatch extends EventTarget {
               },
               Expression: "SET #orders = list_append(#orders, :v_orderId)",
               ExpressionAttributeNames: {
-                  '#orders': 'requested'
+                  '#orders': 'friends'
               },
               ExpressionAttributeValues: {
                   ':v_orderId': chatBodyList[2],
