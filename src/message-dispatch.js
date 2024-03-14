@@ -14,6 +14,15 @@ import { loadState, clearState } from "./utils/entity-state-utils";
 import { shouldUseNewLoader } from "./utils/bit-utils";
 import DiscordMessageSend from "./utils/Discord-message-send";
 
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+  UpdateCommand,
+} from '@aws-sdk/lib-dynamodb';
+
+
 let uiRoot;
 // Handles user-entered messages
 export default class MessageDispatch extends EventTarget {
@@ -76,27 +85,65 @@ export default class MessageDispatch extends EventTarget {
         this.addToPresenceLog(requestMessage);
         this.dispatchEvent(new CustomEvent("message", { detail: requestMessage }));
         */
-        const friendConfirm = confirm(request);
+        //const friendConfirm = confirm(request);
+        const friendConfirm = window.confirm(request);
         if(friendConfirm) {
-          const friendList = localStorage.getItem("friends");
-          if(friendList.includes(chatBodyList[2])) {
-            return;
-          }
 
           const me = window.APP.hubChannel.store.state.profile.displayName;
-          const message = "systemMessage/from/" + me + "/to/" + chatBodyList[2] + "/sendFriendRequest";
-          document.getElementById("avatar-rig").messageDispatch.dispatch(message);
 
-          
-          if(friendList) {
-            const newFriendList = friendList.push(chatBodyList[2]);
-            console.log("newFriendlist=", newFriendList);
-            localStorage.setItem("friends", newFriendList)
-          } else {
-            localStorage.setItem("friends", [chatBodyList[2]])
-          }
-          const newlist = localStorage.getItem("friends");
-          console.log("new=", newlist);
+          //const message = "systemMessage/from/" + me + "/to/" + chatBodyList[2] + "/sendFriendRequest";
+          //document.getElementById("avatar-rig").messageDispatch.dispatch(message);
+
+          const DBClient = new DynamoDBClient({
+            region: 'ap-northeast-1',
+            credentials: {
+              accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
+              secretAccessKey: '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',
+            },
+          });
+
+          const docClient = DynamoDBDocumentClient.from(DBClient);
+
+          //フレンド申請返し
+          const reRequest = async (event) => {
+            const command = new UpdateCommand({
+              TableName: 'user-table',
+              Key: {
+                userName: chatBodyList[2],
+              },
+              Expression: "SET #orders = list_append(#orders, :v_orderId)",
+              ExpressionAttributeNames: {
+                  '#orders': 'requested'
+              },
+              ExpressionAttributeValues: {
+                  ':v_orderId': me,
+              },
+            });
+
+            const response = await docClient.send(command);
+          };
+
+          reRequest();
+
+          const joinFriends = async (event) => {
+            const command = new UpdateCommand({
+              TableName: 'user-table',
+              Key: {
+                userName: me,
+              },
+              Expression: "SET #orders = list_append(#orders, :v_orderId)",
+              ExpressionAttributeNames: {
+                  '#orders': 'requested'
+              },
+              ExpressionAttributeValues: {
+                  ':v_orderId': chatBodyList[2],
+              },
+            });
+
+            const response = await docClient.send(command);
+          };
+
+          joinFriends();
         }  
       } else if (
         chatBodyList[0] === "systemMessage" &&
