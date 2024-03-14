@@ -271,6 +271,11 @@ const PHOENIX_RELIABLE_NAF = "phx-reliable";
 NAF.options.firstSyncSource = PHOENIX_RELIABLE_NAF;
 NAF.options.syncSource = PHOENIX_RELIABLE_NAF;
 
+
+const naf_tree = Object.keys(NAF.connection.entities.entities)
+const my_NAF_ID = "naf-" + naf_tree[naf_tree.length - 1];
+console.log('test myID=', my_NAF_ID, NAF);
+
 let isOAuthModal = false;
 
 // OAuth popup handler

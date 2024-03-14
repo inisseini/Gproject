@@ -204,6 +204,7 @@ export function PeopleSidebar({
     }
   }
 
+
   return (
     <Sidebar
       title={
