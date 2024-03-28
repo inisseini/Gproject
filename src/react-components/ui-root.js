@@ -102,7 +102,11 @@ import { NotificationsContainer } from "./room/NotificationsContainer";
 import { usePermissions } from "./room/hooks/usePermissions";
 import { ChatContextProvider } from "./room/contexts/ChatContext";
 import ChatToolbarButton from "./room/components/ChatToolbarButton/ChatToolbarButton";
+import LibraryToolbarButton from "./room/components/LibraryToolbarButton";
 import SeePlansCTA from "./room/components/SeePlansCTA/SeePlansCTA";
+
+import { LibrarySidebarContainer } from "./room/LibrarySidebarContainer";
+import { LibraryTestSidebarContainer } from "./room/LibraryTestSidebarContainer";
 
 import { createAndRedirectToNewHub } from "../utils/phoenix-utils";
 
@@ -786,9 +790,9 @@ class UIRoot extends Component {
 
   pushHistoryState = (k, v) => pushHistoryState(this.props.history, k, v);
 
-  setSidebar(sidebarId, otherState) {
+  setSidebar = (sidebarId, otherState) => {
     this.setState({ sidebarId, chatPrefix: "", chatAutofocus: false, selectedUserId: null, ...(otherState || {}) });
-  }
+  };
 
   toggleSidebar(sidebarId, otherState) {
     this.setState(({ sidebarId: curSidebarId }) => {
@@ -1393,6 +1397,7 @@ class UIRoot extends Component {
                     {!entered && !streaming && !isMobile && streamerName && <SpectatingLabel name={streamerName} />}
                     {this.props.activeObject && (
                       <ObjectMenuContainer
+                        setSidebar={this.setSidebar}
                         hubChannel={this.props.hubChannel}
                         scene={this.props.scene}
                         onOpenProfile={() => this.setSidebar("profile")}
@@ -1401,6 +1406,7 @@ class UIRoot extends Component {
                             this.setSidebar(null);
                           }
                         }}
+                        selectedQuestion={this.props.selectedQuestion}
                       />
                     )}
                     {this.state.sidebarId !== "chat" && this.props.hub && (
@@ -1545,6 +1551,22 @@ class UIRoot extends Component {
                       {this.state.sidebarId === "ecs-debug" && (
                         <ECSDebugSidebarContainer onClose={() => this.setSidebar(null)} />
                       )}
+                      {this.state.sidebarId === "library" && (
+                        <LibrarySidebarContainer
+                          onClose={() => this.setSidebar(null)}
+                          scene={this.props.scene}
+                          setQuestion={this.props.setQuestion}
+                        />
+                      )}
+                      {this.state.sidebarId === "libraryTest" &&
+                        this.props.selectedQuestion !== 3 &&
+                        this.props.selectedQuestion !== 7 && (
+                          <LibraryTestSidebarContainer
+                            onClose={() => this.setSidebar(null)}
+                            scene={this.props.scene}
+                            questionNum={this.props.selectedQuestion}
+                          />
+                        )}
                     </>
                   ) : undefined
                 }
@@ -1605,10 +1627,17 @@ class UIRoot extends Component {
                       </>
                     )}
                     {!isLockedDownDemo && (
-                      <ChatToolbarButton
-                        onClick={() => this.toggleSidebar("chat", { chatPrefix: "", chatAutofocus: false })}
-                        selected={this.state.sidebarId === "chat"}
-                      />
+                      <>
+                        <ChatToolbarButton
+                          onClick={() => this.toggleSidebar("chat", { chatPrefix: "", chatAutofocus: false })}
+                          selected={this.state.sidebarId === "chat"}
+                        />
+                        <LibraryToolbarButton
+                          scene={this.props.scene}
+                          onClick={() => this.toggleSidebar("library", { chatPrefix: "", chatAutofocus: false })}
+                          selected={this.state.sidebarId === "library"}
+                        />
+                      </>
                     )}
                     {entered && isMobileVR && (
                       <ToolbarButton
@@ -1667,6 +1696,8 @@ function UIRootHooksWrapper(props) {
   const breakpoint = useCssBreakpoints();
   const { voice_chat: canVoiceChat } = usePermissions();
 
+  const [selectedQuestion, setQuestion] = useState();
+
   useEffect(() => {
     const el = document.getElementById("preload-overlay");
     if (el) {
@@ -1691,7 +1722,13 @@ function UIRootHooksWrapper(props) {
   return (
     <ChatContextProvider messageDispatch={props.messageDispatch}>
       <ObjectListProvider scene={props.scene}>
-        <UIRoot breakpoint={breakpoint} {...props} canVoiceChat={canVoiceChat} />
+      <UIRoot
+        breakpoint={breakpoint}
+        {...props}
+        canVoiceChat={canVoiceChat}
+        selectedQuestion={selectedQuestion}
+        setQuestion={setQuestion}
+      />
       </ObjectListProvider>
     </ChatContextProvider>
   );

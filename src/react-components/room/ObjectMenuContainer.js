@@ -17,6 +17,7 @@ import { ReactComponent as GoToIcon } from "../icons/GoTo.svg";
 import { ReactComponent as DeleteIcon } from "../icons/Delete.svg";
 import { ReactComponent as AvatarIcon } from "../icons/Avatar.svg";
 import { ReactComponent as HideIcon } from "../icons/Hide.svg";
+import { ReactComponent as QuestionIcon } from "../icons/question.svg";
 import { FormattedMessage } from "react-intl";
 import DiscordMessageSend from "../../utils/Discord-message-send";
 
@@ -59,7 +60,15 @@ PlayerMenuItems.propTypes = {
   deselectObject: PropTypes.func.isRequired
 };
 
-function ObjectMenuItems({ hubChannel, scene, activeObject, deselectObject, onGoToObject }) {
+function ObjectMenuItems({
+  setSidebar,
+  selectedQuestion,
+  hubChannel,
+  scene,
+  activeObject,
+  deselectObject,
+  onGoToObject
+}) {
   const { canPin, isPinned, togglePinned } = usePinObject(hubChannel, scene, activeObject);
   const { canRemoveObject, removeObject } = useRemoveObject(hubChannel, scene, activeObject);
   const { canGoTo, goToSelectedObject } = useGoToSelectedObject(scene, activeObject);
@@ -86,15 +95,6 @@ function ObjectMenuItems({ hubChannel, scene, activeObject, deselectObject, onGo
         </ObjectMenuButton>
       )}
       <ObjectMenuButton
-        onClick={() => {
-          DiscordMessageSend("img", url);
-        }}
-      >
-        <span>
-          <FormattedMessage id="object-menu.Discord-object-button" defaultMessage="Discord送信" />
-        </span>
-      </ObjectMenuButton>
-      <ObjectMenuButton
         disabled={!canGoTo}
         onClick={() => {
           goToSelectedObject();
@@ -119,6 +119,17 @@ function ObjectMenuItems({ hubChannel, scene, activeObject, deselectObject, onGo
           <FormattedMessage id="object-menu.delete-object-button" defaultMessage="Delete" />
         </span>
       </ObjectMenuButton>
+      <br />
+      {selectedQuestion !== 3 && selectedQuestion !== 7 ? (
+        <ObjectMenuButton
+          onClick={() => {
+            setSidebar("libraryTest");
+          }}
+        >
+          <QuestionIcon fill="#ffffff" />
+          <span>理解度チェック</span>
+        </ObjectMenuButton>
+      ) : undefined}
     </>
   );
 }
@@ -131,15 +142,17 @@ ObjectMenuItems.propTypes = {
   onGoToObject: PropTypes.func.isRequired
 };
 
-export function ObjectMenuContainer({ hubChannel, scene, onOpenProfile, onGoToObject }) {
+export function ObjectMenuContainer({ setSidebar, selectedQuestion, hubChannel, scene, onOpenProfile, onGoToObject }) {
   const { objects, activeObject, deselectObject, selectNextObject, selectPrevObject, toggleLights, lightsEnabled } =
     useObjectList();
 
   let menuItems;
-
+  let isAvatar = false;
   if (isMe(activeObject)) {
+    isAvatar = true;
     menuItems = <MyMenuItems onOpenProfile={onOpenProfile} />;
   } else if (isPlayer(activeObject)) {
+    isAvatar = true;
     menuItems = <PlayerMenuItems hubChannel={hubChannel} activeObject={activeObject} deselectObject={deselectObject} />;
   } else {
     menuItems = (
@@ -149,6 +162,8 @@ export function ObjectMenuContainer({ hubChannel, scene, onOpenProfile, onGoToOb
         activeObject={activeObject}
         deselectObject={deselectObject}
         onGoToObject={onGoToObject}
+        setSidebar={setSidebar}
+        selectedQuestion={selectedQuestion}
       />
     );
   }
