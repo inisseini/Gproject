@@ -5,14 +5,14 @@ import { CloseButton } from "../input/CloseButton";
 import { TextAreaInput } from "../input/TextAreaInput";
 import styles from "./LibrarySidebarContainer.scss";
 
-import GTIE1 from "../../assets/images/GTIE.png";
-import GTIE2 from "../../assets/images/GTIE.png";
-import GTIE3 from "../../assets/images/GTIE.png";
-import GTIE4 from "../../assets/images/GTIE.png";
-import GTIE5 from "../../assets/images/GTIE.png";
-import GTIE6 from "../../assets/images/GTIE.png";
-import GTIE7 from "../../assets/images/GTIE.png";
-import GTIE8 from "../../assets/images/GTIE.png";
+import GTIE1 from "../../assets/images/GTIE1.png";
+import GTIE2 from "../../assets/images/GTIE2.png";
+import GTIE3 from "../../assets/images/GTIE3.png";
+import GTIE4 from "../../assets/images/GTIE4.png";
+import GTIE5 from "../../assets/images/GTIE5.png";
+import GTIE6 from "../../assets/images/GTIE6.png";
+import GTIE7 from "../../assets/images/GTIE7.png";
+import GTIE8 from "../../assets/images/GTIE8.png";
 
 // NOTE: context and related functions moved to ChatContext
 export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
