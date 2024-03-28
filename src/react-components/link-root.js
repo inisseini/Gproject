@@ -195,7 +195,7 @@ class LinkRoot extends Component {
               <a href="https://www.memotansu.jp/docker/489/">
                 <FormattedMessage id="link-page.create-room-button" defaultMessage="Create a new room" />
               </a><br/>
-              <a href="https://metacampus.jp/odmJhzz/golden-awesome-get-together">
+              <a href="https://metacampus.jp/VmdAxka/accomplished-grave-celebration">
                 <FormattedMessage id="link-page.first-world-button" defaultMessage="エントランスワールド" />
               </a>
             </div>

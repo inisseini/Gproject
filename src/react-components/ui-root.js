@@ -366,6 +366,13 @@ class UIRoot extends Component {
         document.querySelector(".rs-base").style.visibility = "hidden";
       }
     });
+
+    this.props.scene.addEventListener("action_toggle_library", () => {
+      console.log("test toggle library");
+      this.toggleSidebar("library", { chatPrefix: "", chatAutofocus: false })
+    });
+
+
     this.props.scene.addEventListener("devicechange", () => {
       this.forceUpdate();
     });

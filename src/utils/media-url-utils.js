@@ -163,13 +163,15 @@ export const guessContentType = url => {
 
 const originIsHubsServer = new Map();
 async function isHubsServer(url) {
-
-  console.log(url);
-
+  console.log('test url=', url);
+  if (url.startsWith("#library")) {
+    return;
+  }
   if (!url) return false;
   if (!url.startsWith("http")) {
     url = "https://" + url;
   }
+
   const { origin } = new URL(url);
 
   if (originIsHubsServer.has(origin)) {
