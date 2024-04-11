@@ -27,7 +27,6 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
   }
 
   const Document = ({ title, text, img, tag, id }) => {
-    console.log("test", searchTag);
     if (searchWord.length > 0) {
       if (title.indexOf(searchWord) === -1 && text.indexOf(searchWord) === -1) return;
     }
@@ -40,10 +39,10 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
         onClick={() => {
           setQuestion(id);
           scene.emit("add_media", img);
-          if(!sessionStorage.getItem("objectTutorial")) {
+          /*if(!sessionStorage.getItem("objectTutorial")) {
             sessionStorage.setItem("objectTutorial", true);
             alert("オブジェクトは右クリックで詳細を確認することができます。リンクを取得したり、理解度チェックを受けてみてください。")
-          }
+          }*/
         }}
         style={{
           display: "flex",
