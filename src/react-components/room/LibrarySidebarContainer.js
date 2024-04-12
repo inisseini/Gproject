@@ -38,17 +38,17 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
       <div
         onClick={(e) => {
           e.preventDefault();
-          setQuestion(id);
           scene.emit("add_media", img);
           if(!sessionStorage.getItem("objectTutorial")) {
             sessionStorage.setItem("objectTutorial", true);
             alert("オブジェクトは右クリックで詳細を確認することができます。リンクを取得したり、理解度チェックを受けてみてください。")
           }
+          setQuestion(id);
         }}
         style={{
           display: "flex",
           justifyContent: "space-between",
-          gap: "16px 0",
+          gap: "16px 20px",
           boxShadow: "2px 2px 4px #dfdfdf",
           borderRadius: "10px",
           padding: "8px 16px",
