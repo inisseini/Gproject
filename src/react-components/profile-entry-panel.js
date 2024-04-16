@@ -34,12 +34,13 @@ export default class ProfileEntryPanel extends Component {
     profile: null,
     friendContent: null,
     sendDiscordMessage: null,
-    metacampusID: this.props.isAdmin ? localStorage.getItem("myID") + "(運営)" : localStorage.getItem("myID")
+    metacampusID: null
   };
 
   constructor(props) {
     super(props);
     this.state = this.getStateFromProfile();
+    console.log("test isAdmin=", this.props.isAdmin);
     if (props.avatarId) {
       this.state.avatarId = props.avatarId;
     }
