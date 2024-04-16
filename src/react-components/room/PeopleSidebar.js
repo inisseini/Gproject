@@ -245,7 +245,11 @@ export function PeopleSidebar({
                   </div>
                 </div>
                 <div className={styles.status}>
-                  {person.profile.metacampusID > 8 ? <p className="position">運営</p> : undefined}
+                  {person.profile.metacampusID.length === 9 ? (
+                    <p className="position">ティーチャー</p>
+                  ) : person.profile.metacampusID.length === 10 ? (
+                    <p className="position">運営</p>
+                  ) : undefined}
                   {!person.isMe ? (
                     <>
                       {localStorage.getItem("friends")?.includes(getPersonName(person, intl)) ? (
