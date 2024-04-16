@@ -40,13 +40,13 @@ import Manual from "../../assets/images/manual.png";
 import Rule from "../../assets/images/rule.png";
 import Mail from "../../assets/images/mail.png";
 
-import Entrance from "../../assets/images/EntranceWorld.PNG";
-import SideStreet from "../../assets/images/SideStreetWorld.PNG";
-import Proffession from "../../assets/images/ProfesserRoomWorld.PNG";
-import Audio from "../../assets/images/AudioVisualRoomWorld.PNG";
-import Event from "../../assets/images/EventRoomWorld.PNG";
-import Meeting from "../../assets/images/MeetingRoomWorld.PNG";
-import MediaCenter from "../../assets/images/MediaCenterWorld.PNG";
+import Entrance from "../../assets/images/EntranceWorld.png";
+import SideStreet from "../../assets/images/SideStreetWorld.png";
+import Proffession from "../../assets/images/ProfesserRoomWorld.png";
+import Audio from "../../assets/images/AudioVisualRoomWorld.png";
+import Event from "../../assets/images/EventRoomWorld.png";
+import Meeting from "../../assets/images/MeetingRoomWorld.png";
+import MediaCenter from "../../assets/images/MediaCenterWorld.png";
 
 import { Button } from "../input/Button";
 import { AvatarSettingsContent } from "../room/AvatarSettingsContent";
