@@ -33,7 +33,7 @@ export default class ProfileEntryPanel extends Component {
     profile: null,
     friendContent: null,
     sendDiscordMessage: null,
-    metacampusID: null
+    metacampusID: localStorage.getItem("myID")
   };
 
   constructor(props) {

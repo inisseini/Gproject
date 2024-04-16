@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Button, AcceptButton } from "../input/Button";
 import styles from "./AvatarSettingsContent.scss";
@@ -12,6 +12,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 import configs from "../../utils/configs";
+import { AuthContext } from "../auth/AuthContext";
 
 export function AvatarSettingsContent({
   displayName,
@@ -129,7 +130,8 @@ export function AvatarSettingsContent({
 
   const myID = localStorage.getItem("myID");
 
-  console.log("test", configs.isAdmin());
+  const auth = useContext(AuthContext);
+  console.log("test", auth.isAdmin);
 
   return (
     <Column as="form" className={styles.content} {...rest}>
@@ -153,19 +155,16 @@ export function AvatarSettingsContent({
         ref={displayNameInputRef}
       />
       <TextInputField
-        disabled={false}
+        disabled
         readAsDataURL
         label={
           <FormattedMessage id="avatar-settings-content.display-metacampusID-label" defaultMessage="metacampusID" />
         }
-        value={configs.isAdmin() ? `${myID}(運営)` : myID}
+        value={metacampusID}
         pattern={metacampusIDPattern}
         spellCheck="false"
         required
         onChange={onChangeMetacampusID}
-        description={
-          <FormattedMessage id="avatar-settings-content.display-metacampusID-description" defaultMessage="" />
-        }
         ref={metacampusIDInputRef}
       />
       <TextInputField
