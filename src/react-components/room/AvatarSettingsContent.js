@@ -127,6 +127,8 @@ export function AvatarSettingsContent({
 
   const myID = localStorage.getItem("myID");
 
+  metacampusID = myID;
+
   return (
     <Column as="form" className={styles.content} {...rest}>
       <div id="iconContainer" className={styles.icon}></div>

@@ -40,20 +40,16 @@ import Manual from "../../assets/images/manual.png";
 import Rule from "../../assets/images/rule.png";
 import Mail from "../../assets/images/mail.png";
 
-import Entrance from "../../assets/images/EntranceWorld.png";
-import SideStreet from "../../assets/images/SideStreet.png";
-import Proffession from "../../assets/images/ProfessorsRoom.png";
-import Audio from "../../assets/images/AudiovisualRoom.png";
-import Event from "../../assets/images/EventWorld.png";
-import Meeting from "../../assets/images/MeetingWorld.png";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
+import Entrance from "../../assets/images/EntranceWorld.PNG";
+import SideStreet from "../../assets/images/SideStreetWorld.PNG";
+import Proffession from "../../assets/images/ProfesserRoomWorld.PNG";
+import Audio from "../../assets/images/AudioVisualRoomWorld.PNG";
+import Event from "../../assets/images/EventRoomWorld.PNG";
+import Meeting from "../../assets/images/MeetingRoomWorld.PNG";
+import MediaCenter from "../../assets/images/MediaCenterWorld.PNG";
 
 import { Button } from "../input/Button";
 import { AvatarSettingsContent } from "../room/AvatarSettingsContent";
-
-import emailjs from "@emailjs/browser";
 
 export function HomePage() {
   const store = window.APP.store;
@@ -168,6 +164,107 @@ export function HomePage() {
   scrollAnchor.forEach(function (value) {
     observe.observe(value);
   });
+
+  const world1 = [
+    {
+      title: "メインエントランスワールド",
+      description:
+        "MetaCampUsのエントランスとなる常設ワールドです。他のワールドへのアクセスが可能で、操作方法や全体のマップなどが設置されています。",
+      imageUrl: Entrance
+    },
+    {
+      title: "横丁ワールド",
+      description:
+        "より砕けたコミュニケーションに特化した常設ワールドです。ラーメンなどの手に持てるオブジェクトで雰囲気を楽しみつつ、交流を行えます。",
+      imageUrl: SideStreet
+    },
+    {
+      title: "メディアセンターワールド",
+      description:
+        "MetaCampUsの各種ナレッジへアクセスが可能な常設ワールドです。階層が分かれており、一階では起業に役立つナレッジが纏めれられている動画を視聴する事が可能です。また二階では先生方の教授室へ繋がっており、面談が可能です。",
+      imageUrl: MediaCenter
+    }
+  ];
+
+  const BoxComponent1 = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const handleSlideChange = index => {
+      setCurrentIndex(index);
+    };
+
+    return (
+      <div className={styles.worldDetail}>
+        <h3>{world1[currentIndex].title}</h3>
+        <p>{world1[currentIndex].description}</p>
+        <img src={world1[currentIndex].imageUrl} alt="thumbnail" />
+        <div className="button-group">
+          {world1.map((item, index) => (
+            <button
+              key={index}
+              onClick={() => handleSlideChange(index)}
+              className={currentIndex === index ? "accent" : ""}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const world2 = [
+    {
+      title: "視聴覚室ワールド",
+      description:
+        "動画の視聴に最適化された臨時ワールドです。ワールド奥にあるディスプレイに画面を共有して他のユーザーと一緒に動画の視聴が可能です。",
+      imageUrl: Audio
+    },
+    {
+      title: "職員室ワールド",
+      description:
+        "時間帯によって教授が待機している臨時ワールドです。講義に関する相談や教授と生徒間でのクイックなMTGも行えます。",
+      imageUrl: Proffession
+    },
+    {
+      title: "イベントルームワールド",
+      description: "イベントを開く事に特化した臨時ワールドです。大画面を用いて講義やプレゼンを行う事が可能です。",
+      imageUrl: Event
+    },
+    {
+      title: "オフィスワールド",
+      description:
+        "会議を開く事に特化した臨時ワールドです。円形の机の沿って着席が可能です。また、天井のない箇所で巨大な画面を共有する事が可能です。",
+      imageUrl: Meeting
+    }
+  ];
+
+  const BoxComponent2 = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const handleSlideChange = index => {
+      setCurrentIndex(index);
+    };
+
+    return (
+      <div className={styles.worldDetail}>
+        <h3>{world2[currentIndex].title}</h3>
+        <p>{world2[currentIndex].description}</p>
+        <img src={world2[currentIndex].imageUrl} alt="thumbnail" />
+        <div className="button-group">
+          {world1.map((item, index) => (
+            <button
+              key={index}
+              onClick={() => handleSlideChange(index)}
+              className={currentIndex === index ? "accent" : ""}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <PageContainer className={styles.homePage}>
@@ -919,116 +1016,8 @@ export function HomePage() {
                   <div className="container">
                     <h2 className="title">WORLDS</h2>
                     <br />
-                    <br />
-                    <div
-                      className={worldsDetail.publicOpen || worldsDetail.privateOpen ? "content" : "content offContent"}
-                    >
-                      <div className={worldsDetail.publicOpen ? "public" : "public offPublic"}>
-                        <div className="publicLabel">
-                          <span>オープンワールド</span>
-                          <p>
-                            参加者全員がお楽しみいただけるワールドです。
-                            <br />
-                            <br />
-                            まずはこのワールドから探索しましょう！！
-                          </p>
-                          <button
-                            onClick={() => {
-                              setWorldsDetail({ ...worldsDetail, publicOpen: true });
-                              //openWorlds('public')
-                            }}
-                          >
-                            詳細
-                          </button>
-                        </div>
-                        <div id="publicRoulette" className={worldsDetail.publicOpen ? "" : "offPublic"}>
-                          {worldsDetail.publicChoosen === 0 ? (
-                            <p>
-                              ①エントランスワールド
-                              <br />
-                              <br />
-                              入口となるワールドです。
-                              <br />
-                              操作方法や全体のマップなどが配置されており、いつでも確認が可能です。
-                            </p>
-                          ) : worldsDetail.publicChoosen === 1 ? (
-                            <p>
-                              ②横丁ワールド
-                              <br />
-                              <br />
-                              ワイワイ楽しむ下町ワールドです。
-                              <br />
-                              各店でみんなと話し込みましょう！！
-                            </p>
-                          ) : undefined}
-
-                          <img className="Entrance" src={Entrance} />
-                          <img className="SideStreet" src={SideStreet} />
-                        </div>
-                      </div>
-                      <div className={worldsDetail.privateOpen ? "private" : "private offPrivate"}>
-                        <div className="privateLabel">
-                          <span>プライベートワールド</span>
-                          <p>
-                            限られたメンバーだけが入室できるワールドです。
-                            <br />
-                            <br />
-                            グループ活動やイベントにご活用いただけます！！
-                          </p>
-                          <button
-                            onClick={() => {
-                              setWorldsDetail({ ...worldsDetail, privateOpen: true });
-                              //openWorlds('private')
-                            }}
-                          >
-                            詳細
-                          </button>
-                        </div>
-                        <div id="privateRoulette" className={worldsDetail.privateOpen ? "" : "offPrivate"}>
-                          {worldsDetail.privateChoosen === 0 ? (
-                            <p>
-                              ①会議室ワールド
-                              <br />
-                              <br />
-                              入口となるワールドです。
-                              <br />
-                              操作方法や全体のマップなどが配置されており、いつでも確認が可能です。
-                            </p>
-                          ) : worldsDetail.privateChoosen === 1 ? (
-                            <p>
-                              ②視聴覚室ワールド
-                              <br />
-                              <br />
-                              ワイワイ楽しむ下町ワールドです。
-                              <br />
-                              各店でみんなと話し込みましょう！！
-                            </p>
-                          ) : worldsDetail.privateChoosen === 2 ? (
-                            <p>
-                              ②職員室ワールド
-                              <br />
-                              <br />
-                              ワイワイ楽しむ下町ワールドです。
-                              <br />
-                              各店でみんなと話し込みましょう！！
-                            </p>
-                          ) : worldsDetail.privateChoosen === 3 ? (
-                            <p>
-                              ②イベントワールド
-                              <br />
-                              <br />
-                              ワイワイ楽しむ下町ワールドです。
-                              <br />
-                              各店でみんなと話し込みましょう！！
-                            </p>
-                          ) : undefined}
-                          <img className="profession" src={Proffession} />
-                          <img className="audio" src={Audio} />
-                          <img className="meeting" src={Meeting} />
-                          <img className="event" src={Event} />
-                        </div>
-                      </div>
-                    </div>
+                    <BoxComponent1 />
+                    <BoxComponent2 />
                   </div>
                 </div>
                 <div className="scrollGTIE">
