@@ -198,7 +198,7 @@ export function HomePage() {
         <h3>{world1[currentIndex].title}</h3>
         <p>{world1[currentIndex].description}</p>
         <img src={world1[currentIndex].imageUrl} alt="thumbnail" />
-        <div className="button-group">
+        <div className={styles.buttonGroup}>
           {world1.map((item, index) => (
             <button
               key={index}
