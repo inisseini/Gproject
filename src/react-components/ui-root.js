@@ -110,13 +110,8 @@ import { LibraryTestSidebarContainer } from "./room/LibraryTestSidebarContainer"
 
 import { createAndRedirectToNewHub } from "../utils/phoenix-utils";
 
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import {
-  DynamoDBDocumentClient,
-  GetCommand,
-  PutCommand,
-  UpdateCommand,
-} from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 const avatarEditorDebug = qsTruthy("avatarEditorDebug");
 
@@ -369,9 +364,8 @@ class UIRoot extends Component {
 
     this.props.scene.addEventListener("action_toggle_library", () => {
       console.log("test toggle library");
-      this.toggleSidebar("library", { chatPrefix: "", chatAutofocus: false })
+      this.toggleSidebar("library", { chatPrefix: "", chatAutofocus: false });
     });
-
 
     this.props.scene.addEventListener("devicechange", () => {
       this.forceUpdate();
@@ -852,33 +846,38 @@ class UIRoot extends Component {
 
   renderEntryStartPanel = () => {
     const DBClient = new DynamoDBClient({
-      region: 'ap-northeast-1',
+      region: "ap-northeast-1",
       credentials: {
-        accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
-        secretAccessKey: '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',
-      },
+        accessKeyId: "AKIA6O7CLSZWBGWOEKTK",
+        secretAccessKey: "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"
+      }
     });
-  
+
     const docClient = DynamoDBDocumentClient.from(DBClient);
-  
+
     const GetGeneral = async () => {
       const command = new GetCommand({
-        TableName: 'generalParameter',
+        TableName: "generalParameter",
         Key: {
-          key: 'settings',
-        },
+          key: "settings"
+        }
       });
-  
+
       const response = await docClient.send(command);
 
       const hour = new Date().getHours();
 
       console.log(hour, response.Item.openingTime, response.Item.closingTime);
-      if(Number(response.Item.openingTime) <= hour && hour <= Number(response.Item.closingTime)) {
+      if (Number(response.Item.openingTime) <= hour && hour <= Number(response.Item.closingTime)) {
         console.log("ようこそMetaCampUsへ");
       } else {
-        const message = "運用時間外です。またお越しください。運用時間は" + String(response.Item.openingTime) + "時から" + String(response.Item.closingTime) + "時です。" 
-        alert(message)
+        const message =
+          "運用時間外です。またお越しください。運用時間は" +
+          String(response.Item.openingTime) +
+          "時から" +
+          String(response.Item.closingTime) +
+          "時です。";
+        alert(message);
         location.href = "/";
         //return <p style={{ zIndex: "100000000" }}>運用時間外です。</p>;
       }
@@ -886,12 +885,12 @@ class UIRoot extends Component {
 
     const GetRoom = async () => {
       const command = new GetCommand({
-        TableName: 'roomParameter',
+        TableName: "roomParameter",
         Key: {
-          URL: location.href,
-        },
+          URL: location.href
+        }
       });
-  
+
       const response = await docClient.send(command);
       this.state.password = response.Item.password;
     };
@@ -899,20 +898,20 @@ class UIRoot extends Component {
     GetGeneral();
     GetRoom();
 
-    console.log('password=', this.state.password);
-    
-    if(this.state.firstConfirm && this.state.password && this.state.password !== "") {
+    console.log("password=", this.state.password);
+
+    if (this.state.firstConfirm && this.state.password && this.state.password !== "") {
       this.state.firstConfirm = false;
       const passwordInput = prompt("パスワードが設定されています　4桁の数字(半角)を入力してください");
       if (isNaN(passwordInput)) {
         alert("パスワードが間違っています");
         location.href = "/";
       } else if (!isNaN(passwordInput)) {
-        if(passwordInput !== this.state.password) {
-          alert("パスワードが間違っています")
+        if (passwordInput !== this.state.password) {
+          alert("パスワードが間違っています");
           location.href = "/";
         } else {
-          console.log('正しいパスワードが入力されました')
+          console.log("正しいパスワードが入力されました");
         }
       }
     }
@@ -1190,6 +1189,7 @@ class UIRoot extends Component {
                 store={this.props.store}
                 mediaSearchStore={this.props.mediaSearchStore}
                 avatarId={props.location.state.detail && props.location.state.detail.avatarId}
+                isAdmin={configs.isAdmin()}
               />
             )}
           />
@@ -1231,8 +1231,7 @@ class UIRoot extends Component {
             id: "create-room",
             label: <FormattedMessage id="more-menu.create-room" defaultMessage="Create Room" />,
             icon: AddIcon,
-            onClick: () =>
-              createAndRedirectToNewHub(null, null, true)
+            onClick: () => createAndRedirectToNewHub(null, null, true)
           },
           !isLockedDownDemo && {
             id: "user-profile",
@@ -1729,13 +1728,13 @@ function UIRootHooksWrapper(props) {
   return (
     <ChatContextProvider messageDispatch={props.messageDispatch}>
       <ObjectListProvider scene={props.scene}>
-      <UIRoot
-        breakpoint={breakpoint}
-        {...props}
-        canVoiceChat={canVoiceChat}
-        selectedQuestion={selectedQuestion}
-        setQuestion={setQuestion}
-      />
+        <UIRoot
+          breakpoint={breakpoint}
+          {...props}
+          canVoiceChat={canVoiceChat}
+          selectedQuestion={selectedQuestion}
+          setQuestion={setQuestion}
+        />
       </ObjectListProvider>
     </ChatContextProvider>
   );

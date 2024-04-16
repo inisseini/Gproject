@@ -11,9 +11,6 @@ import userDemoImg from "../../assets/images/OOKAWA9V9A6918_TP_V4.jpg";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
-import configs from "../../utils/configs";
-import { AuthContext } from "../auth/AuthContext";
-
 export function AvatarSettingsContent({
   displayName,
   pronouns,
@@ -129,9 +126,6 @@ export function AvatarSettingsContent({
   imagecheck(iconContainerBaseURL);
 
   const myID = localStorage.getItem("myID");
-
-  const auth = useContext(AuthContext);
-  console.log("test", auth.isAdmin);
 
   return (
     <Column as="form" className={styles.content} {...rest}>

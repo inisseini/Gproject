@@ -18,6 +18,7 @@ export default class ProfileEntryPanel extends Component {
     avatarId: PropTypes.string,
     onClose: PropTypes.func,
     onBack: PropTypes.func,
+    isAdmin: PropTypes.bool,
     showBackButton: PropTypes.bool
   };
 
@@ -33,7 +34,7 @@ export default class ProfileEntryPanel extends Component {
     profile: null,
     friendContent: null,
     sendDiscordMessage: null,
-    metacampusID: localStorage.getItem("myID")
+    metacampusID: isAdmin ? localStorage.getItem("myID") + "(運営)" : localStorage.getItem("myID")
   };
 
   constructor(props) {
@@ -171,7 +172,8 @@ export default class ProfileEntryPanel extends Component {
       },
       onSubmit: this.saveStateAndFinish,
       onClose: this.props.onClose,
-      onBack: this.props.onBack
+      onBack: this.props.onBack,
+      isAdmin: this.props.isAdmin
     };
 
     if (this.props.containerType === "sidebar") {
