@@ -115,7 +115,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
           // 生成したIDをlocalStorageに保存
           localStorage.setItem("myID", myID);
 
-          putToLambda("userList", { ID: myID, email: email });
+          putToLambda("userList", { ID: myID, requested: [], friends: [] });
         }
 
         onSubmitEmail(email);
