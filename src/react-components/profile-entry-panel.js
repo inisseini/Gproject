@@ -32,7 +32,8 @@ export default class ProfileEntryPanel extends Component {
     pronouns: null,
     profile: null,
     friendContent: null,
-    sendDiscordMessage: null
+    sendDiscordMessage: null,
+    metacampusID: null
   };
 
   constructor(props) {
@@ -46,8 +47,8 @@ export default class ProfileEntryPanel extends Component {
   }
 
   getStateFromProfile = () => {
-    const { displayName, avatarId, pronouns, profile, friendContent, sendDiscordMessage } = this.props.store.state.profile;
-    return { displayName, avatarId, pronouns, profile, friendContent, sendDiscordMessage };
+    const { displayName, avatarId, pronouns, profile, friendContent, sendDiscordMessage, metacampusID } = this.props.store.state.profile;
+    return { displayName, avatarId, pronouns, profile, friendContent, sendDiscordMessage, metacampusID };
   };
 
   storeUpdated = () => this.setState(this.getStateFromProfile());
@@ -55,7 +56,7 @@ export default class ProfileEntryPanel extends Component {
   saveStateAndFinish = e => {
     e && e.preventDefault();
 
-    const { displayName, pronouns, profile, friendContent, sendDiscordMessage } = this.props.store.state.profile;
+    const { displayName, pronouns, profile, friendContent, sendDiscordMessage, metacampusID } = this.props.store.state.profile;
     const { hasChangedNameOrPronounsOrProfile } = this.props.store.state.activity;
 
     const hasChangedNowOrPreviously =
@@ -74,7 +75,8 @@ export default class ProfileEntryPanel extends Component {
         pronouns: this.state.pronouns,
         friendContent: this.state.friendContent,
         profile: this.state.profile,
-        sendDiscordMessage: this.state.sendDiscordMessage
+        sendDiscordMessage: this.state.sendDiscordMessage,
+        metacampusID: this.state.metacampusID
       }
     });
     this.props.finished();
@@ -140,22 +142,26 @@ export default class ProfileEntryPanel extends Component {
       profileInputRef: inp => (this.profileInput = inp),
       friendContentInputRef: inp => (this.friendContentInput = inp),
       sendDiscordMessageInputRef: inp => (this.sendDiscordMessageInput = inp),
+      metacampusIDInputRef: inp => (this.metacampusID = inp),
       disableDisplayNameInput: !!this.props.displayNameOverride,
       displayName: this.props.displayNameOverride ? this.props.displayNameOverride : this.state.displayName,
       pronouns: this.state.pronouns,
       profile: this.state.profile,
       friendContent: this.state.friendContent,
       sendDiscordMessage: this.state.sendDiscordMessage,
+      metacampusID: this.state.metacampusID,
       displayNamePattern: this.props.store.schema.definitions.profile.properties.displayName.pattern,
       pronounsPattern: this.props.store.schema.definitions.profile.properties.pronouns.pattern,
       profilePattern: this.props.store.schema.definitions.profile.properties.profile.pattern,
       friendContentPattern: this.props.store.schema.definitions.profile.properties.friendContent.pattern,
       sendDiscordMessagePattern: this.props.store.schema.definitions.profile.properties.sendDiscordMessage.pattern,
+      metacampusIDPattern: this.props.store.schema.definitions.profile.properties.metacampusID.pattern,
       onChangeDisplayName: e => this.setState({ displayName: e.target.value }),
       onChangePronouns: e => this.setState({ pronouns: e.target.value }),
       onChangeProfile: e => this.setState({ profile: e.target.value }),
       onChangefriendContent: e => this.setState({ friendContent: e.target.value }),
       onChangeSendDiscordMessage: e => this.setState({ sendDiscordMessage: e.target.value }),
+      onChangeMetacampusID: e => this.setState({ metacampusID: e.target.value }),
       avatarPreview: <AvatarPreview avatarGltfUrl={this.state.avatar && this.state.avatar.gltf_url} />,
       onChangeAvatar: e => {
         e.preventDefault();

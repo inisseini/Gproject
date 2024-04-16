@@ -22,23 +22,27 @@ export function AvatarSettingsContent({
   profile,
   friendContent,
   sendDiscordMessage,
+  metacampusID,
   displayNameInputRef,
   pronounsInputRef,
   profileInputRef,
   friendContentInputRef,
   sendDiscordMessageInputRef,
+  metacampusIDInputRef,
   disableDisplayNameInput,
   onChangeDisplayName,
   onChangePronouns,
   onChangeProfile,
   onChangefriendContent,
   onChangeSendDiscordMessage,
+  onChangeMetacampusID,
   avatarPreview,
   displayNamePattern,
   pronounsPattern,
   profilePattern,
   friendContentPattern,
   sendDiscordMessagePattern,
+  metacampusIDPattern,
   onChangeAvatar,
   ...rest
 }) {
@@ -128,6 +132,8 @@ export function AvatarSettingsContent({
 
   imagecheck(iconContainerBaseURL);
 
+  const myID = localStorage.getItem('myID');
+
   return (
     <Column as="form" className={styles.content} {...rest}>
       <div id='iconContainer' className={styles.icon}>
@@ -149,6 +155,22 @@ export function AvatarSettingsContent({
           />
         }
         ref={displayNameInputRef}
+      />
+      <TextInputField
+        disabled
+        label={<FormattedMessage id="avatar-settings-content.display-metacampusID-label" defaultMessage={metacampusID} />}
+        value={myID}
+        pattern={metacampusIDPattern}
+        spellCheck="false"
+        required
+        onChange={onChangeMetacampusID}
+        description={
+          <FormattedMessage
+            id="avatar-settings-content.display-metacampusID-description"
+            defaultMessage=""
+          />
+        }
+        ref={metacampusIDInputRef}
       />
       <TextInputField
         label={
@@ -227,6 +249,7 @@ AvatarSettingsContent.propTypes = {
   pronounsPattern: PropTypes.string,
   profilePattern: PropTypes.string,
   friendContentPattern: PropTypes.string,
+  metacampusIDPattern: PropTypes.string,
   onChangeDisplayName: PropTypes.func,
   onChangePronouns: PropTypes.func,
   onChangeProfile: PropTypes.func,

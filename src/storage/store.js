@@ -69,6 +69,7 @@ export const SCHEMA = {
         profile: { type: "string", pattern: "([^\x01-\x7E]|w){0,300}$" },
         friendContent: { type: "string" },
         sendDiscordMessage: { type: "string" },
+        metacampusID: { type: "string" },
         // personalAvatarId is obsolete, but we need it here for backwards compatibility.
         personalAvatarId: { type: "string" }
       }

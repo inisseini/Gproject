@@ -19,6 +19,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
   const ref = useRef();
   const [searchWord, setWord] = useState("");
   const [searchTag, setTag] = useState("");
+  const [searchCategory, setCategory] = useState("default");
 
   if (!localStorage.getItem("progressScore")) {
     localStorage.setItem("progressScore", 0);
@@ -26,13 +27,17 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
     localStorage.setItem("checkedQuestion", JSON.stringify(list));
   }
 
-  const Document = ({ title, text, img, tag, id }) => {
+  const Document = ({ title, text, img, tag, id, category }) => {
+    if (searchWord.length <= 0 && searchTag <= 0 && searchCategory === "default") return;
     if (searchWord.length > 0) {
       if (title.indexOf(searchWord) === -1 && text.indexOf(searchWord) === -1) return;
     }
     if (searchTag.length > 0) {
       console.log("test", searchTag);
       if (tag.indexOf(searchTag) === -1) return;
+    }
+    if (searchCategory.length > 0) {
+      if (searchCategory !== "default" && category !== searchCategory) return;
     }
     return (
       <div
@@ -110,6 +115,10 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
     }
   };
 
+  const onChangeCategory = event => {
+    setCategory(event.target.value);
+  };
+
   const onClickTags = tag => {
     ref.current.innerText = "タグ検索：" + tag.target.innerText;
     setTag(tag.target.innerText);
@@ -145,6 +154,14 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
           placeholder="資料をキーワードやタグで検索する"
           onChange={e => searchDocuments(e)}
         />
+        <select name="category" onChange={e => onChangeCategory(e)} className={styles.categorySelecter}>
+          <option value="default" selected>
+            カテゴリで検索する
+          </option>
+          <option value="GTIE Startup School">GTIE Startup School</option>
+          <option value="Academic Entrepreneurs'カフェ">Academic Entrepreneurs'カフェ</option>
+          <option value="その他">その他</option>
+        </select>
         <div
           style={{
             overflowY: "auto",
@@ -165,6 +182,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
             img={GTIE1}
             tag="アントレプレナーシップ"
             id={0}
+            category="GTIE Startup School"
           />
           <Document
             title="起業検討をする研究者向けのファンドについてー グラント、エクイティ、デッドの使い分けー"
@@ -175,6 +193,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
             img={GTIE2}
             tag="ファイナンス"
             id={1}
+            category="GTIE Startup School"
           />
           <Document
             title="エクイティ調達におけるベンチャーキャピタルの選定方法について"
@@ -185,6 +204,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
             img={GTIE3}
             tag="VCからのエクイティ調達"
             id={2}
+            category="GTIE Startup School"
           />
           <Document
             title="技術系スタートアップの事業計画作成の基礎について"
@@ -195,6 +215,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
             img={GTIE4}
             tag="事業計画"
             id={3}
+            category="GTIE Startup School"
           />
           <Document
             title="大学発ベンチャーの知財戦略の重要性について"
@@ -205,6 +226,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
             img={GTIE5}
             tag="特許・知財戦略"
             id={4}
+            category="GTIE Startup School"
           />
           <Document
             title="PMF(プロダクト・マーケット・フィット)とは？達成までの手順について"
@@ -215,6 +237,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
             img={GTIE6}
             tag="プロダクト開発"
             id={5}
+            category="GTIE Startup School"
           />
           <Document
             title="創業期におけるスタートアップの人材採用の考え方について"
@@ -225,6 +248,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
             img={GTIE7}
             tag="創業期の人材採用"
             id={6}
+            category="GTIE Startup School"
           />
           <Document
             title="事例で学ぶ資本政策について"
@@ -235,6 +259,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
             img={GTIE8}
             tag="スタートアップの資本政策"
             id={7}
+            category="GTIE Startup School"
           />
         </div>
       </div>

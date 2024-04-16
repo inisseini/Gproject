@@ -42,6 +42,7 @@ export function UserProfileSidebar({
   profile,
   friendContent,
   sendDiscordMessage,
+  metacampusID,
   identityName,
   avatarPreview,
   hasMicPresence,
@@ -110,6 +111,7 @@ export function UserProfileSidebar({
     >
       <Column center padding>
         <h2 className={styles.displayName}>{identityName ? `${displayName} (${identityName})` : displayName}</h2>
+        {metacampusID && <span className={styles.profile}>{metacampusID}</span>}
         {pronouns && <span className={styles.pronouns}>{pronouns}</span>}
         {profile && <span className={styles.profile}>{profile}</span>}
         {!canShow && <button onClick={checkRelationship}>フレンド限定内容を見る</button>}
@@ -212,6 +214,7 @@ UserProfileSidebar.propTypes = {
   profile: PropTypes.string,
   friendContent: PropTypes.string,
   sendDiscordMessage: PropTypes.string,
+  metacampusID: PropTypes.string,
   identityName: PropTypes.string,
   avatarPreview: PropTypes.node,
   hasMicPresence: PropTypes.bool,
