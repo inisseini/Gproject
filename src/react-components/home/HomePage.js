@@ -187,23 +187,23 @@ export function HomePage() {
   ];
 
   const BoxComponent1 = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex1, setCurrentIndex1] = useState(0);
 
     const handleSlideChange = index => {
-      setCurrentIndex(index);
+      setCurrentIndex1(index);
     };
 
     return (
       <div className={styles.worldDetail}>
-        <h3>{world1[currentIndex].title}</h3>
-        <p>{world1[currentIndex].description}</p>
-        <img src={world1[currentIndex].imageUrl} alt="thumbnail" />
+        <h3>{world1[currentIndex1].title}</h3>
+        <p>{world1[currentIndex1].description}</p>
+        <img src={world1[currentIndex1].imageUrl} alt="thumbnail" />
         <div className={styles.buttonGroup}>
           {world1.map((item, index) => (
             <button
               key={index}
               onClick={() => handleSlideChange(index)}
-              className={currentIndex === index ? "accent" : ""}
+              className={currentIndex1 === index ? "accent" : ""}
             >
               {index + 1}
             </button>
@@ -240,23 +240,23 @@ export function HomePage() {
   ];
 
   const BoxComponent2 = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex2, setCurrentIndex2] = useState(0);
 
     const handleSlideChange = index => {
-      setCurrentIndex(index);
+      setCurrentIndex2(index);
     };
 
     return (
       <div className={styles.worldDetail}>
-        <h3>{world2[currentIndex].title}</h3>
-        <p>{world2[currentIndex].description}</p>
-        <img src={world2[currentIndex].imageUrl} alt="thumbnail" />
+        <h3>{world2[currentIndex2].title}</h3>
+        <p>{world2[currentIndex2].description}</p>
+        <img src={world2[currentIndex2].imageUrl} alt="thumbnail" />
         <div className={styles.buttonGroup}>
           {world1.map((item, index) => (
             <button
               key={index}
               onClick={() => handleSlideChange(index)}
-              className={currentIndex === index ? "accent" : ""}
+              className={currentIndex2 === index ? "accent" : ""}
             >
               {index + 1}
             </button>
