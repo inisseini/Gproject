@@ -11,6 +11,8 @@ import userDemoImg from "../../assets/images/OOKAWA9V9A6918_TP_V4.jpg";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
+import configs from "../../utils/configs";
+
 export function AvatarSettingsContent({
   displayName,
   pronouns,
@@ -151,11 +153,11 @@ export function AvatarSettingsContent({
         ref={displayNameInputRef}
       />
       <TextInputField
-        disabled={false}
+        disabled
         label={
           <FormattedMessage id="avatar-settings-content.display-metacampusID-label" defaultMessage="metacampusID" />
         }
-        value={myID}
+        value={configs.isAdmin() ? `${myID}(運営)` : myID}
         pattern={metacampusIDPattern}
         spellCheck="false"
         required
