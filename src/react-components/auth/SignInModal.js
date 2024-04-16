@@ -7,14 +7,7 @@ import { CancelButton, NextButton, ContinueButton } from "../input/Button";
 import { TextInputField } from "../input/TextInputField";
 import { Column } from "../layout/Column";
 import { LegalMessage } from "./LegalMessage";
-
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import {
-  DynamoDBDocumentClient,
-  GetCommand,
-  PutCommand,
-  UpdateCommand,
-} from '@aws-sdk/lib-dynamodb';
+import { putToLambda } from "../../utils/aws-lambda-dynamodb";
 
 export const SignInStep = {
   submit: "submit",
@@ -93,15 +86,15 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
   const mailList =
     /waseda.jp|w-as.jp|u-tokyo.ac.jp|sangaku.titech.ac.jp|titech.ac.jp|tuat.ac.jp|ocha.ac.jp|kuhs.ac.jp|ynu.ac.jp|yokohama-cu.ac.jp|tmd.ac.jp|keio.ac.jp|tmu.ac.jp|keio.jpn|shibaura-it.ac.jp|ow.shibaura-it.ac.jp|s.tsukuba.ac.jp|u.tsukuba.ac.jp|sic.shibaura-it.ac.jp|wasedajg.ed.jp|wasedasaga.jp|chiba-u.jp|student.chiba-u.jp|faculty.chiba-u.jp|student.gs.chiba-u.jp|office.gs.chiba-u.jp|faculty.gs.chiba-u.jp|vleap.jp/;
 
-    const DBClient = new DynamoDBClient({
-      region: 'ap-northeast-1',
-      credentials: {
-        accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
-        secretAccessKey: '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',
-      },
-    });
-  
-    const docClient = DynamoDBDocumentClient.from(DBClient);
+  const generateRandomID = () => {
+      let result = '';
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const charactersLength = characters.length;
+      for ( let i = 0; i < 8; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+  }
 
   const onSubmitForm = useCallback(
     e => {
@@ -111,18 +104,21 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
         return;
       } else if (mailList.test(email)) {
         e.preventDefault();
-        const CreateAccountData = async () => {
-          const command = new PutCommand({
-            TableName: 'accounts',
-            Item: {
-              mail: email,
-            },
-          });
-      
-          const response = await docClient.send(command);
-        };
-    
-        CreateAccountData();
+
+        // localStorageからmyIDを取得
+        let myID = localStorage.getItem('myID');
+
+        // myIDが存在しない場合
+        if (!myID) {
+            // ランダムな8桁のIDを生成
+            myID = generateRandomID();
+            // 生成したIDをlocalStorageに保存
+            localStorage.setItem('myID', myID);
+
+            putToLambda('userList', {ID: myID, email: email})
+
+        }
+
         onSubmitEmail(email);
       }
     },
