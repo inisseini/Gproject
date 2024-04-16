@@ -34,7 +34,7 @@ export default class ProfileEntryPanel extends Component {
     profile: null,
     friendContent: null,
     sendDiscordMessage: null,
-    metacampusID: isAdmin ? localStorage.getItem("myID") + "(運営)" : localStorage.getItem("myID")
+    metacampusID: this.props.isAdmin ? localStorage.getItem("myID") + "(運営)" : localStorage.getItem("myID")
   };
 
   constructor(props) {
