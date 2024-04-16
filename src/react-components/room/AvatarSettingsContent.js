@@ -43,8 +43,6 @@ export function AvatarSettingsContent({
   onChangeAvatar,
   ...rest
 }) {
-  console.log("avatarsettingscontent original");
-
   const [fileName, setFileName] = useState(undefined);
 
   const DBClient = new DynamoDBClient({
@@ -131,6 +129,8 @@ export function AvatarSettingsContent({
 
   const myID = localStorage.getItem("myID");
 
+  console.log("test", configs.isAdmin());
+
   return (
     <Column as="form" className={styles.content} {...rest}>
       <div id="iconContainer" className={styles.icon}></div>
@@ -153,7 +153,8 @@ export function AvatarSettingsContent({
         ref={displayNameInputRef}
       />
       <TextInputField
-        disabled
+        disabled={false}
+        readAsDataURL
         label={
           <FormattedMessage id="avatar-settings-content.display-metacampusID-label" defaultMessage="metacampusID" />
         }
