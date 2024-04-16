@@ -6,15 +6,10 @@ import { TextInputField } from "../input/TextInputField";
 import { Column } from "../layout/Column";
 import { FormattedMessage } from "react-intl";
 
-import userDemoImg from "../../assets/images/OOKAWA9V9A6918_TP_V4.jpg"; 
+import userDemoImg from "../../assets/images/OOKAWA9V9A6918_TP_V4.jpg";
 
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import {
-  DynamoDBDocumentClient,
-  GetCommand,
-  PutCommand,
-  UpdateCommand,
-} from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 export function AvatarSettingsContent({
   displayName,
@@ -46,54 +41,54 @@ export function AvatarSettingsContent({
   onChangeAvatar,
   ...rest
 }) {
-  console.log('avatarsettingscontent original');
+  console.log("avatarsettingscontent original");
 
   const [fileName, setFileName] = useState(undefined);
-  
+
   const DBClient = new DynamoDBClient({
-    region: 'ap-northeast-1',
+    region: "ap-northeast-1",
     credentials: {
-      accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
-      secretAccessKey: '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',
-    },
+      accessKeyId: "AKIA6O7CLSZWBGWOEKTK",
+      secretAccessKey: "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"
+    }
   });
 
   const docClient = DynamoDBDocumentClient.from(DBClient);
 
-  const convert = async (input) => {
+  const convert = async input => {
     const response = await fetch(
-      'https://2vdssaox3xixy7rfz4tr3lh3my0wfslu.lambda-url.ap-northeast-1.on.aws/', // 関数URL
+      "https://2vdssaox3xixy7rfz4tr3lh3my0wfslu.lambda-url.ap-northeast-1.on.aws/", // 関数URL
       {
         body: JSON.stringify(input),
-        method: 'POST',
+        method: "POST"
       }
-    ).then((res) => res.json());
-  
+    ).then(res => res.json());
+
     return response;
   };
 
-  const iconContainerBaseURL = 'https://metacampusassets.s3.ap-northeast-1.amazonaws.com/' + displayName + '.jpg';
-  
-  const uploadToClient = (event) => {
+  const iconContainerBaseURL = "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + displayName + ".jpg";
+
+  const uploadToClient = event => {
     if (event.target.files[0]) {
       const reader = new FileReader();
       const file = event.target.files[0];
-  
-      reader.onload = async (event) => {
+
+      reader.onload = async event => {
         const base64_image = event.currentTarget.result;
         const { base64_image: resizedBase64 } = await convert({
           base64_image,
           width: 800,
           height: 800,
-          fit: 'cover',
+          fit: "cover",
           withoutEnlargement: true,
-          toFormat: 'jpg',
+          toFormat: "jpg",
           file,
-          user: displayName,
+          user: displayName
         });
         Base64ToImage(base64_image, function (img) {
-          const target = document.getElementById('iconContainer');
-          const child = document.getElementById('uploadedImg');
+          const target = document.getElementById("iconContainer");
+          const child = document.getElementById("uploadedImg");
           if (child) target.removeChild(child);
           target.appendChild(img);
         });
@@ -101,45 +96,44 @@ export function AvatarSettingsContent({
       reader.readAsDataURL(file);
     }
   };
-  
+
   const Base64ToImage = (base64img, callback) => {
     var img = new Image();
     img.onload = function () {
       callback(img);
     };
     img.src = base64img;
-    img.id = 'uploadedImg';
+    img.id = "uploadedImg";
   };
 
-  const imagecheck = (url) => {
-    const child = document.getElementById('uploadedImg');
-    if(child) return;
+  const imagecheck = url => {
+    const child = document.getElementById("uploadedImg");
+    if (child) return;
     var newImage = new Image();
- 
+
     // 画像があった時の処理
     newImage.onload = () => {
-      console.log('アイコン有' + url);
-      document.getElementById('iconContainer').appendChild(newImage);
-    }
- 
+      console.log("アイコン有" + url);
+      document.getElementById("iconContainer").appendChild(newImage);
+    };
+
     // 画像がなかった時の処理
     newImage.onerror = () => {
-      console.log('アイコン無' + url);
-    }
+      console.log("アイコン無" + url);
+    };
     newImage.src = url;
-    newImage.id = 'uploadedImg'
-  }
+    newImage.id = "uploadedImg";
+  };
 
   imagecheck(iconContainerBaseURL);
 
-  const myID = localStorage.getItem('myID');
+  const myID = localStorage.getItem("myID");
 
   return (
     <Column as="form" className={styles.content} {...rest}>
-      <div id='iconContainer' className={styles.icon}>
-      </div>
-      
-      <input type='file' onChange={uploadToClient} />
+      <div id="iconContainer" className={styles.icon}></div>
+
+      <input type="file" onChange={uploadToClient} />
       <TextInputField
         disabled={disableDisplayNameInput}
         label={<FormattedMessage id="avatar-settings-content.display-name-label" defaultMessage="Display Name" />}
@@ -158,39 +152,49 @@ export function AvatarSettingsContent({
       />
       <TextInputField
         disabled
-        label={<FormattedMessage id="avatar-settings-content.display-metacampusID-label" defaultMessage={metacampusID} />}
+        label={
+          <FormattedMessage id="avatar-settings-content.display-metacampusID-label" defaultMessage="metacampusID" />
+        }
         value={myID}
         pattern={metacampusIDPattern}
         spellCheck="false"
         required
         onChange={onChangeMetacampusID}
         description={
-          <FormattedMessage
-            id="avatar-settings-content.display-metacampusID-description"
-            defaultMessage=""
-          />
+          <FormattedMessage id="avatar-settings-content.display-metacampusID-description" defaultMessage="" />
         }
         ref={metacampusIDInputRef}
       />
       <TextInputField
         label={
-          <><FormattedMessage id="avatar-settings-content.display-profile-label" defaultMessage="Profile (optional)" /><br/><p>全体に公開するプロフィールです。</p></>
+          <>
+            <FormattedMessage id="avatar-settings-content.display-profile-label" defaultMessage="Profile (optional)" />
+            <br />
+            <p>全体に公開するプロフィールです。</p>
+          </>
         }
         value={profile}
         pattern={profilePattern}
         spellCheck="false"
         onChange={onChangeProfile}
         description={
-          <><FormattedMessage
-            id="avatar-settings-content.display-profile-description"
-            defaultMessage="Alphanumerics, hyphens, underscores, and tildes. No more than 32"
-          /><br/><p>フレンドにのみ公開するプロフィールです。本名や所属大学・組織を記入することを推奨します。</p></>
+          <>
+            <FormattedMessage
+              id="avatar-settings-content.display-profile-description"
+              defaultMessage="Alphanumerics, hyphens, underscores, and tildes. No more than 32"
+            />
+            <br />
+            <p>フレンドにのみ公開するプロフィールです。本名や所属大学・組織を記入することを推奨します。</p>
+          </>
         }
         ref={profileInputRef}
       />
       <TextInputField
         label={
-          <FormattedMessage id="avatar-settings-content.display-friendContent-label" defaultMessage="フレンド限定表示内容" />
+          <FormattedMessage
+            id="avatar-settings-content.display-friendContent-label"
+            defaultMessage="フレンド限定表示内容"
+          />
         }
         value={friendContent}
         pattern={friendContentPattern}
