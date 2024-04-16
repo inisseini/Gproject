@@ -84,17 +84,17 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
   const [email, setEmail] = useState(initialEmail);
 
   const mailList =
-    /waseda.jp|w-as.jp|u-tokyo.ac.jp|sangaku.titech.ac.jp|titech.ac.jp|tuat.ac.jp|ocha.ac.jp|kuhs.ac.jp|ynu.ac.jp|yokohama-cu.ac.jp|tmd.ac.jp|keio.ac.jp|tmu.ac.jp|keio.jpn|shibaura-it.ac.jp|ow.shibaura-it.ac.jp|s.tsukuba.ac.jp|u.tsukuba.ac.jp|sic.shibaura-it.ac.jp|wasedajg.ed.jp|wasedasaga.jp|chiba-u.jp|student.chiba-u.jp|faculty.chiba-u.jp|student.gs.chiba-u.jp|office.gs.chiba-u.jp|faculty.gs.chiba-u.jp|vleap.jp/;
+    /waseda.jp|w-as.jp|u-tokyo.ac.jp|sangaku.titech.ac.jp|titech.ac.jp|tuat.ac.jp|ocha.ac.jp|kuhs.ac.jp|ynu.ac.jp|yokohama-cu.ac.jp|tmd.ac.jp|keio.ac.jp|tmu.ac.jp|keio.jpn|shibaura-it.ac.jp|ow.shibaura-it.ac.jp|s.tsukuba.ac.jp|u.tsukuba.ac.jp|sic.shibaura-it.ac.jp|wasedajg.ed.jp|wasedasaga.jp|chiba-u.jp|student.chiba-u.jp|faculty.chiba-u.jp|student.gs.chiba-u.jp|office.gs.chiba-u.jp|faculty.gs.chiba-u.jp|vleap.jp|issei.kurata819@gmail.com/;
 
   const generateRandomID = () => {
-      let result = '';
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      const charactersLength = characters.length;
-      for ( let i = 0; i < 8; i++ ) {
-          result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      }
-      return result;
-  }
+    let result = "";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    for (let i = 0; i < 8; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
 
   const onSubmitForm = useCallback(
     e => {
@@ -106,17 +106,16 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
         e.preventDefault();
 
         // localStorageからmyIDを取得
-        let myID = localStorage.getItem('myID');
+        let myID = localStorage.getItem("myID");
 
         // myIDが存在しない場合
         if (!myID) {
-            // ランダムな8桁のIDを生成
-            myID = generateRandomID();
-            // 生成したIDをlocalStorageに保存
-            localStorage.setItem('myID', myID);
+          // ランダムな8桁のIDを生成
+          myID = generateRandomID();
+          // 生成したIDをlocalStorageに保存
+          localStorage.setItem("myID", myID);
 
-            putToLambda('userList', {ID: myID, email: email})
-
+          putToLambda("userList", { ID: myID, email: email });
         }
 
         onSubmitEmail(email);

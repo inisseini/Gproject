@@ -23,13 +23,8 @@ import { PermissionNotification } from "./PermissionNotifications";
 import userDemoImg from "../../assets/images/OOKAWA9V9A6918_TP_V4.jpg";
 import configs from "../../utils/configs";
 
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import {
-  DynamoDBDocumentClient,
-  GetCommand,
-  PutCommand,
-  UpdateCommand,
-} from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 const toolTipDescription = defineMessage({
   id: "people-sidebar.muted-tooltip",
@@ -135,46 +130,43 @@ export function PeopleSidebar({
     return intl.formatMessage(toolTipDescription, { mutedState: isMuted ? "muted" : "not muted" });
   }
 
-  const onSendFriendRequest = (target) => {
-    const confirm = window.confirm('フレンド申請をしてよろしいですか？');
-    if(confirm){
-
+  const onSendFriendRequest = target => {
+    const confirm = window.confirm("フレンド申請をしてよろしいですか？");
+    if (confirm) {
       const message = "systemMessage/from/" + me + "/to/" + target + "/sendFriendRequest";
       document.getElementById("avatar-rig").messageDispatch.dispatch(message);
 
       const DBClient = new DynamoDBClient({
-        region: 'ap-northeast-1',
+        region: "ap-northeast-1",
         credentials: {
-          accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
-          secretAccessKey: '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',
-        },
+          accessKeyId: "AKIA6O7CLSZWBGWOEKTK",
+          secretAccessKey: "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"
+        }
       });
 
       const docClient = DynamoDBDocumentClient.from(DBClient);
 
-      const handleSubmit = async (event) => {
+      const handleSubmit = async event => {
         const command = new UpdateCommand({
-          TableName: 'user-table',
+          TableName: "user-table",
           Key: {
-            userName: target,
+            userName: target
           },
           Expression: "SET #orders = list_append(#orders, :v_orderId)",
           ExpressionAttributeNames: {
-              '#orders': 'requested'
+            "#orders": "requested"
           },
           ExpressionAttributeValues: {
-              ':v_orderId': me,
-          },
+            ":v_orderId": me
+          }
         });
 
         const response = await docClient.send(command);
       };
 
       handleSubmit();
-
-
     }
-  }
+  };
 
   return (
     <Sidebar
@@ -205,7 +197,15 @@ export function PeopleSidebar({
             return (
               <div className={styles.person} key={person.id} type="button" onClick={e => onSelectPerson(person, e)}>
                 <div className={styles.icon}>
-                  <img src={'https://metacampusassets.s3.ap-northeast-1.amazonaws.com/' + getPersonName(person, intl).split(' ')[0] + '.jpg'} alt onError={(e) => this.src=''}/>
+                  <img
+                    src={
+                      "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" +
+                      getPersonName(person, intl).split(" ")[0] +
+                      ".jpg"
+                    }
+                    alt
+                    onError={e => (this.src = "")}
+                  />
                 </div>
                 <div className={styles.detail}>
                   <p>{getPersonName(person, intl)}</p>
@@ -245,11 +245,16 @@ export function PeopleSidebar({
                   </div>
                 </div>
                 <div className={styles.status}>
-                      {configs.isAdmin() ? <p className="position">運営</p> : undefined}
+                  {person.profile.metacampusID > 8 ? <p className="position">運営</p> : undefined}
                   {!person.isMe ? (
                     <>
-                      {localStorage.getItem("friends")?.includes(getPersonName(person, intl)) ? <p className="friend">フレンドです</p> : 
-                      <button className="friend" onClick={() => onSendFriendRequest(getPersonName(person, intl))}>フレンド申請</button>}
+                      {localStorage.getItem("friends")?.includes(getPersonName(person, intl)) ? (
+                        <p className="friend">フレンドです</p>
+                      ) : (
+                        <button className="friend" onClick={() => onSendFriendRequest(getPersonName(person, intl))}>
+                          フレンド申請
+                        </button>
+                      )}
                     </>
                   ) : undefined}
                 </div>
