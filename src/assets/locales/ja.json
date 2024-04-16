@@ -66,6 +66,8 @@
   "avatar-settings-content.change-avatar-button": "アバター変更",
   "avatar-settings-content.display-name-description": "英数字とハイフン。3文字以上、32文字以下",
   "avatar-settings-content.display-name-label": "表示名",
+  "avatar-settings-content.display-metacampusID-label": "metacampusID",
+  "avatar-settings-content.display-metacampusID-description": "",
   "avatar-settings-content.display-profile-label": "プロフィール",
   "avatar-settings-content.display-profile-description": "日本語と英数字とハイフン。300文字以下",
   "avatar-settings-sidebar.title": "アバターセットアップ",

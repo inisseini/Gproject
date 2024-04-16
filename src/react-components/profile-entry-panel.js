@@ -47,7 +47,8 @@ export default class ProfileEntryPanel extends Component {
   }
 
   getStateFromProfile = () => {
-    const { displayName, avatarId, pronouns, profile, friendContent, sendDiscordMessage, metacampusID } = this.props.store.state.profile;
+    const { displayName, avatarId, pronouns, profile, friendContent, sendDiscordMessage, metacampusID } =
+      this.props.store.state.profile;
     return { displayName, avatarId, pronouns, profile, friendContent, sendDiscordMessage, metacampusID };
   };
 
@@ -56,7 +57,8 @@ export default class ProfileEntryPanel extends Component {
   saveStateAndFinish = e => {
     e && e.preventDefault();
 
-    const { displayName, pronouns, profile, friendContent, sendDiscordMessage, metacampusID } = this.props.store.state.profile;
+    const { displayName, pronouns, profile, friendContent, sendDiscordMessage, metacampusID } =
+      this.props.store.state.profile;
     const { hasChangedNameOrPronounsOrProfile } = this.props.store.state.activity;
 
     const hasChangedNowOrPreviously =
@@ -142,7 +144,7 @@ export default class ProfileEntryPanel extends Component {
       profileInputRef: inp => (this.profileInput = inp),
       friendContentInputRef: inp => (this.friendContentInput = inp),
       sendDiscordMessageInputRef: inp => (this.sendDiscordMessageInput = inp),
-      metacampusIDInputRef: inp => (this.metacampusID = inp),
+      metacampusIDInputRef: inp => (this.metacampusIDInput = inp),
       disableDisplayNameInput: !!this.props.displayNameOverride,
       displayName: this.props.displayNameOverride ? this.props.displayNameOverride : this.state.displayName,
       pronouns: this.state.pronouns,
@@ -173,7 +175,7 @@ export default class ProfileEntryPanel extends Component {
     };
 
     if (this.props.containerType === "sidebar") {
-      console.log('avatarsettingsGENERAL');
+      console.log("avatarsettingsGENERAL");
       return <AvatarSettingsSidebar {...avatarSettingsProps} showBackButton={this.props.showBackButton} />;
     }
 
