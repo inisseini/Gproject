@@ -34,7 +34,7 @@ export default class ProfileEntryPanel extends Component {
     profile: null,
     friendContent: null,
     sendDiscordMessage: null,
-    metacampusID: localStorage.getItem("myID")
+    metacampusID: null
   };
 
   constructor(props) {
@@ -44,6 +44,7 @@ export default class ProfileEntryPanel extends Component {
     if (props.avatarId) {
       this.state.avatarId = props.avatarId;
     }
+    this.state.metacampusID = localStorage.getItem("myID");
     this.props.store.addEventListener("statechanged", this.storeUpdated);
     this.scene = document.querySelector("a-scene");
   }
