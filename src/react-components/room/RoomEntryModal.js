@@ -14,13 +14,8 @@ import { Column } from "../layout/Column";
 import { AppLogo } from "../misc/AppLogo";
 import { FormattedMessage } from "react-intl";
 
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import {
-  DynamoDBDocumentClient,
-  GetCommand,
-  PutCommand,
-  UpdateCommand,
-} from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 export function RoomEntryModal({
   className,
@@ -37,35 +32,34 @@ export function RoomEntryModal({
 }) {
   const [isNamed, setName] = useState(false);
   const DBClient = new DynamoDBClient({
-    region: 'ap-northeast-1',
+    region: "ap-northeast-1",
     credentials: {
-      accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
-      secretAccessKey: '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',
-    },
+      accessKeyId: "AKIA6O7CLSZWBGWOEKTK",
+      secretAccessKey: "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"
+    }
   });
 
   const docClient = DynamoDBDocumentClient.from(DBClient);
 
   const GetRoom = async () => {
     const command = new GetCommand({
-      TableName: 'roomParameter',
+      TableName: "roomParameter",
       Key: {
-        URL: location.href,
-      },
+        URL: location.href
+      }
     });
 
     const response = await docClient.send(command);
-    setName(response.Item.name)
+    setName(response.Item.name);
   };
 
   GetRoom();
-
 
   const breakpoint = useCssBreakpoints();
   return (
     <Modal className={classNames(styles.roomEntryModal, className)} disableFullscreen {...rest}>
       <Column center className={styles.content}>
-        {breakpoint !== "sm" && breakpoint !== "md" && <AppLogo className={styles.logo} />}
+        {/*breakpoint !== "sm" && breakpoint !== "md" && <AppLogo className={styles.logo} />*/}
         <div className={styles.roomName}>
           <h5>
             <FormattedMessage id="room-entry-modal.room-name-label" defaultMessage="Room Name" />

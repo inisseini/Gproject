@@ -152,7 +152,6 @@ export function AvatarSettingsContent({
       />
       <TextInputField
         disabled
-        readAsDataURL
         label={
           <FormattedMessage id="avatar-settings-content.display-metacampusID-label" defaultMessage="metacampusID" />
         }

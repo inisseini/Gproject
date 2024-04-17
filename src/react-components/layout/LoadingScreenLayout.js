@@ -8,7 +8,7 @@ export function LoadingScreenLayout({ center, bottom }) {
   return (
     <div className={styles.loadingScreenLayout}>
       <Column center padding gap="lg" className={styles.center}>
-        <AppLogo className={styles.logo} />
+        {/*<AppLogo className={styles.logo} />*/}
         {center}
       </Column>
       {bottom && (
