@@ -106,7 +106,7 @@ function getPersonName(person, intl) {
   return `${person.profile?.displayName} ${suffix}`;
 }
 
-function getPersonMetacampusID(person, intl) {
+function getPersonMetacampusID(person) {
   const suffix = person.profile?.metacampusID ? `(${person.profile.metacampusID})` : "";
   return `${suffix}`;
 }
@@ -122,7 +122,7 @@ export function PeopleSidebar({
   isMod
 }) {
   const intl = useIntl();
-  const me = window.APP.hubChannel.store.state.profile.displayName; //people.find(person => !!person.isMe);
+  const me = people.find(person => !!person.isMe); //window.APP.hubChannel.store.state.profile.displayName;
   const filteredPeople = people
     .filter(person => !person.isMe)
     .sort(a => {
@@ -139,7 +139,12 @@ export function PeopleSidebar({
     const confirm = window.confirm("フレンド申請をしてよろしいですか？");
     if (confirm) {
       const message =
-        "systemMessage/from/" + me + `/${localStorage.getItem("myID")}` + "/to/" + target + "/sendFriendRequest";
+        "systemMessage/from/" +
+        window.APP.hubChannel.store.state.profile.displayName +
+        `/${localStorage.getItem("myID")}` +
+        "/to/" +
+        target +
+        "/sendFriendRequest";
       document.getElementById("avatar-rig").messageDispatch.dispatch(message);
 
       const DBClient = new DynamoDBClient({
