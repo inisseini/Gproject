@@ -52,8 +52,8 @@ import { Button } from "../input/Button";
 import { AvatarSettingsContent } from "../room/AvatarSettingsContent";
 
 export function HomePage() {
-  const store = window.APP.store;
-  store.initProfile();
+  //const store = window.APP.store;
+  //store.initProfile();
   const auth = useContext(AuthContext);
   const intl = useIntl();
 
@@ -252,7 +252,7 @@ export function HomePage() {
         <p>{world2[currentIndex2].description}</p>
         <img src={world2[currentIndex2].imageUrl} alt="thumbnail" />
         <div className={styles.buttonGroup}>
-          {world1.map((item, index) => (
+          {world2.map((item, index) => (
             <button
               key={index}
               onClick={() => handleSlideChange(index)}
