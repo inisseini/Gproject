@@ -151,14 +151,12 @@ export function AvatarSettingsContent({
         ref={displayNameInputRef}
       />
       <TextInputField
-        disabled
         label={
           <FormattedMessage id="avatar-settings-content.display-metacampusID-label" defaultMessage="metacampusID" />
         }
         value={metacampusID}
         pattern={metacampusIDPattern}
         spellCheck="false"
-        required
         onChange={onChangeMetacampusID}
         ref={metacampusIDInputRef}
       />
