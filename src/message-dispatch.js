@@ -88,6 +88,7 @@ export default class MessageDispatch extends EventTarget {
         const targetID = chatBodyList[3];
         const friendConfirm = window.confirm(request);
         if (friendConfirm) {
+          console.log("test フレンド申請承認");
           const message = "systemMessage/from/" + me + `/${myID}` + "/to/" + chatBodyList[2] + "/reSendFriendRequest";
           document.getElementById("avatar-rig").messageDispatch.dispatch(message);
 
@@ -141,7 +142,8 @@ export default class MessageDispatch extends EventTarget {
           };
 
           joinFriends();
-        } else {
+        } else if (!friendConfirm) {
+          console.log("フレンド申請却下");
           const message = "systemMessage/from/" + me + `/${myID}` + "/to/" + chatBodyList[2] + "/declineFriendRequest";
           document.getElementById("avatar-rig").messageDispatch.dispatch(message);
         }
