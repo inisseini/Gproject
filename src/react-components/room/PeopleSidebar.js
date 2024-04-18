@@ -122,7 +122,7 @@ export function PeopleSidebar({
   isMod
 }) {
   const intl = useIntl();
-  const me = people.find(person => !!person.isMe);
+  const me = window.APP.hubChannel.store.state.profile.displayName; //people.find(person => !!person.isMe);
   const filteredPeople = people
     .filter(person => !person.isMe)
     .sort(a => {
