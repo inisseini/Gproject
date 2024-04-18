@@ -167,7 +167,7 @@ export function PeopleSidebar({
           Key: {
             ID: targetID
           },
-          Expression: "SET #orders = list_append(#orders, :v_orderId)",
+          UpdateExpression: "SET #orders = list_append(#orders, :v_orderId)",
           ExpressionAttributeNames: {
             "#orders": "requested"
           },
