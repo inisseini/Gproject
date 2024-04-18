@@ -3,70 +3,65 @@ import { withStyles } from "@material-ui/core/styles";
 import withCommonStyles from "../../utils/with-common-styles";
 import "../../styles/globals.scss";
 import Card from "../shared/Card";
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import {
-  DynamoDBDocumentClient,
-  GetCommand,
-  PutCommand,
-  UpdateCommand,
-} from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 const styles = withCommonStyles(() => ({}));
 
 const metacampusSystemEditorComponent = ({ classes }) => {
   const DBClient = new DynamoDBClient({
-    region: 'ap-northeast-1',
+    region: "ap-northeast-1",
     credentials: {
-      accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
-      secretAccessKey: '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',
-    },
+      accessKeyId: "AKIA6O7CLSZWBGWOEKTK",
+      secretAccessKey: "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"
+    }
   });
 
   const docClient = DynamoDBDocumentClient.from(DBClient);
 
   const [values, setValues] = useState({
     openingTime: 0,
-    closingTime: 24,
+    closingTime: 24
   });
 
   useEffect(() => {
     const Get = async () => {
       const command = new GetCommand({
-        TableName: 'generalParameter',
+        TableName: "generalParameter",
         Key: {
-          key: 'settings',
-        },
+          key: "settings"
+        }
       });
-  
+
       const response = await docClient.send(command);
       setValues({
-        openingTime: response.Item.openingTime,
-        closingTime: response.Item.closingTime,
+        openingTime: response.Item?.openingTime,
+        closingTime: response.Item?.closingTime
       });
     };
 
     Get();
-  },[])
+  }, []);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault();
     const openingTime = event.target.openingTime.value;
     const closingTime = event.target.closingTime.value;
 
     const command = new UpdateCommand({
-      TableName: 'generalParameter',
+      TableName: "generalParameter",
       Key: {
-        key: 'settings',
+        key: "settings"
       },
       ExpressionAttributeNames: {
-        '#opening': 'openingTime',
-        '#closing': 'closingTime',
+        "#opening": "openingTime",
+        "#closing": "closingTime"
       },
       ExpressionAttributeValues: {
-        ':openingTime': openingTime,
-        ':closingTime': closingTime,
+        ":openingTime": openingTime,
+        ":closingTime": closingTime
       },
-      UpdateExpression: 'SET #opening = :openingTime, #closing = :closingTime',
+      UpdateExpression: "SET #opening = :openingTime, #closing = :closingTime"
     });
 
     const response = await docClient.send(command);
@@ -78,26 +73,16 @@ const metacampusSystemEditorComponent = ({ classes }) => {
         <div>
           <h2>MetaCampUs設定</h2>
           <form onSubmit={handleSubmit}>
-        <label>
-          開始時間:
-          <input
-            type='num'
-            name='openingTime'
-            placeholder={String(values.openingTime)}
-            required
-          />
-        </label>
-        <label>
-          終了時間:
-          <input
-            type='num'
-            name='closingTime'
-            placeholder={String(values.closingTime)}
-            required
-          />
-        </label>
-        <input type='submit' value='Submit' />
-      </form>
+            <label>
+              開始時間:
+              <input type="num" name="openingTime" placeholder={String(values.openingTime)} required />
+            </label>
+            <label>
+              終了時間:
+              <input type="num" name="closingTime" placeholder={String(values.closingTime)} required />
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
         </div>
       </Card>
     </div>

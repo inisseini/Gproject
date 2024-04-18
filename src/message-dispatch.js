@@ -114,7 +114,7 @@ export default class MessageDispatch extends EventTarget {
                 "#orders": "friends"
               },
               ExpressionAttributeValues: {
-                ":v_orderId": myID
+                ":v_orderId": [myID]
               }
             });
 
@@ -134,7 +134,7 @@ export default class MessageDispatch extends EventTarget {
                 "#orders": "friends"
               },
               ExpressionAttributeValues: {
-                ":v_orderId": targetID
+                ":v_orderId": [targetID]
               }
             });
 

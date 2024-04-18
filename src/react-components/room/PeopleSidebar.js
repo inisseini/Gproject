@@ -172,7 +172,7 @@ export function PeopleSidebar({
             "#orders": "requested"
           },
           ExpressionAttributeValues: {
-            ":v_orderId": myID
+            ":v_orderId": [myID]
           }
         });
 
@@ -196,6 +196,7 @@ export function PeopleSidebar({
     if (myFriends) {
       localStorage.setItem("myFriends", response.Item.friends);
     }
+    console.log("test myFriends", localStorage.getItem("myFriends"));
   };
 
   useEffect(() => {
