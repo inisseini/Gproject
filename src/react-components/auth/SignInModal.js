@@ -106,7 +106,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
         e.preventDefault();
 
         // localStorageからmyIDを取得
-        let myID = localStorage.getItem("myID");
+        const myID = localStorage.getItem("myID");
 
         // myIDが存在しない場合
         if (!myID) {
@@ -114,8 +114,12 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
           myID = generateRandomID();
           // 生成したIDをlocalStorageに保存
           localStorage.setItem("myID", myID);
-
           putToLambda("userList", { ID: myID, requested: [], friends: [] });
+        }
+
+        const myFriends = localStorage.getItem("myFriends");
+        if (!myFriends) {
+          localStorage.setItem("myFriends", []);
         }
 
         onSubmitEmail(email);

@@ -109,7 +109,7 @@ export default class MessageDispatch extends EventTarget {
               Key: {
                 ID: targetID
               },
-              Expression: "SET #orders = list_append(#orders, :v_orderId)",
+              UpdateExpression: "SET #orders = list_append(#orders, :v_orderId)",
               ExpressionAttributeNames: {
                 "#orders": "friends"
               },
@@ -129,7 +129,7 @@ export default class MessageDispatch extends EventTarget {
               Key: {
                 ID: myID
               },
-              Expression: "SET #orders = list_append(#orders, :v_orderId)",
+              UpdateExpression: "SET #orders = list_append(#orders, :v_orderId)",
               ExpressionAttributeNames: {
                 "#orders": "friends"
               },
@@ -142,6 +142,12 @@ export default class MessageDispatch extends EventTarget {
           };
 
           joinFriends();
+
+          const myFriends = localStorage.getItem("myFriends");
+          myFriends.push(targetID);
+          if (myFriends) {
+            localStorage.setItem("myFriends", myFriends);
+          }
         } else if (!friendConfirm) {
           console.log("フレンド申請却下");
           const message = "systemMessage/from/" + me + `/${myID}` + "/to/" + chatBodyList[2] + "/declineFriendRequest";

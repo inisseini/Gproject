@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { ToolTip } from "@mozilla/lilypad-ui";
 import styles from "./PeopleSidebar.scss";
@@ -130,6 +130,16 @@ export function PeopleSidebar({
   me && filteredPeople.unshift(me);
   const store = window.APP.store;
 
+  const DBClient = new DynamoDBClient({
+    region: "ap-northeast-1",
+    credentials: {
+      accessKeyId: "AKIA6O7CLSZWBGWOEKTK",
+      secretAccessKey: "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"
+    }
+  });
+
+  const docClient = DynamoDBDocumentClient.from(DBClient);
+
   function getToolTipDescription(isMuted) {
     return intl.formatMessage(toolTipDescription, { mutedState: isMuted ? "muted" : "not muted" });
   }
@@ -145,16 +155,6 @@ export function PeopleSidebar({
         target +
         "/sendFriendRequest";
       document.getElementById("avatar-rig").messageDispatch.dispatch(message);
-
-      const DBClient = new DynamoDBClient({
-        region: "ap-northeast-1",
-        credentials: {
-          accessKeyId: "AKIA6O7CLSZWBGWOEKTK",
-          secretAccessKey: "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"
-        }
-      });
-
-      const docClient = DynamoDBDocumentClient.from(DBClient);
 
       const myID = localStorage.getItem("myID");
       const targetID = person.profile?.metacampusID ? `${person.profile.metacampusID}` : "";
@@ -182,6 +182,25 @@ export function PeopleSidebar({
       handleSubmit();
     }
   };
+
+  const GetFriends = async () => {
+    const command = new GetCommand({
+      TableName: "userList",
+      Key: {
+        ID: localStorage.getItem("myID")
+      }
+    });
+
+    const response = await docClient.send(command);
+    const myFriends = localStorage.getItem("myFriends");
+    if (myFriends) {
+      localStorage.setItem("myFriends", response.Item.friends);
+    }
+  };
+
+  useEffect(() => {
+    GetFriends();
+  }, []);
 
   return (
     <Sidebar
