@@ -103,7 +103,7 @@ function getPersonName(person, intl) {
   });
   const suffix = person.isMe ? `(${you})` : person.profile?.pronouns ? `(${person.profile.pronouns})` : "";
   console.log("test person.profile", person.profile);
-  return `${person.profile.displayName} ${suffix}`;
+  return `${person.profile?.displayName} ${suffix}`;
 }
 
 function getPersonMetacampusID(person, intl) {
@@ -229,10 +229,10 @@ export function PeopleSidebar({
                         classProp="tooltip"
                         location="bottom"
                         description={getToolTipDescription(
-                          store._preferences?.avatarVoiceLevels?.[person.profile.displayName]?.muted
+                          store._preferences?.avatarVoiceLevels?.[person.profile?.displayName]?.muted
                         )}
                       >
-                        {store._preferences?.avatarVoiceLevels?.[person.profile.displayName]?.muted ? (
+                        {store._preferences?.avatarVoiceLevels?.[person.profile?.displayName]?.muted ? (
                           <UserSoundOffIcon />
                         ) : (
                           <UserSoundOnIcon />
@@ -254,11 +254,6 @@ export function PeopleSidebar({
                   </div>
                 </div>
                 <div className={styles.status}>
-                  {person.profile.metacampusID?.length === 9 ? (
-                    <p className="position">ティーチャー</p>
-                  ) : person.profile.metacampusID?.length === 10 ? (
-                    <p className="position">運営</p>
-                  ) : undefined}
                   {!person.isMe ? (
                     <>
                       {localStorage.getItem("friends")?.includes(getPersonName(person, intl)) ? (
