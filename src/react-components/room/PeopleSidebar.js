@@ -221,7 +221,7 @@ export function PeopleSidebar({
                   <div className={styles.detailIcons}>
                     {person.hand_raised && <HandRaisedIcon />}
                     {<DeviceIcon title={getDeviceLabel(person.context, intl)} />}
-                    {!person.context.discord && VoiceIcon && (
+                    {!person.context?.discord && VoiceIcon && (
                       <VoiceIcon title={getVoiceLabel(person.micPresence, intl)} />
                     )}
                     {!person.isMe && (
@@ -239,7 +239,7 @@ export function PeopleSidebar({
                         )}
                       </ToolTip>
                     )}
-                    {person.roles.owner && (
+                    {person.roles?.owner && (
                       <StarIcon
                         title={intl.formatMessage({
                           id: "people-sidebar.moderator-label",
