@@ -102,7 +102,6 @@ function getPersonName(person, intl) {
     defaultMessage: "You"
   });
   const suffix = person.isMe ? `(${you})` : person.profile?.pronouns ? `(${person.profile.pronouns})` : "";
-  console.log("test person.profile", person.profile);
   return `${person.profile?.displayName} ${suffix}`;
 }
 
@@ -266,7 +265,7 @@ export function PeopleSidebar({
                       ) : (
                         <button
                           className="friend"
-                          onClick={() => onSendFriendRequest(getPersonName(person, intl), person)}
+                          onClick={() => onSendFriendRequest(person.profile?.displayName, person)}
                         >
                           フレンド申請
                         </button>
