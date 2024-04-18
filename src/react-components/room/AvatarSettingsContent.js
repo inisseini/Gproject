@@ -65,7 +65,8 @@ export function AvatarSettingsContent({
     return response;
   };
 
-  const iconContainerBaseURL = "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + displayName + ".jpg";
+  const iconContainerBaseURL =
+    "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + localStorage.getItem("myID") + ".jpg";
 
   const uploadToClient = event => {
     if (event.target.files[0]) {

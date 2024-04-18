@@ -176,7 +176,12 @@ export function PeopleSidebar({
           }
         });
 
-        const response = await docClient.send(command);
+        try {
+          await docClient.send(new UpdateCommand(command));
+          console.log("Friend added successfully.");
+        } catch (error) {
+          console.error("Error updating DynamoDB:", error);
+        }
       };
 
       handleSubmit();

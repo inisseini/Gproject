@@ -159,6 +159,11 @@ export default class MessageDispatch extends EventTarget {
         window.APP.hubChannel.store.state.profile.displayName === chatBodyList[5]
       ) {
         alert(`${chatBodyList[2]}さんがフレンド申請を承認しました！！`);
+        const myFriends = localStorage.getItem("myFriends");
+        myFriends.push(chatBodyList[3]);
+        if (myFriends) {
+          localStorage.setItem("myFriends", myFriends);
+        }
       } else if (
         chatBodyList[0] === "systemMessage" &&
         chatBodyList[6] === "declineFriendRequest" &&
