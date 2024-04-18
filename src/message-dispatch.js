@@ -76,7 +76,7 @@ export default class MessageDispatch extends EventTarget {
         window.APP.hubChannel.store.state.profile.displayName === chatBodyList[5]
       ) {
         console.log("test", window.APP.hubChannel.store);
-        const request = chatBodyList[2] + "さんがあなたにフレンド申請をしています";
+        const request = `${chatBodyList[2]}さんがあなたにフレンド申請をしています`;
         /*
         const requestMessage = { type: "chat", body: request, maySpawn: true, type: "chat" };
         this.addToPresenceLog(requestMessage);

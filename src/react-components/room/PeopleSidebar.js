@@ -157,7 +157,7 @@ export function PeopleSidebar({
       const docClient = DynamoDBDocumentClient.from(DBClient);
 
       const myID = localStorage.getItem("myID");
-      const targetID = person.profile?.metacampusID ? `(${person.profile.metacampusID})` : "";
+      const targetID = person.profile?.metacampusID ? `${person.profile.metacampusID}` : "";
       console.log("test myID targetID", myID, targetID);
       console.log("test person.profile=", person.profile);
 
