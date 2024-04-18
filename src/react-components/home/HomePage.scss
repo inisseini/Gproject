@@ -207,6 +207,9 @@
   opacity: 1 !important;
   color: #ee7342;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   p,
   h3 {

@@ -106,6 +106,11 @@ function getPersonName(person, intl) {
   return `${person.profile.displayName} ${suffix}`;
 }
 
+function getPersonMetacampusID(person, intl) {
+  const suffix = person.profile?.metacampusID ? `(${person.profile.metacampusID})` : "";
+  return `${suffix}`;
+}
+
 export function PeopleSidebar({
   people,
   onSelectPerson,
@@ -130,10 +135,11 @@ export function PeopleSidebar({
     return intl.formatMessage(toolTipDescription, { mutedState: isMuted ? "muted" : "not muted" });
   }
 
-  const onSendFriendRequest = target => {
+  const onSendFriendRequest = (target, person) => {
     const confirm = window.confirm("フレンド申請をしてよろしいですか？");
     if (confirm) {
-      const message = "systemMessage/from/" + me + "/to/" + target + "/sendFriendRequest";
+      const message =
+        "systemMessage/from/" + me + `/${localStorage.getItem("myID")}` + "/to/" + target + "/sendFriendRequest";
       document.getElementById("avatar-rig").messageDispatch.dispatch(message);
 
       const DBClient = new DynamoDBClient({
@@ -146,18 +152,21 @@ export function PeopleSidebar({
 
       const docClient = DynamoDBDocumentClient.from(DBClient);
 
+      const myID = localStorage.getItem("myID");
+      const targetID = getPersonMetacampusID(person);
+
       const handleSubmit = async event => {
         const command = new UpdateCommand({
-          TableName: "user-table",
+          TableName: "userList",
           Key: {
-            userName: target
+            ID: targetID
           },
           Expression: "SET #orders = list_append(#orders, :v_orderId)",
           ExpressionAttributeNames: {
             "#orders": "requested"
           },
           ExpressionAttributeValues: {
-            ":v_orderId": me
+            ":v_orderId": myID
           }
         });
 
@@ -255,7 +264,10 @@ export function PeopleSidebar({
                       {localStorage.getItem("friends")?.includes(getPersonName(person, intl)) ? (
                         <p className="friend">フレンドです</p>
                       ) : (
-                        <button className="friend" onClick={() => onSendFriendRequest(getPersonName(person, intl))}>
+                        <button
+                          className="friend"
+                          onClick={() => onSendFriendRequest(getPersonName(person, intl), person)}
+                        >
                           フレンド申請
                         </button>
                       )}
