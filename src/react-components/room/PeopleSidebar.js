@@ -285,7 +285,8 @@ export function PeopleSidebar({
                 <div className={styles.status}>
                   {!person.isMe ? (
                     <>
-                      {JSON.parse(localStorage.getItem("myFriends"))?.includes(person.profile.displayName) ? (
+                      {console.log("test metacampusID", person.profile.metacampusID)}
+                      {JSON.parse(localStorage.getItem("myFriends"))?.includes(person.profile.metacampusID) ? (
                         <p className="friend">フレンドです</p>
                       ) : (
                         <button
