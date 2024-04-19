@@ -58,6 +58,7 @@ function PeopleListContainer({ hubChannel, people, onSelectPerson, onClose }) {
   const canVoiceChat = useCan("voice_chat");
   const { voice_chat: voiceChatEnabled } = useRoomPermissions();
   const isMod = useRole("owner");
+  console.log("test peopleSidebar SET");
 
   return (
     <PeopleSidebar
