@@ -114,7 +114,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
           myID = generateRandomID();
           // 生成したIDをlocalStorageに保存
           localStorage.setItem("myID", myID);
-          putToLambda("userList", { ID: myID, requested: [], friends: [] });
+          putToLambda("userList", { ID: myID, requested: [], friends: [], isAdmin: false, isTeacer: false });
         }
 
         const myFriends = localStorage.getItem("myFriends");

@@ -20,7 +20,7 @@ import { List, ButtonListItem } from "../layout/List";
 import { FormattedMessage, defineMessage, useIntl } from "react-intl";
 import { PermissionNotification } from "./PermissionNotifications";
 
-import userDemoImg from "../../assets/images/OOKAWA9V9A6918_TP_V4.jpg";
+import userDemoImg from "../../assets/images/default-icon.png";
 import configs from "../../utils/configs";
 
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
@@ -239,12 +239,10 @@ export function PeopleSidebar({
                 <div className={styles.icon}>
                   <img
                     src={
-                      "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" +
-                      localStorage.getItem("myID") +
-                      ".jpg"
+                      "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + person.profile.metacampusID + ".jpg"
                     }
                     alt
-                    onError={e => (this.src = "")}
+                    onError={e => (this.src = { userDemoImg })}
                   />
                 </div>
                 <div className={styles.detail}>
@@ -287,7 +285,7 @@ export function PeopleSidebar({
                 <div className={styles.status}>
                   {!person.isMe ? (
                     <>
-                      {localStorage.getItem("myFriends")?.includes(person.profile.displayName) ? (
+                      {JSON.parse(localStorage.getItem("myFriends"))?.includes(person.profile.displayName) ? (
                         <p className="friend">フレンドです</p>
                       ) : (
                         <button

@@ -281,8 +281,8 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
 
       const docClient = DynamoDBDocumentClient.from(DBClient);
 
-      const roomNameConfirm = confirm("ルームに名前を設定しますか？")
-      if(roomNameConfirm) {
+      const roomNameConfirm = confirm("ルームに名前を設定しますか？");
+      if (roomNameConfirm) {
         const roomNameInput = prompt("入力してください");
         const handleSubmit = async () => {
           const command = new PutCommand({
@@ -291,21 +291,22 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
               URL: url,
               password: passwordInput,
               permanent: false,
-              name: roomNameInput
+              name: roomNameInput,
+              editor: []
             }
           });
-  
+
           const response = await docClient.send(command);
-  
+
           if (replace) {
             document.location.replace(url);
           } else {
             document.location = url;
           }
         };
-  
+
         handleSubmit();
-      } else if(!roomNameConfirm) {
+      } else if (!roomNameConfirm) {
         const handleSubmit = async () => {
           const command = new PutCommand({
             TableName: "roomParameter",
@@ -313,19 +314,20 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
               URL: url,
               password: passwordInput,
               permanent: false,
-              name: false
+              name: false,
+              editor: []
             }
           });
-  
+
           const response = await docClient.send(command);
-  
+
           if (replace) {
             document.location.replace(url);
           } else {
             document.location = url;
           }
         };
-  
+
         handleSubmit();
       }
     }
@@ -393,56 +395,55 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
 
     const docClient = DynamoDBDocumentClient.from(DBClient);
 
-   
-    const roomNameConfirm = confirm("ルームに名前を設定しますか？")
-      if(roomNameConfirm) {
-        const roomNameInput = prompt("入力してください");
-        const handleSubmit = async () => {
-          const command = new PutCommand({
-            TableName: "roomParameter",
-            Item: {
-              URL: url,
-              password: "",
-              permanent: false,
-              name: roomNameInput
-            }
-          });
-    
-          const response = await docClient.send(command);
-    
-          if (replace) {
-            document.location.replace(url);
-          } else {
-            document.location = url;
+    const roomNameConfirm = confirm("ルームに名前を設定しますか？");
+    if (roomNameConfirm) {
+      const roomNameInput = prompt("入力してください");
+      const handleSubmit = async () => {
+        const command = new PutCommand({
+          TableName: "roomParameter",
+          Item: {
+            URL: url,
+            password: "",
+            permanent: false,
+            name: roomNameInput,
+            editor: []
           }
-        };
-    
-        handleSubmit();
-      } else if(!roomNameConfirm) {
-        const handleSubmit = async () => {
-          const command = new PutCommand({
-            TableName: "roomParameter",
-            Item: {
-              URL: url,
-              password: "",
-              permanent: false,
-              name: false
-            }
-          });
-    
-          const response = await docClient.send(command);
-    
-          if (replace) {
-            document.location.replace(url);
-          } else {
-            document.location = url;
-          }
-        };
-    
-        handleSubmit();
-      }
+        });
 
-    
+        const response = await docClient.send(command);
+
+        if (replace) {
+          document.location.replace(url);
+        } else {
+          document.location = url;
+        }
+      };
+
+      handleSubmit();
+    } else if (!roomNameConfirm) {
+      const handleSubmit = async () => {
+        const command = new PutCommand({
+          TableName: "roomParameter",
+          Item: {
+            URL: url,
+            password: "",
+            permanent: false,
+            name: false,
+            editor: []
+          }
+        });
+
+        const response = await docClient.send(command);
+
+        if (replace) {
+          document.location.replace(url);
+        } else {
+          document.location = url;
+        }
+      };
+
+      handleSubmit();
+    }
   }
 }
 
