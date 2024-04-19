@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { PeopleSidebar } from "./PeopleSidebar";
 import { getMicrophonePresences } from "../../utils/microphone-presence";
@@ -93,6 +93,44 @@ export function PeopleSidebarContainer({
   showNonHistoriedDialog,
   onClose
 }) {
+  console.log("test peoplesidebarcontainer SET");
+  useEffect(() => {
+    console.log("test peoplesidebarcontainer.props changed!!!");
+  }, [
+    hubChannel,
+    presences,
+    mySessionId,
+    displayNameOverride,
+    store,
+    mediaSearchStore,
+    performConditionalSignIn,
+    onCloseDialog,
+    showNonHistoriedDialog,
+    onClose
+  ]);
+  useWhyDidYouUpdate("更新処理", {
+    hubChannel,
+    presences,
+    mySessionId,
+    displayNameOverride,
+    store,
+    mediaSearchStore,
+    performConditionalSignIn,
+    onCloseDialog,
+    showNonHistoriedDialog,
+    onClose
+  });
+  function useWhyDidYouUpdate(name, props) {
+    const previousProps = useRef();
+    useEffect(() => {
+      const prev = previousProps.current ?? {};
+      const allKeys = Object.keys({ ...prev, ...props });
+      const changesObj = {};
+      for (const key of allKeys) if (prev[key] !== props[key]) changesObj[key] = { from: prev[key], to: props[key] };
+      if (Object.keys(changesObj).length) console.log("[why-did-you-update]", name, changesObj);
+      previousProps.current = props;
+    });
+  }
   const people = usePeopleList(presences, mySessionId);
   const [selectedPersonId, setSelectedPersonId] = useState(null);
   const selectedPerson = people.find(person => person.id === selectedPersonId);

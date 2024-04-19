@@ -120,7 +120,6 @@ export function PeopleSidebar({
   voiceChatEnabled,
   isMod
 }) {
-  console.log("PeopleSideBar");
   const intl = useIntl();
   const me = people.find(person => !!person.isMe); //window.APP.hubChannel.store.state.profile.displayName;
   const filteredPeople = people
