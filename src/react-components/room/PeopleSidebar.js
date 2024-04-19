@@ -158,7 +158,7 @@ export function PeopleSidebar({
 
       const myID = localStorage.getItem("myID");
       const targetID = person.profile?.metacampusID ? `${person.profile.metacampusID}` : "";
-      console.log("test myID targetID", myID, targetID);
+      console.log("test myID targetID", [myID], targetID);
       console.log("test person.profile=", person.profile);
 
       const handleSubmit = async event => {
@@ -197,11 +197,11 @@ export function PeopleSidebar({
     });
 
     const response = await docClient.send(command);
+    console.log("test ");
     const myFriends = localStorage.getItem("myFriends");
     if (myFriends) {
-      localStorage.setItem("myFriends", response.Item.friends);
+      localStorage.setItem("myFriends", JSON.stringify(response.Item.friends));
     }
-    console.log("test myFriends", localStorage.getItem("myFriends"));
   };
 
   useEffect(() => {
@@ -240,7 +240,7 @@ export function PeopleSidebar({
                   <img
                     src={
                       "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" +
-                      getPersonName(person, intl).split(" ")[0] +
+                      localStorage.getItem("myID") +
                       ".jpg"
                     }
                     alt

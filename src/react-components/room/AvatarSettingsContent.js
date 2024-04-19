@@ -83,7 +83,7 @@ export function AvatarSettingsContent({
           withoutEnlargement: true,
           toFormat: "jpg",
           file,
-          user: displayName
+          user: localStorage.getItem("myID")
         });
         Base64ToImage(base64_image, function (img) {
           const target = document.getElementById("iconContainer");
