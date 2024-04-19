@@ -287,7 +287,7 @@ export function PeopleSidebar({
                 <div className={styles.status}>
                   {!person.isMe ? (
                     <>
-                      {localStorage.getItem("friends")?.includes(getPersonName(person, intl)) ? (
+                      {localStorage.getItem("myFriends")?.includes(getPersonName(person, intl)) ? (
                         <p className="friend">フレンドです</p>
                       ) : (
                         <button
