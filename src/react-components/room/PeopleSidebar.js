@@ -120,6 +120,7 @@ export function PeopleSidebar({
   voiceChatEnabled,
   isMod
 }) {
+  console.log("PeopleSideBar");
   const intl = useIntl();
   const me = people.find(person => !!person.isMe); //window.APP.hubChannel.store.state.profile.displayName;
   const filteredPeople = people
@@ -287,7 +288,7 @@ export function PeopleSidebar({
                     <>
                       {console.log("test metacampusID", person.profile.metacampusID)}
                       {JSON.parse(localStorage.getItem("myFriends"))?.includes(person.profile.metacampusID) ? (
-                        <p className="friend">フレンドです</p>
+                        <p className="friend">　フレンド　</p>
                       ) : (
                         <button
                           className="friend"
