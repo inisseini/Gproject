@@ -242,7 +242,7 @@ export function PeopleSidebar({
                       "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + person.profile.metacampusID + ".jpg"
                     }
                     alt
-                    onError={e => (this.src = { userDemoImg })}
+                    onerror="this.onerror = null; this.src='';"
                   />
                 </div>
                 <div className={styles.detail}>
