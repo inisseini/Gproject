@@ -211,7 +211,7 @@ export function PeopleSidebar({
       console.log("Rendering Img component");
       const url = "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + src + ".jpg";
       return <img src={url} alt="" />;
-    }, []); // 依存配列は空（プロップスの変更がないと仮定）
+    }, [src]);
 
     return imageElement;
   };
