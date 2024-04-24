@@ -75,7 +75,6 @@ export default class MessageDispatch extends EventTarget {
         chatBodyList[6] === "sendFriendRequest" &&
         window.APP.hubChannel.store.state.profile.displayName === chatBodyList[5]
       ) {
-        console.log("test", window.APP.hubChannel.store);
         const request = `${chatBodyList[2]}さんがあなたにフレンド申請をしています`;
         /*
         const requestMessage = { type: "chat", body: request, maySpawn: true, type: "chat" };
@@ -88,7 +87,6 @@ export default class MessageDispatch extends EventTarget {
         const targetID = chatBodyList[3];
         const friendConfirm = window.confirm(request);
         if (friendConfirm) {
-          console.log("test フレンド申請承認");
           const message = "systemMessage/from/" + me + `/${myID}` + "/to/" + chatBodyList[2] + "/reSendFriendRequest";
           document.getElementById("avatar-rig").messageDispatch.dispatch(message);
 

@@ -94,43 +94,7 @@ export function PeopleSidebarContainer({
   onClose
 }) {
   console.log("test peoplesidebarcontainer SET");
-  useEffect(() => {
-    console.log("test peoplesidebarcontainer.props changed!!!");
-  }, [
-    hubChannel,
-    presences,
-    mySessionId,
-    displayNameOverride,
-    store,
-    mediaSearchStore,
-    performConditionalSignIn,
-    onCloseDialog,
-    showNonHistoriedDialog,
-    onClose
-  ]);
-  useWhyDidYouUpdate("更新処理", {
-    hubChannel,
-    presences,
-    mySessionId,
-    displayNameOverride,
-    store,
-    mediaSearchStore,
-    performConditionalSignIn,
-    onCloseDialog,
-    showNonHistoriedDialog,
-    onClose
-  });
-  function useWhyDidYouUpdate(name, props) {
-    const previousProps = useRef();
-    useEffect(() => {
-      const prev = previousProps.current ?? {};
-      const allKeys = Object.keys({ ...prev, ...props });
-      const changesObj = {};
-      for (const key of allKeys) if (prev[key] !== props[key]) changesObj[key] = { from: prev[key], to: props[key] };
-      if (Object.keys(changesObj).length) console.log("[why-did-you-update]", name, changesObj);
-      previousProps.current = props;
-    });
-  }
+
   const people = usePeopleList(presences, mySessionId);
   const [selectedPersonId, setSelectedPersonId] = useState(null);
   const selectedPerson = people.find(person => person.id === selectedPersonId);
@@ -141,38 +105,58 @@ export function PeopleSidebarContainer({
     [setSelectedPersonId]
   );
 
-  if (selectedPerson) {
-    if (selectedPerson.id === mySessionId) {
-      return (
-        <ProfileEntryPanel
-          containerType="sidebar"
-          displayNameOverride={displayNameOverride}
-          store={store}
-          mediaSearchStore={mediaSearchStore}
-          finished={() => setSelectedPersonId(null)}
-          history={history}
-          showBackButton
-          onBack={() => setSelectedPersonId(null)}
-        />
-      );
-    } else {
-      return (
-        <UserProfileSidebarContainer
-          user={selectedPerson}
-          hubChannel={hubChannel}
-          performConditionalSignIn={performConditionalSignIn}
-          showBackButton
-          onBack={() => setSelectedPersonId(null)}
-          onCloseDialog={onCloseDialog}
-          showNonHistoriedDialog={showNonHistoriedDialog}
-        />
-      );
+  return useMemo(() => {
+    console.log("test memo SET");
+    if (selectedPerson) {
+      if (selectedPerson.id === mySessionId) {
+        return (
+          <ProfileEntryPanel
+            containerType="sidebar"
+            displayNameOverride={displayNameOverride}
+            store={store}
+            mediaSearchStore={mediaSearchStore}
+            finished={() => setSelectedPersonId(null)}
+            history={history} // Make sure 'history' is passed correctly
+            showBackButton
+            onBack={() => setSelectedPersonId(null)}
+          />
+        );
+      } else {
+        return (
+          <UserProfileSidebarContainer
+            user={selectedPerson}
+            hubChannel={hubChannel}
+            performConditionalSignIn={performConditionalSignIn}
+            showBackButton
+            onBack={() => setSelectedPersonId(null)}
+            onCloseDialog={onCloseDialog}
+            showNonHistoriedDialog={showNonHistoriedDialog}
+          />
+        );
+      }
     }
-  }
 
-  return (
-    <PeopleListContainer onSelectPerson={setSelectedPerson} onClose={onClose} hubChannel={hubChannel} people={people} />
-  );
+    return (
+      <PeopleListContainer
+        onSelectPerson={setSelectedPerson}
+        onClose={onClose}
+        hubChannel={hubChannel}
+        people={people}
+      />
+    );
+  }, [
+    selectedPerson,
+    hubChannel,
+    displayNameOverride,
+    store,
+    mediaSearchStore,
+    performConditionalSignIn,
+    onCloseDialog,
+    showNonHistoriedDialog,
+    onClose,
+    people,
+    setSelectedPerson
+  ]);
 }
 
 PeopleSidebarContainer.propTypes = {

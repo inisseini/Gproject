@@ -158,8 +158,6 @@ export function PeopleSidebar({
 
       const myID = localStorage.getItem("myID");
       const targetID = person.profile?.metacampusID ? `${person.profile.metacampusID}` : "";
-      console.log("test myID targetID", [myID], targetID);
-      console.log("test person.profile=", person.profile);
 
       const handleSubmit = async event => {
         const command = new UpdateCommand({
@@ -197,7 +195,7 @@ export function PeopleSidebar({
     });
 
     const response = await docClient.send(command);
-    console.log("test ");
+
     const myFriends = localStorage.getItem("myFriends");
     if (myFriends) {
       localStorage.setItem("myFriends", JSON.stringify(response.Item.friends));
@@ -285,7 +283,6 @@ export function PeopleSidebar({
                 <div className={styles.status}>
                   {!person.isMe ? (
                     <>
-                      {console.log("test metacampusID", person.profile.metacampusID)}
                       {JSON.parse(localStorage.getItem("myFriends"))?.includes(person.profile.metacampusID) ? (
                         <p className="friend">　フレンド　</p>
                       ) : (

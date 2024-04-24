@@ -364,7 +364,6 @@ class UIRoot extends Component {
     });
 
     this.props.scene.addEventListener("action_toggle_library", () => {
-      console.log("test toggle library");
       this.toggleSidebar("library", { chatPrefix: "", chatAutofocus: false });
     });
 
@@ -1223,8 +1222,6 @@ class UIRoot extends Component {
     const canCreateRoom = !configs.feature("disable_room_creation") || configs.isAdmin();
     const canCloseRoom = this.props.hubChannel && !!this.props.hubChannel.canOrWillIfCreator("close_hub");
     const isModerator = this.props.hubChannel && this.props.hubChannel.canOrWillIfCreator("kick_users") && !isMobileVR;
-
-    console.log("test isAdmin=", configs.isAdmin());
 
     const moreMenu = [
       {

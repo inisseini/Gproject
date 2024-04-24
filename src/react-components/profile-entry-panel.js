@@ -40,7 +40,6 @@ export default class ProfileEntryPanel extends Component {
   constructor(props) {
     super(props);
     this.state = this.getStateFromProfile();
-    console.log("test isAdmin=", this.props.isAdmin);
     if (props.avatarId) {
       this.state.avatarId = props.avatarId;
     }
