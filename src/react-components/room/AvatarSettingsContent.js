@@ -108,17 +108,13 @@ export function AvatarSettingsContent({
   const imagecheck = url => {
     const child = document.getElementById("uploadedImg");
     if (child) return;
-    const parent = document.getElementById("iconContainer");
-    if (parent.children.length !== 0) {
-      return;
-    }
 
     var newImage = new Image();
 
     // 画像があった時の処理
     newImage.onload = () => {
       console.log("アイコン有" + url);
-      parent.appendChild(newImage);
+      document.getElementById("iconContainer").appendChild(newImage);
     };
 
     // 画像がなかった時の処理

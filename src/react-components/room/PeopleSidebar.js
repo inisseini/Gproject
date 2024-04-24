@@ -206,6 +206,15 @@ export function PeopleSidebar({
     GetFriends();
   }, []);
 
+  const ImgComponent = id => {
+    // useMemo を使用して画像の URL をメモ化
+    const imageUrl = useMemo(() => {
+      return "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + id + ".jpg";
+    }, []);
+
+    return <img src={imageUrl} alt="" />;
+  };
+
   return (
     <Sidebar
       title={
@@ -235,13 +244,7 @@ export function PeopleSidebar({
             return (
               <div className={styles.person} key={person.id} type="button" onClick={e => onSelectPerson(person, e)}>
                 <div className={styles.icon}>
-                  <img
-                    src={
-                      "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + person.profile.metacampusID + ".jpg"
-                    }
-                    alt
-                    onerror="this.onerror = null; this.src='';"
-                  />
+                  <ImgComponent id={person.profile.metacampusID} />
                 </div>
                 <div className={styles.detail}>
                   <p>{getPersonName(person, intl)}</p>
