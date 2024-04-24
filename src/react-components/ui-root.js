@@ -1638,11 +1638,13 @@ class UIRoot extends Component {
                           onClick={() => this.toggleSidebar("chat", { chatPrefix: "", chatAutofocus: false })}
                           selected={this.state.sidebarId === "chat"}
                         />
-                        <LibraryToolbarButton
-                          scene={this.props.scene}
-                          onClick={() => this.toggleSidebar("library", { chatPrefix: "", chatAutofocus: false })}
-                          selected={this.state.sidebarId === "library"}
-                        />
+                        {window.location.href.includes("metacampus-mediacenter") ? (
+                          <LibraryToolbarButton
+                            scene={this.props.scene}
+                            onClick={() => this.toggleSidebar("library", { chatPrefix: "", chatAutofocus: false })}
+                            selected={this.state.sidebarId === "library"}
+                          />
+                        ) : undefined}
                       </>
                     )}
                     {entered && isMobileVR && (

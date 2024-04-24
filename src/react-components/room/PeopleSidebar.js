@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import { ToolTip } from "@mozilla/lilypad-ui";
 import styles from "./PeopleSidebar.scss";
@@ -206,13 +206,14 @@ export function PeopleSidebar({
     GetFriends();
   }, []);
 
-  const ImgComponent = id => {
-    // useMemo を使用して画像の URL をメモ化
-    const imageUrl = useMemo(() => {
-      return "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + id + ".jpg";
-    }, []);
+  const Img = ({ src }) => {
+    const imageElement = useMemo(() => {
+      console.log("Rendering Img component");
+      const url = "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + src + ".jpg";
+      return <img src={url} alt="" />;
+    }, []); // 依存配列は空（プロップスの変更がないと仮定）
 
-    return <img src={imageUrl} alt="" />;
+    return imageElement;
   };
 
   return (
@@ -244,7 +245,7 @@ export function PeopleSidebar({
             return (
               <div className={styles.person} key={person.id} type="button" onClick={e => onSelectPerson(person, e)}>
                 <div className={styles.icon}>
-                  <ImgComponent id={person.profile.metacampusID} />
+                  <Img src={person.profile.metacampusID} />
                 </div>
                 <div className={styles.detail}>
                   <p>{getPersonName(person, intl)}</p>
