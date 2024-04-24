@@ -153,9 +153,7 @@ export function PeopleSidebarContainer({
     performConditionalSignIn,
     onCloseDialog,
     showNonHistoriedDialog,
-    onClose,
-    people,
-    setSelectedPerson
+    onClose
   ]);
 }
 
