@@ -28,7 +28,6 @@ import { PendingSceneList } from "./react-components/pending-scenes";
 import { AccountList, AccountEdit } from "./react-components/accounts";
 import { ProjectList, ProjectShow } from "./react-components/projects";
 import { SystemEditor } from "./react-components/pages/system-editor";
-import { metacampusSystemEditor } from "./react-components/pages/metacampus-editor";
 import { ServiceEditor, AppConfigEditor } from "./react-components/service-editor";
 import { ServerAccess } from "./react-components/server-access";
 import { ContentCDN } from "./react-components/content-cdn";
@@ -120,7 +119,7 @@ class AdminUI extends Component {
               logoutButton={() => <span />}
               theme={theme}
             >
-              <Resource name="pending_scenes" list={PendingSceneList} options={{ label: "未承認シーン" }}/>
+              <Resource name="pending_scenes" list={PendingSceneList} options={{ label: "未承認シーン" }} />
               <Resource
                 name="scene_listings"
                 list={SceneListingList}
@@ -134,7 +133,7 @@ class AdminUI extends Component {
                 options={{ label: "ピックアップシーン" }}
               />
 
-              <Resource name="pending_avatars" list={AvatarList} options={{ label: "未承認アバター" }}/>
+              <Resource name="pending_avatars" list={AvatarList} options={{ label: "未承認アバター" }} />
               <Resource
                 name="avatar_listings"
                 list={AvatarListingList}
@@ -148,13 +147,19 @@ class AdminUI extends Component {
                 options={{ label: "ピックアップアバター" }}
               />
 
-              <Resource name="accounts" list={AccountList} edit={AccountEdit} options={{ label: "アカウント一覧" }}/>
-              <Resource name="identities" list={IdentityList} create={IdentityCreate} edit={IdentityEdit} options={{ label: "属性一覧" }}/>
-              <Resource name="scenes" list={SceneList} edit={SceneEdit} options={{ label: "シーン一覧" }}/>
-              <Resource name="avatars" list={AvatarList} edit={AvatarEdit} options={{ label: "アバター一覧" }}/>
+              <Resource name="accounts" list={AccountList} edit={AccountEdit} options={{ label: "アカウント一覧" }} />
+              <Resource
+                name="identities"
+                list={IdentityList}
+                create={IdentityCreate}
+                edit={IdentityEdit}
+                options={{ label: "属性一覧" }}
+              />
+              <Resource name="scenes" list={SceneList} edit={SceneEdit} options={{ label: "シーン一覧" }} />
+              <Resource name="avatars" list={AvatarList} edit={AvatarEdit} options={{ label: "アバター一覧" }} />
               <Resource name="owned_files" />
 
-              <Resource name="projects" list={ProjectList} show={ProjectShow} options={{ label: "プロジェクト一覧" }}/>
+              <Resource name="projects" list={ProjectList} show={ProjectShow} options={{ label: "プロジェクト一覧" }} />
             </Admin>
             {this.state.showAutoEndSessionDialog && (
               <AutoEndSessionDialog
@@ -248,9 +253,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const importRoute = <Route exact path="/import" component={ImportContent} />;
   const accessRoute = <Route exact path="/server-access" component={ServerAccess} />;
   const cdnRoute = <Route exact path="/content-cdn" component={ContentCDN} />;
-  const metaCampusRoute = <Route exact path="/metacampus" component={metacampusSystemEditor} />;
 
-  const customRoutes = [homeRoute, importRoute, accessRoute, cdnRoute, metaCampusRoute];
+  const customRoutes = [homeRoute, importRoute, accessRoute, cdnRoute];
 
   try {
     const appConfigSchema = schemaByCategories({
