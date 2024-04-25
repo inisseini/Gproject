@@ -111,10 +111,10 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
         // myIDが存在しない場合
         if (!myID) {
           // ランダムな8桁のIDを生成
-          myID = generateRandomID();
+          newID = generateRandomID();
           // 生成したIDをlocalStorageに保存
-          localStorage.setItem("myID", myID);
-          putToLambda("userList", { ID: myID, requested: [], friends: [], isAdmin: false, isTeacer: false });
+          localStorage.setItem("myID", newID);
+          putToLambda("userList", { ID: newID, requested: [], friends: [], isAdmin: false, isTeacer: false });
         }
 
         const myFriends = localStorage.getItem("myFriends");
