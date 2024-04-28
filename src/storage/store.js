@@ -70,6 +70,7 @@ export const SCHEMA = {
         friendContent: { type: "string" },
         sendDiscordMessage: { type: "string" },
         metacampusID: { type: "string" },
+        isAdmin: { type: "boolean" },
         // personalAvatarId is obsolete, but we need it here for backwards compatibility.
         personalAvatarId: { type: "string" }
       }

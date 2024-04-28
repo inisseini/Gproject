@@ -5,6 +5,7 @@ import { replaceHistoryState } from "../utils/history";
 import { AvatarSettingsSidebar } from "./room/AvatarSettingsSidebar";
 import { AvatarSetupModal } from "./room/AvatarSetupModal";
 import AvatarPreview from "./avatar-preview";
+import configs from "../utils/configs";
 
 export default class ProfileEntryPanel extends Component {
   static propTypes = {
@@ -18,7 +19,6 @@ export default class ProfileEntryPanel extends Component {
     avatarId: PropTypes.string,
     onClose: PropTypes.func,
     onBack: PropTypes.func,
-    isAdmin: PropTypes.bool,
     showBackButton: PropTypes.bool
   };
 
@@ -34,7 +34,8 @@ export default class ProfileEntryPanel extends Component {
     profile: null,
     friendContent: null,
     sendDiscordMessage: null,
-    metacampusID: null
+    metacampusID: null,
+    isAdmin: false
   };
 
   constructor(props) {
@@ -44,14 +45,15 @@ export default class ProfileEntryPanel extends Component {
       this.state.avatarId = props.avatarId;
     }
     this.state.metacampusID = localStorage.getItem("myID");
+    this.state.metacampusID = configs.isAdmin();
     this.props.store.addEventListener("statechanged", this.storeUpdated);
     this.scene = document.querySelector("a-scene");
   }
 
   getStateFromProfile = () => {
-    const { displayName, avatarId, pronouns, profile, friendContent, sendDiscordMessage, metacampusID } =
+    const { displayName, avatarId, pronouns, profile, friendContent, sendDiscordMessage, metacampusID, isAdmin } =
       this.props.store.state.profile;
-    return { displayName, avatarId, pronouns, profile, friendContent, sendDiscordMessage, metacampusID };
+    return { displayName, avatarId, pronouns, profile, friendContent, sendDiscordMessage, metacampusID, isAdmin };
   };
 
   storeUpdated = () => this.setState(this.getStateFromProfile());
@@ -59,7 +61,7 @@ export default class ProfileEntryPanel extends Component {
   saveStateAndFinish = e => {
     e && e.preventDefault();
 
-    const { displayName, pronouns, profile, friendContent, sendDiscordMessage, metacampusID } =
+    const { displayName, pronouns, profile, friendContent, sendDiscordMessage, metacampusID, isAdmin } =
       this.props.store.state.profile;
     const { hasChangedNameOrPronounsOrProfile } = this.props.store.state.activity;
 
@@ -80,7 +82,8 @@ export default class ProfileEntryPanel extends Component {
         friendContent: this.state.friendContent,
         profile: this.state.profile,
         sendDiscordMessage: this.state.sendDiscordMessage,
-        metacampusID: this.state.metacampusID
+        metacampusID: this.state.metacampusID,
+        isAdmin: this.state.isAdmin
       }
     });
     this.props.finished();
@@ -147,6 +150,7 @@ export default class ProfileEntryPanel extends Component {
       friendContentInputRef: inp => (this.friendContentInput = inp),
       sendDiscordMessageInputRef: inp => (this.sendDiscordMessageInput = inp),
       metacampusIDInputRef: inp => (this.metacampusIDInput = inp),
+      isAdminInputRef: inp => (this.isAdminInput = inp),
       disableDisplayNameInput: !!this.props.displayNameOverride,
       displayName: this.props.displayNameOverride ? this.props.displayNameOverride : this.state.displayName,
       pronouns: this.state.pronouns,
@@ -154,18 +158,21 @@ export default class ProfileEntryPanel extends Component {
       friendContent: this.state.friendContent,
       sendDiscordMessage: this.state.sendDiscordMessage,
       metacampusID: this.state.metacampusID,
+      isAdmin: this.state.isAdmin,
       displayNamePattern: this.props.store.schema.definitions.profile.properties.displayName.pattern,
       pronounsPattern: this.props.store.schema.definitions.profile.properties.pronouns.pattern,
       profilePattern: this.props.store.schema.definitions.profile.properties.profile.pattern,
       friendContentPattern: this.props.store.schema.definitions.profile.properties.friendContent.pattern,
       sendDiscordMessagePattern: this.props.store.schema.definitions.profile.properties.sendDiscordMessage.pattern,
       metacampusIDPattern: this.props.store.schema.definitions.profile.properties.metacampusID.pattern,
+      isAdminPattern: this.props.store.schema.definitions.profile.properties.isAdmin.pattern,
       onChangeDisplayName: e => this.setState({ displayName: e.target.value }),
       onChangePronouns: e => this.setState({ pronouns: e.target.value }),
       onChangeProfile: e => this.setState({ profile: e.target.value }),
       onChangefriendContent: e => this.setState({ friendContent: e.target.value }),
       onChangeSendDiscordMessage: e => this.setState({ sendDiscordMessage: e.target.value }),
       onChangeMetacampusID: e => this.setState({ metacampusID: e.target.value }),
+      onChangeisAdmin: e => this.setState({ isAdmin: e.target.value }),
       avatarPreview: <AvatarPreview avatarGltfUrl={this.state.avatar && this.state.avatar.gltf_url} />,
       onChangeAvatar: e => {
         e.preventDefault();
@@ -173,8 +180,7 @@ export default class ProfileEntryPanel extends Component {
       },
       onSubmit: this.saveStateAndFinish,
       onClose: this.props.onClose,
-      onBack: this.props.onBack,
-      isAdmin: this.props.isAdmin
+      onBack: this.props.onBack
     };
 
     if (this.props.containerType === "sidebar") {

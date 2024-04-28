@@ -13,20 +13,15 @@ import { ReactComponent as VolumeHigh } from "../icons/VolumeHigh.svg";
 import { ReactComponent as VolumeMuted } from "../icons/VolumeMuted.svg";
 import useAvatarVolume from "./hooks/useAvatarVolume";
 import { calcLevel, calcGainMultiplier, MAX_VOLUME_LABELS } from "../../utils/avatar-volume-utils";
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import {
-  DynamoDBDocumentClient,
-  GetCommand,
-  PutCommand,
-  UpdateCommand,
-} from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 const DBClient = new DynamoDBClient({
-  region: 'ap-northeast-1',
+  region: "ap-northeast-1",
   credentials: {
-    accessKeyId: 'AKIA6O7CLSZWBGWOEKTK',
-    secretAccessKey: '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',
-  },
+    accessKeyId: "AKIA6O7CLSZWBGWOEKTK",
+    secretAccessKey: "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"
+  }
 });
 
 const docClient = DynamoDBDocumentClient.from(DBClient);
@@ -43,6 +38,7 @@ export function UserProfileSidebar({
   friendContent,
   sendDiscordMessage,
   metacampusID,
+  isAdmin,
   identityName,
   avatarPreview,
   hasMicPresence,
@@ -93,15 +89,15 @@ export function UserProfileSidebar({
     };
     
     Get();*/
-    
+
     const me = window.APP.hubChannel.store.state.profile.displayName;
-    if(me === displayName) return
-    const friendList = localStorage.getItem("friends");
-    const result =friendList.includes(displayName)
-    if(result) {
+    if (me === displayName) return;
+    const friendList = localStorage.getItem("myFriends");
+    const result = friendList.includes(metacampusID);
+    if (result) {
       setShow(true);
     }
-  }
+  };
 
   return (
     <Sidebar
@@ -110,7 +106,10 @@ export function UserProfileSidebar({
       {...rest}
     >
       <Column center padding>
-        <h2 className={styles.displayName}>{identityName ? `${displayName} (${identityName})` : displayName}</h2>
+        <h2 className={styles.displayName}>
+          {identityName ? `${displayName} (${identityName})` : displayName}{" "}
+          {isAdmin && <span className={styles.adminTag}>運営</span>}
+        </h2>
         {metacampusID && <span className={styles.profile}>{metacampusID}</span>}
         {pronouns && <span className={styles.pronouns}>{pronouns}</span>}
         {profile && <span className={styles.profile}>{profile}</span>}
@@ -198,9 +197,11 @@ export function UserProfileSidebar({
             <FormattedMessage id="user-profile-sidebar.kick-button" defaultMessage="Kick" />
           </Button>
         )}
-        <Button preset="cancel" onClick={onSendFriendRequest}>
-          <FormattedMessage id="user-profile-sidebar.friend-button" defaultMessage="Send Friend Request" />
-        </Button>
+        {!canShow && (
+          <Button preset="cancel" onClick={onSendFriendRequest}>
+            <FormattedMessage id="user-profile-sidebar.friend-button" defaultMessage="Send Friend Request" />
+          </Button>
+        )}
       </Column>
     </Sidebar>
   );
@@ -215,6 +216,7 @@ UserProfileSidebar.propTypes = {
   friendContent: PropTypes.string,
   sendDiscordMessage: PropTypes.string,
   metacampusID: PropTypes.string,
+  isAdmin: PropTypes.bool,
   identityName: PropTypes.string,
   avatarPreview: PropTypes.node,
   hasMicPresence: PropTypes.bool,
