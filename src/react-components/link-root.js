@@ -194,8 +194,9 @@ class LinkRoot extends Component {
             <div className={styles.createLink}>
               <a href="https://www.memotansu.jp/docker/489/">
                 <FormattedMessage id="link-page.create-room-button" defaultMessage="Create a new room" />
-              </a><br/>
-              <a href="https://metacampus.jp/oi6Rc2E/metacampus-entrance-world">
+              </a>
+              <br />
+              <a href="https://metacampus.jp/7Fd2oaK/simple-tempting-safari">
                 <FormattedMessage id="link-page.first-world-button" defaultMessage="エントランスワールド" />
               </a>
             </div>
