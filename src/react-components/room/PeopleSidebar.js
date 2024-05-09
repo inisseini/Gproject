@@ -216,6 +216,8 @@ export function PeopleSidebar({
     return imageElement;
   };
 
+  console.log("friendtest", person.profile.metacampusID, person.profile.isAdmin);
+
   return (
     <Sidebar
       title={

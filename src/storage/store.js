@@ -66,8 +66,16 @@ export const SCHEMA = {
         displayName: { type: "string", pattern: "^[A-Za-z0-9_~\\s\\-]{3,32}$" },
         avatarId: { type: "string" },
         pronouns: { type: "string", pattern: "^([a-zA-Z]{1,32}\\/){0,4}[a-zA-Z]{1,32}$" },
-        profile: { type: "string", pattern: "([^\x01-\x7E]|w){0,300}$" },
-        friendContent: { type: "string" },
+        profile: {
+          type: "string",
+          pattern:
+            "^[\u0041-\u005A\u0061-\u007A\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\u0030-\u0039\u0020-\u002F\u003A-\u0040\u005B-\u0060\u007B-\u007E]{1,200}$"
+        },
+        friendContent: {
+          type: "string",
+          pattern:
+            "^[\u0041-\u005A\u0061-\u007A\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\u0030-\u0039\u0020-\u002F\u003A-\u0040\u005B-\u0060\u007B-\u007E]{1,300}$"
+        },
         sendDiscordMessage: { type: "string" },
         metacampusID: { type: "string" },
         isAdmin: { type: "boolean" },
