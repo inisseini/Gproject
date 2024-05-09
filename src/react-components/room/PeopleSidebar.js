@@ -236,7 +236,8 @@ export function PeopleSidebar({
             const Img = () => {
               const imageElement = useMemo(() => {
                 console.log("Rendering Img component");
-                const url = person.profile.metacampusID; // "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + src + ".jpg";
+                const url =
+                  "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + person.profile.metacampusID + ".jpg";
                 return <img src={url} alt="" />;
               }, [src]);
 
