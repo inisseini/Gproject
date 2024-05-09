@@ -45,7 +45,7 @@ export default class ProfileEntryPanel extends Component {
       this.state.avatarId = props.avatarId;
     }
     this.state.metacampusID = localStorage.getItem("myID");
-    this.state.metacampusID = configs.isAdmin();
+    this.state.isAdmin = configs.isAdmin();
     this.props.store.addEventListener("statechanged", this.storeUpdated);
     this.scene = document.querySelector("a-scene");
   }
