@@ -292,7 +292,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
               password: passwordInput,
               permanent: false,
               name: roomNameInput,
-              editor: []
+              editor: [localStorage.getItem("myID")]
             }
           });
 
@@ -315,7 +315,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
               password: passwordInput,
               permanent: false,
               name: false,
-              editor: []
+              editor: [localStorage.getItem("myID")]
             }
           });
 
@@ -406,7 +406,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
             password: "",
             permanent: false,
             name: roomNameInput,
-            editor: []
+            editor: [localStorage.getItem("myID")]
           }
         });
 
@@ -429,7 +429,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
             password: "",
             permanent: false,
             name: false,
-            editor: []
+            editor: [localStorage.getItem("myID")]
           }
         });
 
