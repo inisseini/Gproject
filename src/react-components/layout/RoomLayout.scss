@@ -12,7 +12,8 @@
     [viewport] auto
     [toolbar] min-content;
 
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
   position: relative;
   pointer-events: none;
 }
