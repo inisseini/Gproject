@@ -92,7 +92,7 @@ export function UserProfileSidebar({
 
     const me = window.APP.hubChannel.store.state.profile.displayName;
     if (me === displayName) return;
-    const friendList = localStorage.getItem("myFriends");
+    const friendList = JSON.parse(localStorage.getItem("myFriends"));
     const result = friendList.includes(metacampusID);
     if (result) {
       setShow(true);

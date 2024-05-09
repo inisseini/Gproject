@@ -119,7 +119,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
 
         const myFriends = localStorage.getItem("myFriends");
         if (!myFriends) {
-          localStorage.setItem("myFriends", []);
+          localStorage.setItem("myFriends", JSON.stringify([]));
         }
 
         onSubmitEmail(email);
