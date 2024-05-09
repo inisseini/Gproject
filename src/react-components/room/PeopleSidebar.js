@@ -206,18 +206,6 @@ export function PeopleSidebar({
     GetFriends();
   }, []);
 
-  const Img = ({ src }) => {
-    const imageElement = useMemo(() => {
-      console.log("Rendering Img component");
-      const url = "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + src + ".jpg";
-      return <img src={url} alt="" />;
-    }, [src]);
-
-    return imageElement;
-  };
-
-  console.log("friendtest", person.profile.metacampusID, person.profile.isAdmin);
-
   return (
     <Sidebar
       title={
@@ -243,11 +231,22 @@ export function PeopleSidebar({
           filteredPeople.map(person => {
             const DeviceIcon = getDeviceIconComponent(person.context);
             const VoiceIcon = getVoiceIconComponent(person.micPresence);
+            console.log("friendtest", person.profile.metacampusID, person.profile.isAdmin);
+
+            const Img = () => {
+              const imageElement = useMemo(() => {
+                console.log("Rendering Img component");
+                const url = person.profile.metacampusID; // "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + src + ".jpg";
+                return <img src={url} alt="" />;
+              }, [src]);
+
+              return imageElement;
+            };
 
             return (
               <div className={styles.person} key={person.id} type="button" onClick={e => onSelectPerson(person, e)}>
                 <div className={styles.icon}>
-                  <Img src={person.profile.metacampusID} />
+                  <Img />
                 </div>
                 <div className={styles.detail}>
                   <p>{getPersonName(person, intl)}</p>
