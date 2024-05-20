@@ -5,7 +5,9 @@ const DiscordMessageSend = (type, message) => {
   /*const webhookUrl =
     "https://discord.com/api/webhooks/1156887494843973692/ejQif5hw-4V3xMzKq-HscflTrhZRiv0FtqtsVq0tK3c_l9mEKciOSKFzmAdY9m2A3m5H";*/
   const webhookUrl =
-    "https://discord.com/api/webhooks/1159604974808993823/C3AJCNmyvCt-LzmqMIWoVdi3UlV9JIyLAU8FX982vG_kj40yAQ-KuUL86C1FpKXPb5Y1";
+    type === "text"
+      ? "https://discord.com/api/webhooks/1242044974556643339/qI-AsQ7IX-t4qzCls-NZpY9mPi-0zzR4xG8bB7mvXUV6D72aAkCw11GCL0CD6a5TahD-"
+      : "https://discord.com/api/webhooks/1242045512027471943/l_QzWW1YpGaGz1ES44MdjNArMqHN10y5NL2fFGCPkODj_u5yeqVxAyzbND2j9CS6StS_";
 
   const requestBodyTxt = {
     content: "通知：" + message,

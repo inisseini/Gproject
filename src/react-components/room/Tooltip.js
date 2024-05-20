@@ -64,7 +64,7 @@ const onboardingMessages = defineMessages({
   },
   "tips.end": {
     id: "tips.end",
-    defaultMessage: "Tutorial completed! Have fun exploring"
+    defaultMessage: "<p>Tutorial completed! Have fun exploring</p>"
   },
   "tips.menu": {
     id: "tips.menu",
