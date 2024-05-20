@@ -200,6 +200,7 @@ class ImportContentComponent extends Component {
   async onImport(e) {
     if (e) e.preventDefault();
     const { imports } = this.state;
+    console.log("imports=", imports);
 
     for (let i = 0; i < imports.length; i++) {
       const { url, type, importUrl, isEnabled, isImported, isBase, isDefault, isFeatured } = imports[i];
@@ -219,6 +220,7 @@ class ImportContentComponent extends Component {
         continue;
       }
 
+      console.log("res=", res);
       const asset = res[type][0];
       const tags = [];
 
