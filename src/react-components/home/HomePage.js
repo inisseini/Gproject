@@ -400,9 +400,11 @@ export function HomePage() {
                         </div>
                       </a>
                     ) : (
-                      <div className="entryButton">
-                        <p>ログインしてください</p>
-                      </div>
+                      <a href="/signin">
+                        <div className="entryButton">
+                          <p>ログインしてください</p>
+                        </div>
+                      </a>
                     )}
                   </div>
 

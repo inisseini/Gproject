@@ -227,17 +227,20 @@ export function AvatarSettingsContent({
       <SelectInputField
         label="入室時のDiscord通知"
         value={sendDiscordMessage === "希望しない" ? "希望しない" : "希望する"}
-        options={["希望しない", "希望する"]}
+        options={[
+          { id: "1", label: "希望しない", value: "希望しない" },
+          { id: "2", label: "希望する", value: "希望する" }
+        ]}
         onChange={onChangeSendDiscordMessage}
       />
-      <TextInputField
+      {/*<TextInputField
         label={<FormattedMessage id="avatar-settings-content.pronouns-label" defaultMessage="Pronouns (optional)" />}
         value={pronouns}
         pattern={pronounsPattern}
         spellCheck="false"
         onChange={onChangePronouns}
         ref={pronounsInputRef}
-      />
+    />*/}
       <div className={styles.avatarPreviewContainer}>
         {avatarPreview || <div />}
         <Button type="button" preset="basic" onClick={onChangeAvatar}>

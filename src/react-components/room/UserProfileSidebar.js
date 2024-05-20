@@ -111,7 +111,7 @@ export function UserProfileSidebar({
           {isAdmin && <span className={styles.adminTag}>運営</span>}
         </h2>
         {metacampusID && <span className={styles.profile}>{metacampusID}</span>}
-        {pronouns && <span className={styles.pronouns}>{pronouns}</span>}
+        {/*pronouns && <span className={styles.pronouns}>{pronouns}</span>*/}
         {profile && <span className={styles.profile}>{profile}</span>}
         {!canShow && <button onClick={checkRelationship}>フレンド限定内容を見る</button>}
         {canShow && friendContent && <span className={styles.profile}>{friendContent}</span>}
