@@ -196,7 +196,7 @@ class LinkRoot extends Component {
                 <FormattedMessage id="link-page.create-room-button" defaultMessage="Create a new room" />
               </a>
               <br />
-              <a href="https://metacampus.jp/STV2o7o/metacampus-entrance-world">
+              <a href="https://metacampus.jp/benA3d2/metacampus-entrance-world">
                 <FormattedMessage id="link-page.first-world-button" defaultMessage="エントランスワールド" />
               </a>
             </div>
