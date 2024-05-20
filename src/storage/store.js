@@ -76,7 +76,7 @@ export const SCHEMA = {
           pattern:
             "^[\u0041-\u005A\u0061-\u007A\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\u0030-\u0039\u0020-\u002F\u003A-\u0040\u005B-\u0060\u007B-\u007E]{1,300}$"
         },
-        sendDiscordMessage: { type: "boolean" },
+        sendDiscordMessage: { type: "string" },
         metacampusID: { type: "string" },
         isAdmin: { type: "boolean" },
         // personalAvatarId is obsolete, but we need it here for backwards compatibility.

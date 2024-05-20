@@ -211,7 +211,7 @@ export function AvatarSettingsContent({
         }
         ref={friendContentInputRef}
       />
-      <TextInputField
+      {/*<TextInputField
         label={
           <FormattedMessage
             id="avatar-settings-content.sendDiscordMessage-label"
@@ -223,14 +223,11 @@ export function AvatarSettingsContent({
         spellCheck="false"
         onChange={onChangeSendDiscordMessage}
         ref={sendDiscordMessageInputRef}
-      />
+      />*/}
       <SelectInputField
         label="入室時のDiscord通知"
         value={sendDiscordMessage}
-        options={[
-          { id: "1", label: "行う", value: false },
-          { id: "2", label: "行わない", value: true }
-        ]}
+        options={["希望しない", "希望する"]}
         onChange={onChangeSendDiscordMessage}
       />
       <TextInputField

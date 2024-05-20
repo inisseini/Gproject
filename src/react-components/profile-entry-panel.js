@@ -33,7 +33,7 @@ export default class ProfileEntryPanel extends Component {
     pronouns: null,
     profile: null,
     friendContent: null,
-    sendDiscordMessage: false,
+    sendDiscordMessage: "希望しない",
     metacampusID: null,
     isAdmin: false
   };
