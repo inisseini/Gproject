@@ -114,7 +114,7 @@ export function UserProfileSidebar({
         {/*pronouns && <span className={styles.pronouns}>{pronouns}</span>*/}
         {profile && <span className={styles.profile}>{profile}</span>}
         {!canShow && <button onClick={checkRelationship}>フレンド限定内容を見る</button>}
-        {canShow && friendContent && <span className={styles.profile}>{friendContent}</span>}
+        {canShow && friendContent && <span className={styles.friendContent}>{friendContent}</span>}
         {sendDiscordMessage && <span className={styles.profile}>{sendDiscordMessage}</span>}
         <div className={styles.avatarPreviewContainer}>{avatarPreview || <div />}</div>
         {hasMicPresence && (

@@ -38,6 +38,10 @@
   border-radius: 15px;
 }
 
+:local(.friendContent) {
+  color: #7a7a7a;
+}
+
 :local(.pronouns) {
   color: theme.$text2-color;
 }
