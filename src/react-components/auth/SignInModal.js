@@ -122,6 +122,13 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
           localStorage.setItem("myFriends", JSON.stringify([]));
         }
 
+        const discordPermission = localStorage.getItem("discordPermission");
+
+        if (!discordPermission) {
+          // 生成したIDをlocalStorageに保存
+          localStorage.setItem("discordPermission", "希望しない");
+        }
+
         onSubmitEmail(email);
       }
     },
