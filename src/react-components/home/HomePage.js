@@ -394,7 +394,7 @@ export function HomePage() {
                   <div>
                     <img src={Entry} />
                     {auth.isSignedIn ? (
-                      <a href="/sFeMpd3/metacampus-entrance-world">
+                      <a href="/STV2o7o/metacampus-entrance-world">
                         <div className="entryButton">
                           <p>クリックして入場</p>
                         </div>
