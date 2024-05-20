@@ -63,6 +63,7 @@ export default class SceneEntryManager {
     console.log("Entering scene...");
 
     const me = window.APP.hubChannel.store.state.profile.displayName;
+    console.log("test send discord message", window.APP.hubChannel.store.state.profile);
     DiscordMessageSend("text", me + "が入室しました！！");
 
     document.getElementById("viewing-camera").removeAttribute("scene-preview-camera");

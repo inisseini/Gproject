@@ -214,7 +214,7 @@ UserProfileSidebar.propTypes = {
   pronouns: PropTypes.string,
   profile: PropTypes.string,
   friendContent: PropTypes.string,
-  sendDiscordMessage: PropTypes.string,
+  sendDiscordMessage: PropTypes.bool,
   metacampusID: PropTypes.string,
   isAdmin: PropTypes.bool,
   identityName: PropTypes.string,

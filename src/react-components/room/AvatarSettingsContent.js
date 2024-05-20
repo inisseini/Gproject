@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Button, AcceptButton } from "../input/Button";
 import styles from "./AvatarSettingsContent.scss";
 import { TextInputField } from "../input/TextInputField";
+import { SelectInputField } from "../input/SelectInputField";
 import { Column } from "../layout/Column";
 import { FormattedMessage } from "react-intl";
 
@@ -222,6 +223,15 @@ export function AvatarSettingsContent({
         spellCheck="false"
         onChange={onChangeSendDiscordMessage}
         ref={sendDiscordMessageInputRef}
+      />
+      <SelectInputField
+        label="入室時のDiscord通知"
+        value={sendDiscordMessage}
+        options={[
+          { id: "1", label: "行う", value: false },
+          { id: "2", label: "行わない", value: true }
+        ]}
+        onChange={onChangeSendDiscordMessage}
       />
       <TextInputField
         label={<FormattedMessage id="avatar-settings-content.pronouns-label" defaultMessage="Pronouns (optional)" />}
