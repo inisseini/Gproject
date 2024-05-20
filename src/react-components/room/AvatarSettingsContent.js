@@ -226,7 +226,7 @@ export function AvatarSettingsContent({
       />*/}
       <SelectInputField
         label="入室時のDiscord通知"
-        value={sendDiscordMessage}
+        value={sendDiscordMessage === "希望しない" ? "希望しない" : "希望する"}
         options={["希望しない", "希望する"]}
         onChange={onChangeSendDiscordMessage}
       />
