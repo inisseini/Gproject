@@ -103,6 +103,7 @@ import { usePermissions } from "./room/hooks/usePermissions";
 import { ChatContextProvider } from "./room/contexts/ChatContext";
 import ChatToolbarButton from "./room/components/ChatToolbarButton/ChatToolbarButton";
 import LibraryToolbarButton from "./room/components/LibraryToolbarButton";
+import TutorialToolbarButton from "./room/components/TutorialToolbarButton";
 import SeePlansCTA from "./room/components/SeePlansCTA/SeePlansCTA";
 
 import { LibrarySidebarContainer } from "./room/LibrarySidebarContainer";
@@ -1645,6 +1646,10 @@ class UIRoot extends Component {
                             selected={this.state.sidebarId === "library"}
                           />
                         ) : undefined}
+                        <TutorialToolbarButton
+                          onClick={() => this.props.scene.systems.tips.resetTips()}
+                          selected={false}
+                        />
                       </>
                     )}
                     {entered && isMobileVR && (
