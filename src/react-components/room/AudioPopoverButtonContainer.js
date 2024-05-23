@@ -20,18 +20,18 @@ export const AudioPopoverButtonContainer = ({ scene, initiallyVisible }) => {
   const muteStatuses = defineMessages({
     mute: {
       id: "mute",
-      defaultMessage: "Mute"
+      defaultMessage: "ミュートにする"
     },
     unmute: {
       id: "unmute",
-      defaultMessage: "Unmute"
+      defaultMessage: "ミュートを解除する"
     }
   });
 
   const description = intl.formatMessage(
     {
       id: "mute-tooltip.description",
-      defaultMessage: "{muteStatus} Microphone (M)"
+      defaultMessage: "{muteStatus}"
     },
     { muteStatus: intl.formatMessage(muteStatuses[isMicMuted ? "unmute" : "mute"]) }
   );

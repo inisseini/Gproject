@@ -7,7 +7,6 @@ import { ChatContext } from "../contexts/ChatContext";
 import { ToolTip } from "@mozilla/lilypad-ui";
 
 const TutorialToolbarButton = ({ onClick, selected }) => {
-  const { unreadMessages } = useContext(ChatContext);
   const description = "チュートリアルを開始します";
 
   return (
@@ -16,9 +15,7 @@ const TutorialToolbarButton = ({ onClick, selected }) => {
         // Ignore type lint error as we will be redoing ToolbarButton in the future
         // @ts-ignore
         onClick={onClick}
-        statusColor={unreadMessages ? "unread" : undefined}
-        icon={selected ? <TutorialIcon fill="#007ab8" /> : <TutorialIcon fill="#ffffff" />}
-        preset="accent4"
+        icon={selected ? <TutorialIcon fill="#007ab8" /> : <TutorialIcon />}
         label="チュートリアル"
         selected={selected}
       />
