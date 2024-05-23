@@ -56,6 +56,8 @@ import mamelon from "../../assets/fonts/Mamelon-3.5HiRegular.woff2";
 import jua from "../../assets/fonts/Jua-Regular.ttf";
 
 export function HomePage() {
+  console.log("mamelon=", mamelon);
+  console.log("jua=", jua);
   //const store = window.APP.store;
   //store.initProfile();
   const auth = useContext(AuthContext);
@@ -281,16 +283,17 @@ export function HomePage() {
     zIndex: 0
   };
 
-  const loadFont = (name, url) => {
-    const font = new FontFace(name, `url(${url})`);
-    font.load().then(loadedFont => {
-      document.fonts.add(loadedFont);
-    });
-  };
+  // スタイルを動的に追加
+  const font1 = new FontFace("mamelon", `url(${mamelon})`);
+  const font2 = new FontFace("jua", `url(${jua})`);
+  font1.load().then(function (loadedFont) {
+    document.fonts.add(loadedFont);
+  });
+  font2.load().then(function (loadedFont) {
+    document.fonts.add(loadedFont);
+  });
 
-  loadFont("mamelon", mamelon);
-  loadFont("jua", jua);
-
+  console.log("document.fonts", document.fonts);
   return (
     <PageContainer className={styles.homePage}>
       <Container>
