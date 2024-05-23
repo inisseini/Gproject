@@ -424,6 +424,16 @@ module.exports = async (env, argv) => {
     module: {
       rules: [
         {
+          test: /\.(ttf|otf|eot|svg|woff|woff2)$/,
+          use: {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "fonts/"
+            }
+          }
+        },
+        {
           test: /\.html$/,
           loader: "html-loader",
           options: {
