@@ -51,6 +51,8 @@ import MediaCenter from "../../assets/images/MediaCenterWorld.png";
 import { Button } from "../input/Button";
 import { AvatarSettingsContent } from "../room/AvatarSettingsContent";
 
+import backgroundImg from "../../assets/images/backGround.gif";
+
 export function HomePage() {
   //const store = window.APP.store;
   //store.initProfile();
@@ -269,7 +271,7 @@ export function HomePage() {
   return (
     <PageContainer className={styles.homePage}>
       <Container>
-        <div className={styles.App}>
+        <div className={styles.App} style={{ backgroundImage: "url(${backgroundImg})" }}>
           <div className="bg"></div>
           <header>
             <div className="Logo">

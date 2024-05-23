@@ -1646,10 +1646,12 @@ class UIRoot extends Component {
                             selected={this.state.sidebarId === "library"}
                           />
                         ) : undefined}
-                        <TutorialToolbarButton
-                          onClick={() => this.props.scene.systems.tips.resetTips()}
-                          selected={false}
-                        />
+                        {entered && (
+                          <TutorialToolbarButton
+                            onClick={() => this.props.scene.systems.tips.resetTips()}
+                            selected={false}
+                          />
+                        )}
                       </>
                     )}
                     {entered && isMobileVR && (
