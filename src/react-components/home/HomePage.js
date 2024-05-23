@@ -281,15 +281,17 @@ export function HomePage() {
     zIndex: 0
   };
 
-  // スタイルを動的に追加
-  const font1 = new FontFace("mamelon", `url(${mamelon})`);
-  const font2 = new FontFace("jua", `url(${jua})`);
-  font1.load().then(function (loadedFont) {
-    document.fonts.add(loadedFont);
-  });
-  font2.load().then(function (loadedFont) {
-    document.fonts.add(loadedFont);
-  });
+  useEffect(() => {
+    const loadFont = (name, url) => {
+      const font = new FontFace(name, `url(${url})`);
+      font.load().then(loadedFont => {
+        document.fonts.add(loadedFont);
+      });
+    };
+
+    loadFont("mamelon", mamelon);
+    loadFont("jua", jua);
+  }, []);
 
   return (
     <PageContainer className={styles.homePage}>
