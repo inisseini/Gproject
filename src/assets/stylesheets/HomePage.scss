@@ -303,17 +303,7 @@ button {
   flex-direction: column;
   justify-content: space-between;
   background-color: var(--mainGreen);
-  .bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    content: "";
-    width: 100dvw;
-    height: 100dvh;
-    background: url("../images/backGround.gif");
-    background-size: cover;
-    opacity: 0.2;
-  }
+
   header {
     flex-grow: 1;
     display: flex;

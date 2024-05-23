@@ -919,6 +919,7 @@ class UIRoot extends Component {
 
     const { hasAcceptedProfile, hasChangedNameOrPronounsOrProfile } = this.props.store.state.activity;
     const isLockedDownDemo = isLockedDownDemoRoom();
+    console.log("isLockedDownDemo=", isLockedDownDemo);
     const promptForNameAndAvatarBeforeEntry = this.props.hubIsBound
       ? !hasAcceptedProfile
       : !hasChangedNameOrPronounsOrProfile;

@@ -268,11 +268,23 @@ export function HomePage() {
     );
   };
 
+  const imgStyle = {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    objectFit: "cover",
+    opacity: 0.2,
+    zIndex: -1 // 背景として扱うためにz-indexを低く設定
+  };
+
   return (
     <PageContainer className={styles.homePage}>
       <Container>
-        <div className={styles.App} style={{ backgroundImage: "url(${backgroundImg})" }}>
-          <div className="bg"></div>
+        <div className={styles.App}>
+          <img src={backgroundImg} alt="Background" style={imgStyle} />
+
           <header>
             <div className="Logo">
               <img src={MetaCampUsLogo} />
