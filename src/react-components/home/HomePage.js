@@ -281,17 +281,15 @@ export function HomePage() {
     zIndex: 0
   };
 
-  useEffect(() => {
-    const loadFont = (name, url) => {
-      const font = new FontFace(name, `url(${url})`);
-      font.load().then(loadedFont => {
-        document.fonts.add(loadedFont);
-      });
-    };
+  const loadFont = (name, url) => {
+    const font = new FontFace(name, `url(${url})`);
+    font.load().then(loadedFont => {
+      document.fonts.add(loadedFont);
+    });
+  };
 
-    loadFont("mamelon", mamelon);
-    loadFont("jua", jua);
-  }, []);
+  loadFont("mamelon", mamelon);
+  loadFont("jua", jua);
 
   return (
     <PageContainer className={styles.homePage}>
