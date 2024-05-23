@@ -247,22 +247,11 @@
   --accentOrange: #ee7342;
 }
 
-@font-face {
-  font-family: "mamelon";
-  src: url(../images/Mamelon-3.5HiRegular.woff2) format("woff2");
-}
-
-@font-face {
-  font-family: "Jua";
-  src: url(../images/Jua-Regular.ttf) format("truetype");
-}
-
 * {
   margin: 0;
   padding: 0;
   list-style: none;
   text-decoration: none;
-  font-family: "mamelon";
 }
 
 body {
@@ -480,7 +469,6 @@ button {
         color: var(--accentOrange);
         font-size: 30px;
         text-align: center;
-        font-family: "Jua";
         @media (max-width: theme.$breakpoint-md) {
           font-size: 20px;
         }

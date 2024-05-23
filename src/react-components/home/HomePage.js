@@ -52,6 +52,8 @@ import { Button } from "../input/Button";
 import { AvatarSettingsContent } from "../room/AvatarSettingsContent";
 
 import backgroundImg from "../../assets/images/backGround.gif";
+import mamelon from "../../assets/fonts/Mamelon-3.5HiRegular.woff2";
+import jua from "../../assets/fonts/Jua-Regular.ttf";
 
 export function HomePage() {
   //const store = window.APP.store;
@@ -276,13 +278,23 @@ export function HomePage() {
     height: "100vh",
     objectFit: "cover",
     opacity: 0.2,
-    zIndex: -1 // 背景として扱うためにz-indexを低く設定
+    zIndex: 0
   };
+
+  // スタイルを動的に追加
+  const font1 = new FontFace("mamelon", `url(${mamelon})`);
+  const font2 = new FontFace("jua", `url(${jua})`);
+  font1.load().then(function (loadedFont) {
+    document.fonts.add(loadedFont);
+  });
+  font2.load().then(function (loadedFont) {
+    document.fonts.add(loadedFont);
+  });
 
   return (
     <PageContainer className={styles.homePage}>
       <Container>
-        <div className={styles.App}>
+        <div className={styles.App} style={{ fontFamily: "mamelon" }}>
           <img src={backgroundImg} alt="Background" style={imgStyle} />
 
           <header>
@@ -404,7 +416,9 @@ export function HomePage() {
             <div className={mobileMenu ? "content mobile" : "content"}>
               <div className={mobileMenu ? "Enter mobile" : "Enter"}>
                 <div className="enterBox">
-                  <h2 className="title">ENTER</h2>
+                  <h2 className="title" style={{ fontFamily: "jua" }}>
+                    ENTER
+                  </h2>
                   <div>
                     <img src={Entry} />
                     {auth.isSignedIn ? (
@@ -1001,7 +1015,9 @@ export function HomePage() {
                 <div className="scrollAbout scrollAnchor" data-key={1}>
                   <div className="container">
                     <br />
-                    <h2 className="title">ABOUT</h2>
+                    <h2 className="title" style={{ fontFamily: "jua" }}>
+                      ABOUT
+                    </h2>
                     <br />
                     <br />
                     <p>
@@ -1016,7 +1032,9 @@ export function HomePage() {
                 <div className="scrollFeature scrollAnchor" data-key={2}>
                   <div className="container">
                     <br />
-                    <h2 className="title">FEATURE</h2>
+                    <h2 className="title" style={{ fontFamily: "jua" }}>
+                      FEATURE
+                    </h2>
                     <br />
                     <br />
                     <p>
@@ -1033,7 +1051,9 @@ export function HomePage() {
                 </div>
                 <div className="scrollWorlds scrollAnchor" data-key={3}>
                   <div className="container">
-                    <h2 className="title">WORLDS</h2>
+                    <h2 className="title" style={{ fontFamily: "jua" }}>
+                      WORLDS
+                    </h2>
                     <br />
                     <BoxComponent1 />
                     <BoxComponent2 />
@@ -1063,21 +1083,31 @@ export function HomePage() {
                 <div className="Index">
                   <ul>
                     <li>
-                      <h2 className={progress === 0 ? "title accent" : "title"}>-TOP</h2>
+                      <h2 className={progress === 0 ? "title accent" : "title"} style={{ fontFamily: "jua" }}>
+                        -TOP
+                      </h2>
                     </li>
                     <li>
-                      <h2 className={progress === 1 ? "title accent" : "title"}>-ABOUT</h2>
+                      <h2 className={progress === 1 ? "title accent" : "title"} style={{ fontFamily: "jua" }}>
+                        -ABOUT
+                      </h2>
                     </li>
                     <li>
-                      <h2 className={progress === 2 ? "title accent" : "title"}>-FEATURE</h2>
+                      <h2 className={progress === 2 ? "title accent" : "title"} style={{ fontFamily: "jua" }}>
+                        -FEATURE
+                      </h2>
                     </li>
                     <li>
-                      <h2 className={progress === 3 ? "title accent" : "title"}>-WORLD</h2>
+                      <h2 className={progress === 3 ? "title accent" : "title"} style={{ fontFamily: "jua" }}>
+                        -WORLD
+                      </h2>
                     </li>
                   </ul>
                 </div>
                 <div className="News">
-                  <h2 className="title">NEWS</h2>
+                  <h2 className="title" style={{ fontFamily: "jua" }}>
+                    NEWS
+                  </h2>
                   <div className="articleContainer">
                     <div className="article">
                       <h3 className="articleTitle">2023-02-09 β版リリース</h3>
