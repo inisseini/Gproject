@@ -989,7 +989,7 @@ export function HomePage() {
               <div className={mobileMenu ? "Scroll mobile" : "Scroll"}>
                 <div className="scrollHero scrollAnchor" data-key={0}>
                   <img src={Hero} />
-                  <div className="container">
+                  <div className="container" style={{ textShadow: "1px 1px 1px black" }}>
                     <p>
                       「<span>やりたい</span>」が<span>カタチ</span>になるコミュニティ「MetaCampUs」
                     </p>
