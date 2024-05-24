@@ -52,8 +52,6 @@ import { Button } from "../input/Button";
 import { AvatarSettingsContent } from "../room/AvatarSettingsContent";
 
 import backgroundImg from "../../assets/images/backGround.gif";
-import mamelon from "../../assets/fonts/Mamelon-3.5HiRegular.woff2";
-//import jua from "../../assets/fonts/Jua-Regular.ttf";
 
 export function HomePage() {
   //const store = window.APP.store;
@@ -281,21 +279,10 @@ export function HomePage() {
     zIndex: 0
   };
 
-  // スタイルを動的に追加
-  const font1 = new FontFace("mamelon", `url(${mamelon})`);
-  //const font2 = new FontFace("jua", `url(${jua})`);
-  font1.load().then(function (loadedFont) {
-    document.fonts.add(loadedFont);
-  });
-  /*font2.load().then(function (loadedFont) {
-    document.fonts.add(loadedFont);
-  });*/
-
-  console.log("document.fonts", document.fonts);
   return (
     <PageContainer className={styles.homePage}>
       <Container>
-        <div className={styles.App} style={{ fontFamily: "mamelon" }}>
+        <div className={styles.App}>
           <img src={backgroundImg} alt="Background" style={imgStyle} />
 
           <header>
