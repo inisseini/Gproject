@@ -228,7 +228,7 @@ class UIRoot extends Component {
   constructor(props) {
     super(props);
 
-    console.log("UIRoot");
+    console.log("UIRoot", configs.isAdmin());
     props.mediaSearchStore.setHistory(props.history);
 
     // An exit handler that discards event arguments and can be cleaned up.
