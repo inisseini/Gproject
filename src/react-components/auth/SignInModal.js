@@ -111,7 +111,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
 
         const handlePut = async () => {
           const type = "PUT";
-          const data = `type=${type}&email=${email}&isAdmin=${false}&isTeacher=${false}&requested=${[]}&friends=${[]}`;
+          const data = `type=${type}&email=${email}&isAdmin=${false}&isTeacher=${false}&requested=${"[]"}&friends=${"[]"}`;
           try {
             const res = await axios.post(
               "https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/",
