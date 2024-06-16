@@ -237,6 +237,29 @@ class UIRoot extends Component {
     // An exit handler that discards event arguments and can be cleaned up.
     this.exitEventHandler = () => this.props.exitScene();
     this.mediaDevicesManager = APP.mediaDevicesManager;
+
+    const handleGet = async () => {
+      const type = "GET";
+      const data = `type=${type}&email=${window.APP.store.state.credentials.email}`;
+      try {
+        const res = await axios.post(
+          "https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/",
+          data,
+          {
+            headers: {
+              "Content-Type": "text/plain"
+            }
+          }
+        );
+        this.setState({ adminUser: res.data.Item.isAdmin });
+        console.log("adminUser=", this.state.adminUser);
+      } catch (error) {
+        console.error("Error getting data:", error);
+        setResponse("Error getting data");
+      }
+    };
+
+    handleGet();
   }
 
   componentDidUpdate(prevProps) {
@@ -326,29 +349,6 @@ class UIRoot extends Component {
   };
 
   componentDidMount() {
-    const handleGet = async () => {
-      console.log("handleGet");
-      const type = "GET";
-      const data = `type=${type}&email=${email}`;
-      try {
-        const res = await axios.post(
-          "https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/",
-          data,
-          {
-            headers: {
-              "Content-Type": "text/plain"
-            }
-          }
-        );
-        this.setState({ adminUser: res.data.Item.isAdmin });
-        console.log("adminUser=", this.state.adminUser);
-      } catch (error) {
-        console.error("Error getting data:", error);
-        setResponse("Error getting data");
-      }
-    };
-
-    handleGet();
     window.addEventListener("concurrentload", this.onConcurrentLoad);
     window.addEventListener("idle_detected", this.onIdleDetected);
     window.addEventListener("activity_detected", this.onActivityDetected);
