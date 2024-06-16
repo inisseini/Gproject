@@ -222,18 +222,40 @@ class UIRoot extends Component {
     chatAutofocus: false,
 
     password: null,
-    firstConfirm: true
+    firstConfirm: true,
+
+    adminUser: false
   };
 
   constructor(props) {
     super(props);
 
-    console.log("UIRoot", configs.isAdmin());
+    console.log("UIRoot");
     props.mediaSearchStore.setHistory(props.history);
 
     // An exit handler that discards event arguments and can be cleaned up.
     this.exitEventHandler = () => this.props.exitScene();
     this.mediaDevicesManager = APP.mediaDevicesManager;
+
+    const handleGet = async () => {
+      const type = "GET";
+      const data = `type=${type}&email=${email}`;
+      try {
+        const res = await axios.post(
+          "https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/",
+          data,
+          {
+            headers: {
+              "Content-Type": "text/plain"
+            }
+          }
+        );
+        this.setState({ adminUser: res.data.Item.isAdmin });
+      } catch (error) {
+        console.error("Error getting data:", error);
+        setResponse("Error getting data");
+      }
+    };
   }
 
   componentDidUpdate(prevProps) {
@@ -1614,7 +1636,7 @@ class UIRoot extends Component {
                     )}
                     {entered && (
                       <>
-                        {!isLockedDownDemo && (
+                        {(!isLockedDownDemo || adminUser) && (
                           <>
                             <AudioPopoverButtonContainer scene={this.props.scene} />
                             <SharePopoverContainer scene={this.props.scene} hubChannel={this.props.hubChannel} />
@@ -1634,7 +1656,7 @@ class UIRoot extends Component {
                         )}
                       </>
                     )}
-                    {!isLockedDownDemo && (
+                    {(!isLockedDownDemo || adminUser) && (
                       <>
                         <ChatToolbarButton
                           onClick={() => this.toggleSidebar("chat", { chatPrefix: "", chatAutofocus: false })}
