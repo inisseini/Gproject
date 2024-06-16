@@ -127,7 +127,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
           }
         };
 
-        const haveId = async () => {
+        const checkId = async () => {
           const type = "GET";
           const data = `type=${type}&email=${email}`;
           try {
@@ -150,7 +150,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
           }
         };
 
-        haveId();
+        checkId();
 
         const myFriends = localStorage.getItem("myFriends");
         if (!myFriends) {

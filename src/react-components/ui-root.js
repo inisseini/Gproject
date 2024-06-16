@@ -251,11 +251,14 @@ class UIRoot extends Component {
           }
         );
         this.setState({ adminUser: res.data.Item.isAdmin });
+        console.log("adminUser=", this.state.adminUser);
       } catch (error) {
         console.error("Error getting data:", error);
         setResponse("Error getting data");
       }
     };
+
+    handleGet();
   }
 
   componentDidUpdate(prevProps) {
@@ -1636,7 +1639,7 @@ class UIRoot extends Component {
                     )}
                     {entered && (
                       <>
-                        {(!isLockedDownDemo || adminUser) && (
+                        {(!isLockedDownDemo || this.state.adminUser) && (
                           <>
                             <AudioPopoverButtonContainer scene={this.props.scene} />
                             <SharePopoverContainer scene={this.props.scene} hubChannel={this.props.hubChannel} />
@@ -1656,7 +1659,7 @@ class UIRoot extends Component {
                         )}
                       </>
                     )}
-                    {(!isLockedDownDemo || adminUser) && (
+                    {(!isLockedDownDemo || this.state.adminUser) && (
                       <>
                         <ChatToolbarButton
                           onClick={() => this.toggleSidebar("chat", { chatPrefix: "", chatAutofocus: false })}
