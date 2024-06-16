@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import axios from "axios";
 import PropTypes from "prop-types";
 import { CloseButton } from "../input/CloseButton";
 import { Modal } from "../modal/Modal";
@@ -110,7 +111,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
 
         const handlePut = async () => {
           const type = "PUT";
-          const data = `type=${type}&email=${email}`;
+          const data = `type=${type}&email=${email}&isAdmin=${false}&isTeacher=${false}&requested=${[]}&friends=${[]}`;
           try {
             const res = await axios.post(
               "https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/",
@@ -121,7 +122,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
                 }
               }
             );
-            console.log("mail登録完了");
+            console.log("アカウント情報更新");
             return res.data.message;
           } catch (error) {
             console.error("Error putting data:", error);
