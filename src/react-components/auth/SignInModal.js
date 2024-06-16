@@ -106,8 +106,25 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
       } else if (mailList.test(email)) {
         e.preventDefault();
 
-        // localStorageからmyIDを取得
-        const myID = localStorage.getItem("myID");
+        const haveId = async () => {
+          const type = "GET";
+          const data = `type=${type}&email=${email}`;
+          try {
+            const res = await axios.post(
+              "https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/",
+              data,
+              {
+                headers: {
+                  "Content-Type": "text/plain"
+                }
+              }
+            );
+            console.log(res.data.Item);
+            return res.data.Item;
+          } catch (error) {
+            console.error("Error getting data:", error);
+          }
+        };
 
         const handlePut = async () => {
           const type = "PUT";
@@ -123,19 +140,17 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
               }
             );
             console.log("アカウント情報更新");
+            localStorage.setItem("myID", res.data.message);
             return res.data.message;
           } catch (error) {
             console.error("Error putting data:", error);
           }
         };
 
-        // myIDが存在しない場合
-        if (!myID) {
-          // ランダムな8桁のIDを生成
-          const newID = handlePut(); //generateRandomID();
-          // 生成したIDをlocalStorageに保存
-          localStorage.setItem("myID", newID);
-          putToLambda("userList", { ID: newID, requested: [], friends: [], isAdmin: false, isTeacer: false });
+        // アカウントが存在しない場合
+        if (haveId === undefined) {
+          handlePut();
+          //putToLambda("userList", { ID: newID, requested: [], friends: [], isAdmin: false, isTeacer: false });
         }
 
         const myFriends = localStorage.getItem("myFriends");
