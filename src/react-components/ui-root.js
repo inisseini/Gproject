@@ -253,6 +253,7 @@ class UIRoot extends Component {
         );
         this.setState({ adminUser: res.data.Item.isAdmin });
         console.log("adminUser=", this.state.adminUser);
+        console.log(res.data.Item);
       } catch (error) {
         console.error("Error getting data:", error);
         setResponse("Error getting data");
