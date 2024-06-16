@@ -106,26 +106,6 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
       } else if (mailList.test(email)) {
         e.preventDefault();
 
-        const haveId = async () => {
-          const type = "GET";
-          const data = `type=${type}&email=${email}`;
-          try {
-            const res = await axios.post(
-              "https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/",
-              data,
-              {
-                headers: {
-                  "Content-Type": "text/plain"
-                }
-              }
-            );
-            console.log(res.data.Item);
-            return res.data.Item;
-          } catch (error) {
-            console.error("Error getting data:", error);
-          }
-        };
-
         const handlePut = async () => {
           const type = "PUT";
           const data = `type=${type}&email=${email}&isAdmin=${false}&isTeacher=${false}&requested=${"[]"}&friends=${"[]"}`;
@@ -147,11 +127,30 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
           }
         };
 
-        // アカウントが存在しない場合
-        if (haveId === undefined) {
-          handlePut();
-          //putToLambda("userList", { ID: newID, requested: [], friends: [], isAdmin: false, isTeacer: false });
-        }
+        const haveId = async () => {
+          const type = "GET";
+          const data = `type=${type}&email=${email}`;
+          try {
+            const res = await axios.post(
+              "https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/",
+              data,
+              {
+                headers: {
+                  "Content-Type": "text/plain"
+                }
+              }
+            );
+            // アカウントが存在しない場合
+            if (res.data.Item === undefined) {
+              handlePut();
+              //putToLambda("userList", { ID: newID, requested: [], friends: [], isAdmin: false, isTeacer: false });
+            }
+          } catch (error) {
+            console.error("Error getting data:", error);
+          }
+        };
+
+        haveId();
 
         const myFriends = localStorage.getItem("myFriends");
         if (!myFriends) {
