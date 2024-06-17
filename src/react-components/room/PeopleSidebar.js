@@ -105,11 +105,6 @@ function getPersonName(person, intl) {
   return `${person.profile?.displayName} ${suffix}`;
 }
 
-function getPersonMetacampusID(person) {
-  const suffix = person.profile?.metacampusID ? `(${person.profile.metacampusID})` : "";
-  return `${suffix}`;
-}
-
 export function PeopleSidebar({
   people,
   onSelectPerson,
