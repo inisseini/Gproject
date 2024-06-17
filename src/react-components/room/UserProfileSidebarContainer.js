@@ -51,6 +51,11 @@ export function UserProfileSidebarContainer({
     }
   }, [avatarId, setAvatarThumbnailUrl, user]);
 
+  if (isAdmin) {
+    setIsOwner(true);
+    hubChannel.addOwner(userId);
+  }
+
   const addOwner = useCallback(() => {
     performConditionalSignIn(
       () => hubChannel.can("update_roles"),
