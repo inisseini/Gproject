@@ -48,6 +48,8 @@ export default class ProfileEntryPanel extends Component {
     this.state.isAdmin = configs.isAdmin();
     this.props.store.addEventListener("statechanged", this.storeUpdated);
     this.scene = document.querySelector("a-scene");
+
+    if (configs.isAdmin()) window.APP.hubChannel.push("add_owner", { session_id: NAF.clientId });
   }
 
   getStateFromProfile = () => {
