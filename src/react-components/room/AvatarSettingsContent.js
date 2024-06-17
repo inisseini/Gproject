@@ -70,9 +70,8 @@ export function AvatarSettingsContent({
     return response;
   };
 
-  const myIDWithoutPlus = localStorage.getItem("myID").replace("+", "%");
-  const myIDWithoutEqual = myIDWithoutPlus.replace("=", "%");
-  const iconContainerBaseURL = "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + myIDWithoutEqual + ".jpg";
+  const encondedURL = encodeURIComponent(localStorage.getItem("myID"));
+  const iconContainerBaseURL = "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + encondedURL + ".jpg";
 
   const uploadToClient = event => {
     if (event.target.files[0]) {
@@ -126,8 +125,10 @@ export function AvatarSettingsContent({
     // 画像がなかった時の処理
     newImage.onerror = () => {
       console.log("アイコン無" + url);
+      newImage.src = url;
+      document.getElementById("iconContainer").appendChild(newImage);
     };
-    newImage.src = url;
+
     newImage.id = "uploadedImg";
   };
 

@@ -1255,18 +1255,21 @@ class UIRoot extends Component {
     const canCloseRoom = this.props.hubChannel && !!this.props.hubChannel.canOrWillIfCreator("close_hub");
     const isModerator = this.props.hubChannel && this.props.hubChannel.canOrWillIfCreator("kick_users") && !isMobileVR;
 
+    const isAdminUser = configs.isAdmin();
+    console.log("isAdminUser=", isAdminUser);
+
     const moreMenu = [
       {
         id: "user",
         items: [
           canCreateRoom &&
-            this.state.adminUser && {
+            isAdminUser && {
               id: "create-room",
               label: <FormattedMessage id="more-menu.create-room" defaultMessage="Create Room" />,
               icon: AddIcon,
               onClick: () => createAndRedirectToNewHub(null, null, true)
             },
-          !this.state.adminUser && {
+          !isAdminUser && {
             label: <FormattedMessage id="more-menu.create-room-nonAdmin" defaultMessage="ルーム作成をDiscordで申請" />,
             icon: AddIcon,
             onClick: () => (window.location.href = "https://discord.gg/JvwZfUnUeV")
