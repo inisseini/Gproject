@@ -237,7 +237,7 @@ class UIRoot extends Component {
     // An exit handler that discards event arguments and can be cleaned up.
     this.exitEventHandler = () => this.props.exitScene();
     this.mediaDevicesManager = APP.mediaDevicesManager;
-    handleGet = async () => {
+    const handleGet = async () => {
       const type = "GET";
       const data = `type=${type}&email=${window.APP.store.state.credentials.email}`;
       try {
