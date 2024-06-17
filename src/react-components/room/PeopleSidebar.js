@@ -228,12 +228,12 @@ export function PeopleSidebar({
             const VoiceIcon = getVoiceIconComponent(person.micPresence);
             console.log("friendtest", person.profile.metacampusID, person.profile.isAdmin);
 
-            const encondedURL = encodeURIComponent(localStorage.getItem("myID"));
+            const encodedURL = encodeURIComponent(person.profile.metacampusID);
 
             const Img = () => {
               const imageElement = useMemo(() => {
                 console.log("Rendering Img component");
-                const url = "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + encondedURL + ".jpg";
+                const url = "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + encodedURL + ".jpg";
                 console.log("img url=", url);
                 return <img src={url} alt="" />;
               }, []);

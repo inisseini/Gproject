@@ -109,11 +109,13 @@ import SeePlansCTA from "./room/components/SeePlansCTA/SeePlansCTA";
 
 import { LibrarySidebarContainer } from "./room/LibrarySidebarContainer";
 import { LibraryTestSidebarContainer } from "./room/LibraryTestSidebarContainer";
+import { ManualSidebarContainer } from "./room/ManualSidebarContainer";
 
 import { createAndRedirectToNewHub } from "../utils/phoenix-utils";
 
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import ManualToolbarButton from "./room/components/ManualToolbarButton";
 
 const avatarEditorDebug = qsTruthy("avatarEditorDebug");
 
@@ -1256,7 +1258,6 @@ class UIRoot extends Component {
     const isModerator = this.props.hubChannel && this.props.hubChannel.canOrWillIfCreator("kick_users") && !isMobileVR;
 
     const isAdminUser = configs.isAdmin();
-    console.log("isAdminUser=", isAdminUser);
 
     const moreMenu = [
       {
@@ -1614,6 +1615,9 @@ class UIRoot extends Component {
                             questionNum={this.props.selectedQuestion}
                           />
                         )}
+                      {this.state.sidebarId === "manual" && (
+                        <ManualSidebarContainer onClose={() => this.setSidebar(null)} scene={this.props.scene} />
+                      )}
                     </>
                   ) : undefined
                 }
@@ -1679,7 +1683,7 @@ class UIRoot extends Component {
                           onClick={() => this.toggleSidebar("chat", { chatPrefix: "", chatAutofocus: false })}
                           selected={this.state.sidebarId === "chat"}
                         />
-                        {window.location.href.includes("metacampus-mediacenter") ? (
+                        {window.location.href.includes("metacampus-mediacenter") && entered ? (
                           <LibraryToolbarButton
                             scene={this.props.scene}
                             onClick={() => this.toggleSidebar("library", { chatPrefix: "", chatAutofocus: false })}
@@ -1690,6 +1694,13 @@ class UIRoot extends Component {
                           <TutorialToolbarButton
                             onClick={() => this.props.scene.systems.tips.resetTips()}
                             selected={false}
+                          />
+                        )}
+                        {entered && (
+                          <ManualToolbarButton
+                            scene={this.props.scene}
+                            onClick={() => this.toggleSidebar("manual", { chatPrefix: "", chatAutofocus: false })}
+                            selected={this.state.sidebarId === "manual"}
                           />
                         )}
                       </>
