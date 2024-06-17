@@ -238,30 +238,24 @@ class UIRoot extends Component {
     this.exitEventHandler = () => this.props.exitScene();
     this.mediaDevicesManager = APP.mediaDevicesManager;
 
-    const handleGet = async () => {
-      const type = "GET";
-      const data = `type=${type}&email=${window.APP.store.state.credentials.email}`;
-      try {
-        const res = await axios.post(
-          "https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/",
-          data,
-          {
-            headers: {
-              "Content-Type": "text/plain"
-            }
-          }
-        );
-        this.setState({ adminUser: res.data.Item.isAdmin });
-        console.log("adminUser=", this.state.adminUser);
-        console.log(res.data.Item);
-      } catch (error) {
-        console.error("Error getting data:", error);
-        setResponse("Error getting data");
-      }
-    };
-
     handleGet();
   }
+
+  handleGet = async () => {
+    const type = "GET";
+    const data = `type=${type}&email=${window.APP.store.state.credentials.email}`;
+    try {
+      const res = await axios.post("https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/", data, {
+        headers: {
+          "Content-Type": "text/plain"
+        }
+      });
+      this.setState({ adminUser: res.data.Item.isAdmin });
+    } catch (error) {
+      console.error("Error getting data:", error);
+      setResponse("Error getting data");
+    }
+  };
 
   componentDidUpdate(prevProps) {
     const { hubChannel, showSignInDialog } = this.props;
@@ -326,6 +320,9 @@ class UIRoot extends Component {
     if (this.state.presenceCount != this.occupantCount()) {
       this.setState({ presenceCount: this.occupantCount() });
     }
+
+    console.log("adminuser=", this.state.adminUser);
+    console.log("config isAdmin=", configs.isAdmin());
   }
 
   onConcurrentLoad = () => {
@@ -946,7 +943,6 @@ class UIRoot extends Component {
 
     const { hasAcceptedProfile, hasChangedNameOrPronounsOrProfile } = this.props.store.state.activity;
     const isLockedDownDemo = isLockedDownDemoRoom();
-    console.log("isLockedDownDemo=", isLockedDownDemo);
     const promptForNameAndAvatarBeforeEntry = this.props.hubIsBound
       ? !hasAcceptedProfile
       : !hasChangedNameOrPronounsOrProfile;
@@ -1641,7 +1637,7 @@ class UIRoot extends Component {
                     )}
                     {entered && (
                       <>
-                        {(!isLockedDownDemo || this.state.adminUser) && (
+                        {!isLockedDownDemo && (
                           <>
                             <AudioPopoverButtonContainer scene={this.props.scene} />
                             <SharePopoverContainer scene={this.props.scene} hubChannel={this.props.hubChannel} />
@@ -1661,7 +1657,7 @@ class UIRoot extends Component {
                         )}
                       </>
                     )}
-                    {(!isLockedDownDemo || this.state.adminUser) && (
+                    {!isLockedDownDemo && (
                       <>
                         <ChatToolbarButton
                           onClick={() => this.toggleSidebar("chat", { chatPrefix: "", chatAutofocus: false })}
