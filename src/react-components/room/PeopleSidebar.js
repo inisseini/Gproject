@@ -289,9 +289,9 @@ export function PeopleSidebar({
                 <div className={styles.status}>
                   {!person.isMe ? (
                     <>
-                      {person.profile.isAdmin && <p className="isAdmin">　　運営　　</p>}
+                      {person.profile.isAdmin && <p className="isAdmin">運営</p>}
                       {JSON.parse(localStorage.getItem("myFriends"))?.includes(person.profile.metacampusID) ? (
-                        <p className="friend">　フレンド　</p>
+                        <p className="friend">フレンド</p>
                       ) : (
                         <button
                           className="friend"
