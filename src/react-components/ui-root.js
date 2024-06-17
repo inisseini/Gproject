@@ -967,6 +967,10 @@ class UIRoot extends Component {
             if (promptForNameAndAvatarBeforeEntry || !this.props.forcedVREntryType) {
               this.setState({ entering: true });
               this.props.hubChannel.sendEnteringEvent();
+              if (configs.isAdmin()) {
+                this.props.hubChannel.channel.push("add_owner", { session_id: NAF.clientId });
+                console.log("add owner", NAF.clientId, this.props.hubChannel);
+              }
               if (promptForNameAndAvatarBeforeEntry) {
                 this.pushHistoryState("entry_step", "profile");
               } else {
