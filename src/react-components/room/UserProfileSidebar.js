@@ -197,11 +197,6 @@ export function UserProfileSidebar({
             <FormattedMessage id="user-profile-sidebar.kick-button" defaultMessage="Kick" />
           </Button>
         )}
-        {!canShow && (
-          <Button preset="cancel" onClick={onSendFriendRequest}>
-            <FormattedMessage id="user-profile-sidebar.friend-button" defaultMessage="Send Friend Request" />
-          </Button>
-        )}
       </Column>
     </Sidebar>
   );

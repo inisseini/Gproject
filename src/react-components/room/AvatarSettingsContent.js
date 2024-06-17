@@ -70,8 +70,9 @@ export function AvatarSettingsContent({
     return response;
   };
 
-  const iconContainerBaseURL =
-    "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + localStorage.getItem("myID") + ".jpg";
+  const myIDWithoutPlus = localStorage.getItem("myID").replace("+", "%");
+  const myIDWithoutEqual = myIDWithoutPlus.replace("=", "%");
+  const iconContainerBaseURL = "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + myIDWithoutEqual + ".jpg";
 
   const uploadToClient = event => {
     if (event.target.files[0]) {

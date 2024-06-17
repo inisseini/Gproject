@@ -87,7 +87,8 @@ export default class MessageDispatch extends EventTarget {
         const targetID = chatBodyList[3];
         const friendConfirm = window.confirm(request);
         if (friendConfirm) {
-          const message = "systemMessage/from/" + me + `/${myID}` + "/to/" + chatBodyList[2] + "/reSendFriendRequest";
+          const message =
+            "systemMessage///from///" + me + `///${myID}` + "///to///" + chatBodyList[2] + "///reSendFriendRequest";
           document.getElementById("avatar-rig").messageDispatch.dispatch(message);
 
           const DBClient = new DynamoDBClient({
@@ -148,7 +149,8 @@ export default class MessageDispatch extends EventTarget {
           }
         } else if (!friendConfirm) {
           console.log("フレンド申請却下");
-          const message = "systemMessage/from/" + me + `/${myID}` + "/to/" + chatBodyList[2] + "/declineFriendRequest";
+          const message =
+            "systemMessage///from///" + me + `///${myID}` + "///to///" + chatBodyList[2] + "///declineFriendRequest";
           document.getElementById("avatar-rig").messageDispatch.dispatch(message);
         }
       } else if (
