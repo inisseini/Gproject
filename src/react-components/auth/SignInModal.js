@@ -128,6 +128,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
         };
 
         const checkId = async () => {
+          console.log("checkID");
           const type = "GET";
           const data = `type=${type}&email=${email}`;
           try {

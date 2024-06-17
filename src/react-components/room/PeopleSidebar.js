@@ -232,7 +232,10 @@ export function PeopleSidebar({
               const imageElement = useMemo(() => {
                 console.log("Rendering Img component");
                 const url =
-                  "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" + person.profile.metacampusID + ".jpg";
+                  "https://metacampusassets.s3.ap-northeast-1.amazonaws.com/" +
+                  encodeURI(person.profile.metacampusID) +
+                  ".jpg";
+                console.log("img url=", url);
                 return <img src={url} alt="" />;
               }, []);
 
