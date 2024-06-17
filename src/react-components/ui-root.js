@@ -237,25 +237,28 @@ class UIRoot extends Component {
     // An exit handler that discards event arguments and can be cleaned up.
     this.exitEventHandler = () => this.props.exitScene();
     this.mediaDevicesManager = APP.mediaDevicesManager;
+    handleGet = async () => {
+      const type = "GET";
+      const data = `type=${type}&email=${window.APP.store.state.credentials.email}`;
+      try {
+        const res = await axios.post(
+          "https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/",
+          data,
+          {
+            headers: {
+              "Content-Type": "text/plain"
+            }
+          }
+        );
+        this.setState({ adminUser: res.data.Item.isAdmin });
+      } catch (error) {
+        console.error("Error getting data:", error);
+        setResponse("Error getting data");
+      }
+    };
 
     handleGet();
   }
-
-  handleGet = async () => {
-    const type = "GET";
-    const data = `type=${type}&email=${window.APP.store.state.credentials.email}`;
-    try {
-      const res = await axios.post("https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/", data, {
-        headers: {
-          "Content-Type": "text/plain"
-        }
-      });
-      this.setState({ adminUser: res.data.Item.isAdmin });
-    } catch (error) {
-      console.error("Error getting data:", error);
-      setResponse("Error getting data");
-    }
-  };
 
   componentDidUpdate(prevProps) {
     const { hubChannel, showSignInDialog } = this.props;

@@ -38,6 +38,7 @@ export function UserProfileSidebarContainer({
   const isNetworkMuted = user.micPresence?.muted;
   const mayMute = !isNetworkMuted && hubChannel.canOrWillIfCreator("mute_users");
   const [isOwner, setIsOwner] = useState(!!roles.owner);
+  console.log("isOwner=", isOwner);
   const isCreator = !!roles.creator;
   const isSignedIn = !!roles.signed_in;
   const mayAddOwner = hubChannel.canOrWillIfCreator("update_roles") && !isOwner && !isCreator;
