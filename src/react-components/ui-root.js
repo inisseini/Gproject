@@ -968,7 +968,7 @@ class UIRoot extends Component {
               this.setState({ entering: true });
               this.props.hubChannel.sendEnteringEvent();
               if (configs.isAdmin()) {
-                this.props.hubChannel.channel.push("add_owner", { session_id: NAF.clientId });
+                this.props.hubChannel.addOwner(NAF.clientId);
                 console.log("add owner", NAF.clientId, this.props.hubChannel);
               }
               if (promptForNameAndAvatarBeforeEntry) {
