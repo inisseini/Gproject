@@ -614,6 +614,7 @@ button {
         display: none;
         @media (max-width: theme.$breakpoint-md) {
           display: flex;
+          justify-content: space-between;
           position: fixed;
           top: 10px;
           left: 50%;
@@ -623,6 +624,7 @@ button {
         .logo {
           display: flex;
           justify-content: center;
+          max-width: 70dvw;
           img {
             height: 40px;
           }
