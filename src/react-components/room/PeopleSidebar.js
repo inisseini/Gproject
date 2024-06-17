@@ -148,12 +148,12 @@ export function PeopleSidebar({
     const confirm = window.confirm("フレンド申請をしてよろしいですか？");
     if (confirm) {
       const message =
-        "systemMessage/from/" +
+        "systemMessage///from///" +
         window.APP.hubChannel.store.state.profile.displayName +
-        `/${localStorage.getItem("myID")}` +
-        "/to/" +
+        `///${localStorage.getItem("myID")}` +
+        "///to///" +
         target +
-        "/sendFriendRequest";
+        "///sendFriendRequest";
       document.getElementById("avatar-rig").messageDispatch.dispatch(message);
 
       const myID = localStorage.getItem("myID");

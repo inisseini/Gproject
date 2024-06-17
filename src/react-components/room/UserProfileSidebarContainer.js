@@ -113,7 +113,7 @@ export function UserProfileSidebarContainer({
   const me = window.APP.hubChannel.store.state.profile.displayName;
 
   const sendFriendRequest = () => {
-    const message = "systemMessage/from/" + me + "/to/" + displayName + "/sendFriendRequest";
+    const message = "systemMessage///from///" + me + "///to///" + displayName + "///sendFriendRequest";
     document.getElementById("avatar-rig").messageDispatch.dispatch(message);
   };
 

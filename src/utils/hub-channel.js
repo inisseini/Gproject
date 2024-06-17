@@ -151,15 +151,10 @@ export default class HubChannel extends EventTarget {
   }
 
   setPermissionsFromToken = token => {
-    console.log("setpermissionfromtoken");
     // Note: token is not verified.
     this.token = token;
     this._permissions = jwtDecode(token);
     configs.setIsAdmin(this._permissions.postgrest_role === "ret_admin");
-    if (configs.isAdmin()) {
-      console.log("adminなので権利付与");
-      this.channel.push("add_owner", { session_id: NAF.clientId });
-    }
     this.dispatchEvent(new CustomEvent("permissions_updated"));
 
     // Refresh the token 1 minute before it expires.

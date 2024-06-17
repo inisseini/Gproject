@@ -67,9 +67,9 @@ export default class MessageDispatch extends EventTarget {
   receive(message) {
     if (isLockedDownDemoRoom()) return;
 
-    const isSlash = message.body !== undefined ? message.body.includes("/") : false;
+    const isSlash = message.body !== undefined ? message.body.includes("///") : false;
     if (isSlash) {
-      const chatBodyList = message.body.split("/");
+      const chatBodyList = message.body.split("///");
       if (
         chatBodyList[0] === "systemMessage" &&
         chatBodyList[6] === "sendFriendRequest" &&
@@ -189,7 +189,7 @@ export default class MessageDispatch extends EventTarget {
   };
 
   dispatch = message => {
-    if (message.startsWith("/")) {
+    if (message.startsWith("///")) {
       const commandParts = message.substring(1).split(/\s+/);
       this.dispatchCommand(commandParts[0], ...commandParts.slice(1));
       document.activeElement.blur(); // Commands should blur
