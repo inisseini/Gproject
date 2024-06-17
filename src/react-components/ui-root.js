@@ -1601,7 +1601,10 @@ class UIRoot extends Component {
                       )}
                       {this.state.sidebarId === "library" && (
                         <LibrarySidebarContainer
-                          onClose={() => this.setSidebar(null)}
+                          onClose={() => {
+                            this.setSidebar(null);
+                            this.props.setQuestion(null);
+                          }}
                           scene={this.props.scene}
                           setQuestion={this.props.setQuestion}
                         />
@@ -1762,7 +1765,7 @@ function UIRootHooksWrapper(props) {
   const breakpoint = useCssBreakpoints();
   const { voice_chat: canVoiceChat } = usePermissions();
 
-  const [selectedQuestion, setQuestion] = useState();
+  const [selectedQuestion, setQuestion] = useState(null);
 
   useEffect(() => {
     const el = document.getElementById("preload-overlay");

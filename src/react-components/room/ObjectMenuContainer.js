@@ -120,7 +120,10 @@ function ObjectMenuItems({
         </span>
       </ObjectMenuButton>
       <br />
-      {selectedQuestion !== 3 && selectedQuestion !== 7 ? (
+      {window.location.href.includes("metacampus-mediacenter") &&
+      selectedQuestion !== null &&
+      selectedQuestion !== 3 &&
+      selectedQuestion !== 7 ? (
         <ObjectMenuButton
           onClick={() => {
             setSidebar("libraryTest");
