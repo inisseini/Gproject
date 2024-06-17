@@ -145,8 +145,13 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
             );
             // アカウントが存在しない場合
             if (res.data.Item === undefined) {
+              console.log("アカウントを作成します");
               handlePut();
               //putToLambda("userList", { ID: newID, requested: [], friends: [], isAdmin: false, isTeacer: false });
+            } else if (res.data.Item.ID !== localStorage.getItem("myID")) {
+              console.log("アカウントが変更されました");
+              localStorage.setItem("myID", res.data.Item.ID);
+              localStorage.setItem("myFriends", JSON.stringify(res.data.Item.friends));
             }
           } catch (error) {
             console.error("Error getting data:", error);
