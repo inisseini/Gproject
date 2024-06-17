@@ -1266,11 +1266,11 @@ class UIRoot extends Component {
               icon: AddIcon,
               onClick: () => createAndRedirectToNewHub(null, null, true)
             },
-            !this.state.adminUser && {
-              label: <FormattedMessage id="more-menu.create-room-nonAdmin" defaultMessage="ルーム作成をDiscordで申請" />,
-              icon: AddIcon,
-              onClick: () => window.location.href = 'https://discord.gg/JvwZfUnUeV';
-            },
+          !this.state.adminUser && {
+            label: <FormattedMessage id="more-menu.create-room-nonAdmin" defaultMessage="ルーム作成をDiscordで申請" />,
+            icon: AddIcon,
+            onClick: () => (window.location.href = "https://discord.gg/JvwZfUnUeV")
+          },
           !isLockedDownDemo && {
             id: "user-profile",
             label: <FormattedMessage id="more-menu.profile" defaultMessage="Change Name & Avatar" />,
