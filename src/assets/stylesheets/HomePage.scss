@@ -614,6 +614,7 @@ button {
         display: none;
         @media (max-width: theme.$breakpoint-md) {
           display: flex;
+          padding: 0 10px;
           justify-content: space-between;
           position: fixed;
           top: 10px;

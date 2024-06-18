@@ -1085,7 +1085,7 @@ export function HomePage() {
                         <img src={Entry} />
                         <p>MetaCampUsがverβとしてリリースされました。正式版リリースについては続報をお待ちください。</p>
                       </div>
-                      <a className="articleDetail">詳細</a>
+                      {/*<a className="articleDetail">詳細</a>*/}
                     </div>
 
                     {/* 
