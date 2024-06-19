@@ -90,6 +90,8 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
     }
   });
 
+  const docClient = DynamoDBDocumentClient.from(DBClient);
+
   const GetGeneral = async () => {
     const command = new GetCommand({
       TableName: "generalParameter",
