@@ -109,6 +109,8 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
 
   const mailList = GetGeneral();
 
+  console.log(mailList);
+
   const intl = useIntl();
 
   const [email, setEmail] = useState(initialEmail);
