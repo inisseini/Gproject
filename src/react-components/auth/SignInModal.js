@@ -9,6 +9,8 @@ import { TextInputField } from "../input/TextInputField";
 import { Column } from "../layout/Column";
 import { LegalMessage } from "./LegalMessage";
 import { putToLambda } from "../../utils/aws-lambda-dynamodb";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 
 export const SignInStep = {
   submit: "submit",
@@ -80,14 +82,37 @@ export const SignInMessages = defineMessages({
 });
 
 export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl, message }) {
+  const DBClient = new DynamoDBClient({
+    region: "ap-northeast-1",
+    credentials: {
+      accessKeyId: "AKIA6O7CLSZWBGWOEKTK",
+      secretAccessKey: "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"
+    }
+  });
+
+  const GetGeneral = async () => {
+    const command = new GetCommand({
+      TableName: "generalParameter",
+      Key: {
+        key: "accountPermission"
+      }
+    });
+
+    const response = await docClient.send(command);
+
+    console.log(response.Item);
+
+    return new RegExp(response.Item.mailList);
+  };
+
+  const mailList = GetGeneral();
+
   const intl = useIntl();
 
   const [email, setEmail] = useState(initialEmail);
 
-  const mailList =
-    /waseda.jp|w-as.jp|u-tokyo.ac.jp|sangaku.titech.ac.jp|titech.ac.jp|tuat.ac.jp|ocha.ac.jp|kuhs.ac.jp|ynu.ac.jp|yokohama-cu.ac.jp|tmd.ac.jp|keio.ac.jp|tmu.ac.jp|keio.jpn|shibaura-it.ac.jp|ow.shibaura-it.ac.jp|s.tsukuba.ac.jp|u.tsukuba.ac.jp|sic.shibaura-it.ac.jp|wasedajg.ed.jp|wasedasaga.jp|chiba-u.jp|student.chiba-u.jp|faculty.chiba-u.jp|student.gs.chiba-u.jp|office.gs.chiba-u.jp|faculty.gs.chiba-u.jp|vleap.jp|issei.kurata819@gmail.com/;
-
-  console.log("maillist type =", typeof mailList, mailList);
+  /*const mailList =
+    /waseda.jp|w-as.jp|u-tokyo.ac.jp|sangaku.titech.ac.jp|titech.ac.jp|tuat.ac.jp|ocha.ac.jp|kuhs.ac.jp|ynu.ac.jp|yokohama-cu.ac.jp|tmd.ac.jp|keio.ac.jp|tmu.ac.jp|keio.jp|shibaura-it.ac.jp|ow.shibaura-it.ac.jp|s.tsukuba.ac.jp|u.tsukuba.ac.jp|sic.shibaura-it.ac.jp|wasedajg.ed.jp|wasedasaga.jp|chiba-u.jp|student.chiba-u.jp|faculty.chiba-u.jp|student.gs.chiba-u.jp|office.gs.chiba-u.jp|faculty.gs.chiba-u.jp|vleap.jp|issei.kurata819@gmail.com/;*/
 
   const generateRandomID = () => {
     let result = "";
