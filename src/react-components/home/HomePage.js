@@ -1080,7 +1080,7 @@ export function HomePage() {
                   <h2 className="title">NEWS</h2>
                   <div className="articleContainer">
                     <div className="article">
-                      <h3 className="articleTitle">2023-02-09 β版リリース</h3>
+                      <h3 className="articleTitle">2024-06-01 β版リリース</h3>
                       <div className="articleContent">
                         <img src={Entry} />
                         <p>MetaCampUsがverβとしてリリースされました。正式版リリースについては続報をお待ちください。</p>
