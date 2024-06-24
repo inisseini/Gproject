@@ -35,7 +35,7 @@ const DiscordMessageSend = (type, message) => {
     headers: {
       "Content-Type": "application/json"
     },
-    body: type === "text" ? JSON.stringify(requestBodyTxt) : type === "img" ? JSON.stringify(requestBodyImg) : undefined
+    body: type === "img" ? JSON.stringify(requestBodyImg) : JSON.stringify(requestBodyTxt)
   })
     .then(response => {
       console.log(response.status);
