@@ -7,6 +7,8 @@ const DiscordMessageSend = (type, message) => {
   const webhookUrl =
     type === "text"
       ? "https://discord.com/api/webhooks/1242044974556643339/qI-AsQ7IX-t4qzCls-NZpY9mPi-0zzR4xG8bB7mvXUV6D72aAkCw11GCL0CD6a5TahD-"
+      : type === "mail"
+      ? "https://discord.com/api/webhooks/1254917005409128619/EoK0eTulG4IqMnCDS5y7eDddyKYFtPhsnT2ib5z-1J_drCvencLPO2zWnDeXWDKmPVmM"
       : "https://discord.com/api/webhooks/1242045512027471943/l_QzWW1YpGaGz1ES44MdjNArMqHN10y5NL2fFGCPkODj_u5yeqVxAyzbND2j9CS6StS_";
 
   const requestBodyTxt = {

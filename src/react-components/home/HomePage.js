@@ -52,6 +52,7 @@ import { Button } from "../input/Button";
 import { AvatarSettingsContent } from "../room/AvatarSettingsContent";
 
 import backgroundImg from "../../assets/images/backGround.gif";
+import DiscordMessageSend from "../../utils/Discord-message-send";
 
 export function HomePage() {
   //const store = window.APP.store;
@@ -139,6 +140,11 @@ export function HomePage() {
     const request = `name=${form.current.user_name.value}&email=${form.current.user_email.value}&message=${form.current.message.value}`;
     xhr.send(request);
     alert("メールを送信しました。");
+
+    DiscordMessageSend(
+      "mail",
+      `${form.current.user_name.value}様（${form.current.user_email.value}）からお問い合わせです。以下本文：${form.current.message.value}`
+    );
   };
 
   const [progress, setProgress] = useState(0);

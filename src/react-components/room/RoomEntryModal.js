@@ -75,14 +75,14 @@ export function RoomEntryModal({
               </span>
             </Button>
           )}
-          {showSpectate && (
+          {/*showSpectate && (
             <Button preset="accent2" onClick={onSpectate}>
               <ShowIcon />
               <span>
                 <FormattedMessage id="room-entry-modal.spectate-button" defaultMessage="Spectate" />
               </span>
             </Button>
-          )}
+          )*/}
           {showRoomSettings && breakpoint !== "sm" && (
             <>
               <hr className={styleUtils.showLg} />
