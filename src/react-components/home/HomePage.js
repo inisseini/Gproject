@@ -136,7 +136,7 @@ export function HomePage() {
 
     xhr.open("POST", "https://vgdr5k3cwrrk4c7ehcebdsp4he0okmgj.lambda-url.ap-northeast-1.on.aws/", true);
     xhr.setRequestHeader("content-type", "text/plain");
-    const request = form.current.user_name.value + form.current.user_email.value + form.current.message.value;
+    const request = `name=${form.current.user_name.value}&email=${form.current.user_email.value}&message=${form.current.message.value}`;
     xhr.send(request);
     alert("メールを送信しました。");
   };
