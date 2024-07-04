@@ -19,10 +19,9 @@
   overflow: hidden;
   img {
     width: 100%;
+    flex-shrink: 0;
   }
 }
-
-
 
 :local(.iconButton) {
   background-color: #7ed320;

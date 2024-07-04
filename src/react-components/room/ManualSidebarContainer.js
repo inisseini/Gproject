@@ -415,7 +415,7 @@ const content = {
 
 // NOTE: context and related functions moved to ChatContext
 export function ManualSidebarContainer({ onClose, scene }) {
-  const [isMobile, setIsMobile] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const [selectedSection, setSelectedSection] = useState("操作方法");
 
   const handleToggle = () => {

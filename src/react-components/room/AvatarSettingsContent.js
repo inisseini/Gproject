@@ -177,9 +177,9 @@ export function AvatarSettingsContent({
       <TextInputField
         label={
           <>
-            <FormattedMessage id="avatar-settings-content.display-profile-label" defaultMessage="Profile (optional)" />
-            <br />
-            <p>全体に公開するプロフィールです。</p>
+            {/*<FormattedMessage id="avatar-settings-content.display-profile-label" defaultMessage="Profile (optional)" />
+            <br />*/}
+            <p>所属等（全員に公開されるプロフィールです。）</p>
           </>
         }
         value={profile}
@@ -188,12 +188,12 @@ export function AvatarSettingsContent({
         onChange={onChangeProfile}
         description={
           <>
-            <FormattedMessage
+            {/*<FormattedMessage
               id="avatar-settings-content.display-profile-description"
               defaultMessage="Alphanumerics, hyphens, underscores, and tildes. No more than 32"
             />
-            <br />
-            <p>フレンドにのみ公開するプロフィールです。本名や所属大学・組織を記入することを推奨します。</p>
+            <br />*/}
+            <p>お名前（フレンドのみ公開されます。）</p>
           </>
         }
         ref={profileInputRef}
