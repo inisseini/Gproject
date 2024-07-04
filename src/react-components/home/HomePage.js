@@ -1102,7 +1102,7 @@ export function HomePage() {
                       <div className="articleDetail" onClick={() => setNewsOpen(!isNewsOpen)}>
                         {isNewsOpen ? "閉じる" : "詳　細"}
                       </div>
-                      {isNewsOpen ?? (
+                      {isNewsOpen && (
                         <p>
                           MCUでは、「やりたい」が「カタチ」になるメタバース上の共創型コミュニティをコンセプトに、今後は様々なイベントやワークショップの開催を予定しています。それに先立って、MCUの空間をお披露目するキャンパスツアーを開催しますので、ご興味のある方は是非Googleフォームにてご予約ください！
                           <br />
