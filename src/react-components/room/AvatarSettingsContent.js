@@ -179,7 +179,7 @@ export function AvatarSettingsContent({
           <>
             {/*<FormattedMessage id="avatar-settings-content.display-profile-label" defaultMessage="Profile (optional)" />
             <br />*/}
-            <p>所属等（全員に公開されるプロフィールです。）</p>
+            <p>所属等</p>
           </>
         }
         value={profile}
@@ -193,27 +193,33 @@ export function AvatarSettingsContent({
               defaultMessage="Alphanumerics, hyphens, underscores, and tildes. No more than 32"
             />
             <br />*/}
-            <p>お名前（フレンドのみ公開されます。）</p>
+            <p>全員に公開されるプロフィールです。</p>
           </>
         }
         ref={profileInputRef}
       />
       <TextInputField
         label={
-          <FormattedMessage
+          <>
+            {/*<FormattedMessage
             id="avatar-settings-content.display-friendContent-label"
             defaultMessage="フレンド限定表示内容"
-          />
+          />*/}
+            <p>お名前</p>
+          </>
         }
         value={friendContent}
         pattern={friendContentPattern}
         spellCheck="false"
         onChange={onChangefriendContent}
         description={
-          <FormattedMessage
-            id="avatar-settings-content.display-friendContent-description"
-            defaultMessage="フレンドにのみ表示される情報です"
-          />
+          <>
+            {/*<FormattedMessage
+              id="avatar-settings-content.display-friendContent-description"
+              defaultMessage="フレンドにのみ表示される情報です"
+            />*/}
+            <p>フレンドにのみ公開されます。</p>
+          </>
         }
         ref={friendContentInputRef}
       />

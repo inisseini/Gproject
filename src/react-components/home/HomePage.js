@@ -281,6 +281,8 @@ export function HomePage() {
     zIndex: 0
   };
 
+  const [isNewsOpen, setNewsOpen] = useState(false);
+
   return (
     <PageContainer className={styles.homePage}>
       <Container>
@@ -1088,6 +1090,46 @@ export function HomePage() {
                         <p>MetaCampUsがverβとしてリリースされました。正式版リリースについては続報をお待ちください。</p>
                       </div>
                       {/*<a className="articleDetail">詳細</a>*/}
+                    </div>
+
+                    <div className="article">
+                      <h3 className="articleTitle">2024-06-01 オープンキャンパス開催</h3>
+                      <div className="articleContent">
+                        <img src={Entry} />
+                        <p>
+                          この度、GTIE18大学の学生・教職員なら誰でも利用可能な、メタバース空間上のキャンパス「MetaCampUs（メタキャンパス、通称MCU）」が開校致します！
+                        </p>
+                      </div>
+                      <div className="articleDetail" onClick={() => setNewsOpen(!isNewsOpen)}>
+                        {isNewsOpen ? "閉じる" : "詳　細"}
+                      </div>
+                      {isNewsOpen ?? (
+                        <>
+                          <p>
+                            MCUでは、「やりたい」が「カタチ」になるメタバース上の共創型コミュニティをコンセプトに、今後は様々なイベントやワークショップの開催を予定しています。それに先立って、MCUの空間をお披露目するキャンパスツアーを開催しますので、ご興味のある方は是非Googleフォームにてご予約ください！
+                            <br />
+                            <br />
+                            キャンパスツアー詳細
+                            <br />
+                            <br />
+                            MCUをより多くの方に知って頂くことを目的にオープンキャンパスツアーを実施します。
+                            <br />
+                            ご興味のある教職員及び学生の方々や、MCUを使った様々なイベントや勉強会、サークル活動での利用まで、幅広い活動にお使い頂けますので、ご検討されている方は是非お気軽にご参加ください！以下Googleフォームにご入力後、前日にMCU入室のためのご案内をさせて頂きます。
+                            <br />
+                            <br />
+                            【実施日】
+                            <br />
+                            6月19日(水) 12:15-13:00
+                            <br />
+                            6月24日(月) 12:15-13:00
+                            <br />
+                            <br />
+                            【参加URL】
+                            <br />
+                            https://forms.gle/Mkqdc12NNvPnSgWW9
+                          </p>
+                        </>
+                      )}
                     </div>
 
                     {/* 
