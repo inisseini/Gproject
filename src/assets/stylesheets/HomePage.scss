@@ -1044,9 +1044,11 @@ button {
                 }
               }
               .articleDetail {
+                cursor: pointer;
                 position: absolute;
-                bottom: -10%;
-                right: 10px;
+                bottom: -12px;
+                right: 50%;
+                transform: translateX(50%);
                 width: 150px;
                 padding: 5px;
                 text-align: center;
