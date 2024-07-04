@@ -1107,7 +1107,7 @@ export function HomePage() {
                           MCUでは、「やりたい」が「カタチ」になるメタバース上の共創型コミュニティをコンセプトに、今後は様々なイベントやワークショップの開催を予定しています。それに先立って、MCUの空間をお披露目するキャンパスツアーを開催しますので、ご興味のある方は是非Googleフォームにてご予約ください！
                           <br />
                           <br />
-                          キャンパスツアー詳細
+                          【キャンパスツアー詳細】
                           <br />
                           <br />
                           MCUをより多くの方に知って頂くことを目的にオープンキャンパスツアーを実施します。
@@ -1124,7 +1124,7 @@ export function HomePage() {
                           <br />
                           【参加URL】
                           <br />
-                          https://forms.gle/Mkqdc12NNvPnSgWW9
+                          <a href="https://forms.gle/Mkqdc12NNvPnSgWW9">https://forms.gle/Mkqdc12NNvPnSgWW9</a>
                         </p>
                       )}
                     </div>

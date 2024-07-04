@@ -1013,11 +1013,15 @@ button {
 
         .News {
           padding: 10px 15px;
+          overflow: hidden;
           .articleContainer {
+            width: 100%;
+            aspect-ratio: 1 / 1.5;
             display: flex;
             flex-direction: column;
             margin: 15px 0;
-            overflow-y: auto;
+            overflow-y: scroll;
+            padding-bottom: 50px;
             .article {
               background-color: #ffffff;
               position: relative;
@@ -1026,6 +1030,7 @@ button {
               display: flex;
               flex-direction: column;
               margin: 15px 0;
+              word-break: break-all;
               .articleTitle {
                 color: var(--accentGreen);
                 font-weight: lighter;
