@@ -1,5 +1,5 @@
 @use "../../react-components/styles/theme.scss";
-@import 'shared.scss';
+@import "shared.scss";
 
 $fontSize: 16px;
 $semi-bold: 600;
@@ -22,8 +22,8 @@ $semi-bold: 600;
   align-items: center;
   padding-bottom: 16px;
 
-  input[type='number'] {
-    -moz-appearance:textfield;
+  input[type="number"] {
+    -moz-appearance: textfield;
 
     &:disabled,
     &[disabled] {
@@ -31,11 +31,12 @@ $semi-bold: 600;
     }
   }
 
-  input[type=text],input[type=number] {
+  input[type="text"],
+  input[type="number"] {
     cursor: pointer;
     @extend %rounded-border;
     @extend %default-font;
-    color: theme.$text1-color;;
+    color: theme.$text1-color;
     padding: 0px;
     margin: 0px;
     background: transparent;
@@ -80,7 +81,7 @@ $semi-bold: 600;
   font-weight: bold;
 }
 
-:local(.nav-item){
+:local(.nav-item) {
   @extend %default-font;
   @extend %font-nav-item;
   @extend %no-default-button-style;
@@ -124,17 +125,17 @@ $semi-bold: 600;
     padding-left: 15px;
   }
 }
-:local(.column){
+:local(.column) {
   display: flex;
   flex-flow: column;
 }
 %row {
   display: flex;
   align-items: center;
-  &>*{
+  & > * {
     margin-right: 12px;
   }
-  &>*:last-child {
+  & > *:last-child {
     margin-right: 0px;
   }
 }
@@ -152,7 +153,7 @@ $semi-bold: 600;
 :local(.row-right) {
   @extend %row-right;
 }
-:local(.row-center){
+:local(.row-center) {
   @extend %row-center;
 }
 
@@ -162,10 +163,10 @@ $semi-bold: 600;
   min-width: 36px;
   min-height: 36px;
 }
-:local(.warn-icon-placeholder){
+:local(.warn-icon-placeholder) {
   @extend %warn-icon-size;
 }
-:local(.warn-icon){
+:local(.warn-icon) {
   @extend %warn-icon-size;
   color: theme.$error-color;
 }
@@ -173,11 +174,11 @@ $semi-bold: 600;
 :local(.horizontal) {
   @extend %preference-list-item;
   justify-content: space-between;
-  &>*:first-child {
+  & > *:first-child {
     margin-left: 16px !important;
     margin-right: 16px !important;
   }
-  &>* {
+  & > * {
     margin-right: 16px !important;
   }
 }
@@ -185,7 +186,7 @@ $semi-bold: 600;
   @extend %preference-list-item;
   flex-flow: column;
   justify-content: center;
-  &>*{
+  & > * {
     margin: 0px 16px !important;
   }
 }
@@ -194,15 +195,15 @@ $semi-bold: 600;
   justify-content: space-between;
   align-items: center;
   margin-right: 0px;
-  &>*:first-child {
+  & > *:first-child {
     margin-left: 16px;
     margin-right: 16px;
   }
-  &>* {
+  & > * {
     margin-right: 16px;
   }
 }
-:local(.preference-label){
+:local(.preference-label) {
   @extend %default-font;
   font-size: $fontSize;
   font-weight: 600;
@@ -227,7 +228,7 @@ $semi-bold: 600;
   font-size: $fontSize;
   text-align: center;
 }
-:local(.toast){
+:local(.toast) {
   width: 100%;
   max-width: 600px;
   z-index: 10;
@@ -238,14 +239,14 @@ $semi-bold: 600;
   align-items: center;
   border-radius: 16px 16px 0px 0px;
   background-color: theme.$tile-bg-color;
-  &>* {
+  & > * {
     margin: 16px 16px 0px 16px;
   }
-  &>*:last-child {
+  & > *:last-child {
     margin: 16px;
   }
 }
-:local(.refresh-now-button){
+:local(.refresh-now-button) {
   @extend %action-button;
   min-width: 120px;
   width: 120px;
@@ -262,19 +263,19 @@ $semi-bold: 600;
   @extend %no-default-button-style;
   @extend %reset-to-default-button-size;
   color: theme.$text2-color;
-  @media(hover: hover){
+  @media (hover: hover) {
     &:hover {
       color: theme.$primary-color;
     }
   }
 }
-:local(.reset-to-default-button-placeholder){
+:local(.reset-to-default-button-placeholder) {
   @extend %reset-to-default-button-size;
 }
-:local(.flex){
+:local(.flex) {
   display: flex;
 }
-:local(.icon){
+:local(.icon) {
   width: 32px !important;
   height: 32px !important;
 }
@@ -294,7 +295,7 @@ $semi-bold: 600;
   min-height: 36px;
 }
 
-:local(.checkbox-placeholder){
+:local(.checkbox-placeholder) {
   @extend %checkbox-size;
 }
 :local(.scrolling-content) {
@@ -303,7 +304,7 @@ $semi-bold: 600;
   width: 800px;
   max-width: 100%;
 
-  input[type=checkbox] {
+  input[type="checkbox"] {
     cursor: pointer;
     cursor: pointer;
     appearance: none;
@@ -318,9 +319,9 @@ $semi-bold: 600;
     justify-content: center;
     @extend %checkbox-size;
   }
-  input[type=checkbox]:checked {
+  input[type="checkbox"]:checked {
     &::after {
-      content: ' ';
+      content: " ";
       position: absolute;
       background: theme.$active-color;
       border-radius: 6px;
@@ -340,7 +341,7 @@ $semi-bold: 600;
   }
 }
 
-:local(.section-title){
+:local(.section-title) {
   @extend %default-font;
   font-weight: normal;
   text-transform: uppercase;
@@ -377,24 +378,24 @@ $semi-bold: 600;
     }
   }
 }
-:local(.dropdown-arrow){
+:local(.dropdown-arrow) {
   pointer-events: none;
   position: absolute;
   right: 7.5%;
-
+  width: 10px;
   &:local(.disabled) {
     filter: opacity(25%);
   }
 }
 
-:local(.number-with-range){
+:local(.number-with-range) {
   display: flex;
   flex-flow: row;
   justify-content: flex-start;
   align-items: center;
 
   :local(.number-in-number-with-range) {
-    display:flex;
+    display: flex;
     justify-content: center;
     cursor: pointer;
 
@@ -415,4 +416,3 @@ $semi-bold: 600;
   overflow-wrap: break-word;
   line-height: 1.25;
 }
-

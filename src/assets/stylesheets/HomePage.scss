@@ -503,6 +503,9 @@ button {
             max-width: 400px;
             margin: 0 auto;
             display: block;
+            @media (max-width: theme.$breakpoint-md) {
+              max-width: 250px;
+            }
           }
           .entryButton {
             background-color: var(--accentGreen);
@@ -590,7 +593,7 @@ button {
               padding: 10px 20px;
               border-radius: 10px;
               color: var(--accentOrange);
-              margin-top: 50px;
+              margin-top: 10px;
             }
             .description {
               display: none;
@@ -1002,6 +1005,10 @@ button {
           margin-bottom: 20px;
           color: #8b8b8b;
           padding: 10px 20px;
+          @media (max-width: theme.$breakpoint-md) {
+            margin-bottom: 0px;
+            padding: 0px 20px;
+          }
           .title {
             color: #8b8b8b;
             text-align: left;
@@ -1026,6 +1033,10 @@ button {
             overflow-y: scroll;
             -webkit-overflow-scrolling: touch;
             padding-bottom: 50px;
+
+            @media (max-width: theme.$breakpoint-md) {
+              margin: 0;
+            }
             .article {
               background-color: #ffffff;
               position: relative;
