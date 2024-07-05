@@ -362,8 +362,8 @@ export function HomePage() {
                       <img src={MyAccount} />
                     </li>
                   </a>
-                  <a href="#" onClick={onSignOut}>
-                    <li className="orange">
+                  <a href="#">
+                    <li className="orange" onClick={onSignOut}>
                       <img src={LogOut} />
                     </li>
                   </a>
