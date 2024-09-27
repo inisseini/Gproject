@@ -36,8 +36,8 @@ const WEBCAM_SIMULCAST_ENCODINGS = [
 
 // Used for simulcast screen sharing.
 const SCREEN_SHARING_SIMULCAST_ENCODINGS = [
-  { dtx: true, maxBitrate: 3000000 }, //1500000
-  { dtx: true, maxBitrate: 6000000 }
+  { dtx: true, maxBitrate: 4000000 }, //1500000
+  { dtx: true, maxBitrate: 8000000 } //6000000
 ];
 
 export const DIALOG_CONNECTION_CONNECTED = "dialog-connection-connected";
