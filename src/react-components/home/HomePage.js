@@ -435,7 +435,7 @@ export function HomePage() {
                       <br />
                       早稲田大学
                       <br />
-                      東京工業大学
+                      東京科学大学
                       <br />
                       筑波大学
                       <br />
@@ -450,8 +450,6 @@ export function HomePage() {
                       横浜国立大学
                       <br />
                       横浜市立大学
-                      <br />
-                      東京医科歯科大学
                       <br />
                       慶應義塾大学
                       <br />
@@ -547,7 +545,7 @@ export function HomePage() {
                       6.個人情報等の取り扱い
                       <br />
                       <br />
-                      GTIEは、本サービスの提供にあたり、ユーザーから取得する個人情報を、本サービスを含むGTIEの実施する起業活動支援プログラムの情報提供、お問い合わせ対応、本サービスの改善を目的に利用する他、GTIEの主幹機関である国立大学法人東京工業大学が別に定める「国立大学法人東京工業大学個人情報保護規程」＜http://www.somuka.titech.ac.jp/reiki_int/reiki_honbun/x385RG00001579.html＞（国立大学法人東京工業大学がそのURLを変更した場合は、変更後のURLとします。）に準拠する形で、当該目的達成に必要な範囲で利用します。
+                      GTIEは、本サービスの提供にあたり、ユーザーから取得する個人情報を、本サービスを含むGTIEの実施する起業活動支援プログラムの情報提供、お問い合わせ対応、本サービスの改善を目的に利用する他、GTIEの主幹機関である国立大学法人東京科学大学が別に定める「国立大学法人東京科学大学個人情報保護規程」＜http://www.somuka.titech.ac.jp/reiki_int/reiki_honbun/x385RG00001579.html＞（国立大学法人東京科学大学がそのURLを変更した場合は、変更後のURLとします。）に準拠する形で、当該目的達成に必要な範囲で利用します。
                       <br />
                       <br />
                       また、本サービスにおけるユーザーの利用状況を把握するために、GTIEでは下記の情報収集モジュールを利用しています。
@@ -1049,7 +1047,7 @@ export function HomePage() {
                     <img className="GTIEBackground" src={GTIEBackground} />
                     <p>
                       MetaCampUs
-                      Japan（MCU）の運営団体であるGTIE（ジータイ）とは、東京大学・東京工業大学・早稲田大学を主幹機関とした『世界を変える大学発スタートアップを育てる』プラットフォームです。
+                      Japan（MCU）の運営団体であるGTIE（ジータイ）とは、東京大学・東京科学大学・早稲田大学を主幹機関とした『世界を変える大学発スタートアップを育てる』プラットフォームです。
                       <br />
                       <br />
                       <a href="https://gtie.jp/" target="_blank" rel="noopener noreferrer">

@@ -224,7 +224,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
             title="大学発ベンチャーの知財戦略の重要性について"
             text="
               講師/清野 千秋 Seino Chiaki
-              東京工業大学 特任教授
+              東京科学大学 特任教授
             "
             img={GTIE5}
             tag="特許・知財戦略"

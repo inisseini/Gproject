@@ -207,6 +207,8 @@ export function fetchReticulumAuthenticated(url, method = "GET", payload) {
 export async function createAndRedirectToNewHub(name, sceneId, replace) {
   //DiscordMessageSend("text", "ルーム作成申請が届きました 詳細は以下の通りです");
   //return;
+  const createRoomConfirm = confirm("部屋を新しく作成しますか？");
+  if (!createRoomConfirm) return;
 
   const passwordConfirm = confirm("パスワードを設定しますか？");
   if (passwordConfirm) {

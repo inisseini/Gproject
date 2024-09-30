@@ -140,7 +140,7 @@ import "./components/avatar-inspect-collider";
 import "./components/video-texture-target";
 import "./components/mirror";
 
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Router, Route } from "react-router-dom";
 import { createBrowserHistory, createMemoryHistory } from "history";
@@ -271,10 +271,9 @@ const PHOENIX_RELIABLE_NAF = "phx-reliable";
 NAF.options.firstSyncSource = PHOENIX_RELIABLE_NAF;
 NAF.options.syncSource = PHOENIX_RELIABLE_NAF;
 
-
-const naf_tree = Object.keys(NAF.connection.entities.entities)
+const naf_tree = Object.keys(NAF.connection.entities.entities);
 const my_NAF_ID = "naf-" + naf_tree[naf_tree.length - 1];
-console.log('test myID=', my_NAF_ID, NAF);
+console.log("test myID=", my_NAF_ID, NAF);
 
 let isOAuthModal = false;
 
@@ -351,40 +350,36 @@ function mountUI(props = {}) {
     qsTruthy("allow_idle") || (process.env.NODE_ENV === "development" && !qs.get("idle_timeout"));
   const forcedVREntryType = qsVREntryType;
 
-  
-    root.render(
-      <WrappedIntlProvider>
-        <ThemeProvider store={store}>
-          <Router history={history}>
-            <Route
-              render={routeProps =>
-                props.showOAuthScreen ? (
-                  <OAuthScreenContainer oauthInfo={props.oauthInfo} />
-                ) : props.roomUnavailableReason ? (
-                  <ExitedRoomScreenContainer reason={props.roomUnavailableReason} />
-                ) : (
-                  <UIRoot
-                    {...{
-                      scene,
-                      isBotMode,
-                      disableAutoExitOnIdle,
-                      forcedVREntryType,
-                      store,
-                      mediaSearchStore,
-                      ...props,
-                      ...routeProps
-                    }}
-                  />
-                )
-              }
-            />
-          </Router>
-        </ThemeProvider>
-      </WrappedIntlProvider>
-    );
-  
-
-  
+  root.render(
+    <WrappedIntlProvider>
+      <ThemeProvider store={store}>
+        <Router history={history}>
+          <Route
+            render={routeProps =>
+              props.showOAuthScreen ? (
+                <OAuthScreenContainer oauthInfo={props.oauthInfo} />
+              ) : props.roomUnavailableReason ? (
+                <ExitedRoomScreenContainer reason={props.roomUnavailableReason} />
+              ) : (
+                <UIRoot
+                  {...{
+                    scene,
+                    isBotMode,
+                    disableAutoExitOnIdle,
+                    forcedVREntryType,
+                    store,
+                    mediaSearchStore,
+                    ...props,
+                    ...routeProps
+                  }}
+                />
+              )
+            }
+          />
+        </Router>
+      </ThemeProvider>
+    </WrappedIntlProvider>
+  );
 }
 
 export function remountUI(props) {
@@ -760,10 +755,45 @@ document.addEventListener("DOMContentLoaded", async () => {
   const hubId = getCurrentHubId();
   console.log(`Hub ID: ${hubId}`);
 
+  const officialURLs = [
+    "metacampus-entrance-world",
+    "metacampus-yokotyou-world",
+    "metacampus-eventroom-world",
+    "metacampus-professorroom-world",
+    "metacampus-largemeetingroom-world",
+    "metacampus-mediacenter-1f-world",
+    "metacampus-mediacenter-b1f-world",
+    "metacampus-professorroom101-world",
+    "metacampus-professorroom102-world",
+    "metacampus-professorroom103-world",
+    "metacampus-professorroom104-world",
+    "metacampus-professorroom105-world",
+    "metacampus-professorroom106-world",
+    "metacampus-professorroom107-world",
+    "metacampus-professorroom108-world",
+    "metacampus-professorroomb101-world",
+    "metacampus-professorroomb102-world",
+    "metacampus-professorroomb103-world",
+    "metacampus-professorroomb104-world",
+    "metacampus-professorroomb105-world",
+    "metacampus-mediacenter-audiovisualroom-world"
+  ];
+
+  const currentUrl = window.location.href;
+  const lastPart = currentUrl.substring(currentUrl.lastIndexOf("/") + 1);
+
+  console.log("roomName: ", lastPart);
+  if (stringArrayLower.includes(lastPartLower)) {
+    console.log(`${lastPart} は常設ワールドです`);
+  } else {
+    console.log(`${lastPart} は公開ワールドです`);
+  }
+
   const shouldRedirectToSignInPage =
     // Default room won't work if account is required to access
     !configs.feature("default_room_id") &&
     configs.feature("require_account_for_join") &&
+    officialURLs.includes(lastPart) &&
     !(store.state.credentials && store.state.credentials.token);
   if (shouldRedirectToSignInPage) {
     document.location = `/?sign_in&sign_in_destination=hub&sign_in_destination_url=${encodeURIComponent(
