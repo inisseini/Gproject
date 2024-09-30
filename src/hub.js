@@ -783,7 +783,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const lastPart = currentUrl.substring(currentUrl.lastIndexOf("/") + 1);
 
   console.log("roomName: ", lastPart);
-  if (stringArrayLower.includes(lastPartLower)) {
+  if (officialURLs.includes(lastPart)) {
     console.log(`${lastPart} は常設ワールドです`);
   } else {
     console.log(`${lastPart} は公開ワールドです`);
