@@ -1340,7 +1340,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   hubPhxChannel
     .join()
     .receive("ok", async data => {
-      console.log("data =", data);
+      if (officialURLs.includes(lastPart)) {
+        if (!(store.state.credentials && store.state.credentials.token && store.state.credentials.email)) {
+          console.log("公式ワールドにつきログインが必要です");
+          entryManager.exitScene();
+          remountUI({ roomUnavailableReason: ExitReason.denied });
+        }
+      }
 
       setLocalClientID(APP.getSid(data.session_id));
       APP.hideHubPresenceEvents = true;
@@ -1365,9 +1371,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       await presenceSync.promise;
       handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data);
     })
-    .receive("error", async res => {
-      console.log("res =", res);
-
+    .receive("error", res => {
       if (res.reason === "closed") {
         entryManager.exitScene();
         remountUI({ roomUnavailableReason: ExitReason.closed });
@@ -1375,33 +1379,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         entryManager.exitScene();
         remountUI({ oauthInfo: res.oauth_info, showOAuthScreen: true });
       } else if (res.reason === "join_denied") {
-        if (officialURLs.includes(lastPart)) {
-          entryManager.exitScene();
-          remountUI({ roomUnavailableReason: ExitReason.denied });
-        } else {
-          setLocalClientID(APP.getSid(res.session_id));
-          APP.hideHubPresenceEvents = true;
-          presenceSync.promise = new Promise(resolve => {
-            presenceSync.resolve = resolve;
-          });
-
-          socket.params().session_id = res.session_id;
-          socket.params().session_token = res.session_token;
-
-          const permsToken = oauthFlowPermsToken || res.perms_token;
-          hubChannel.setPermissionsFromToken(permsToken);
-
-          subscriptions.setHubChannel(hubChannel);
-          subscriptions.setSubscribed(res.subscriptions.web_push);
-
-          remountUI({
-            hubIsBound: res.hub_requires_oauth,
-            initialIsFavorited: res.subscriptions.favorites
-          });
-
-          await presenceSync.promise;
-          handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data);
-        }
+        entryManager.exitScene();
+        remountUI({ roomUnavailableReason: ExitReason.denied });
       }
 
       console.error(res);
