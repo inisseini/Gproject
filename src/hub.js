@@ -1363,7 +1363,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       await presenceSync.promise;
       handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data);
     })
-    .receive("error", res => {
+    .receive("error", async res => {
       if (res.reason === "closed") {
         entryManager.exitScene();
         remountUI({ roomUnavailableReason: ExitReason.closed });
@@ -1398,7 +1398,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           await presenceSync.promise;
           handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data);
         }
-
       }
 
       console.error(res);
