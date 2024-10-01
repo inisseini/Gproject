@@ -1340,6 +1340,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   hubPhxChannel
     .join()
     .receive("ok", async data => {
+      console.log("data =", data);
+
       setLocalClientID(APP.getSid(data.session_id));
       APP.hideHubPresenceEvents = true;
       presenceSync.promise = new Promise(resolve => {
@@ -1364,6 +1366,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data);
     })
     .receive("error", async res => {
+      console.log("res =", res);
+
       if (res.reason === "closed") {
         entryManager.exitScene();
         remountUI({ roomUnavailableReason: ExitReason.closed });
@@ -1375,24 +1379,24 @@ document.addEventListener("DOMContentLoaded", async () => {
           entryManager.exitScene();
           remountUI({ roomUnavailableReason: ExitReason.denied });
         } else {
-          setLocalClientID(APP.getSid(data.session_id));
+          setLocalClientID(APP.getSid(res.session_id));
           APP.hideHubPresenceEvents = true;
           presenceSync.promise = new Promise(resolve => {
             presenceSync.resolve = resolve;
           });
 
-          socket.params().session_id = data.session_id;
-          socket.params().session_token = data.session_token;
+          socket.params().session_id = res.session_id;
+          socket.params().session_token = res.session_token;
 
-          const permsToken = oauthFlowPermsToken || data.perms_token;
+          const permsToken = oauthFlowPermsToken || res.perms_token;
           hubChannel.setPermissionsFromToken(permsToken);
 
           subscriptions.setHubChannel(hubChannel);
-          subscriptions.setSubscribed(data.subscriptions.web_push);
+          subscriptions.setSubscribed(res.subscriptions.web_push);
 
           remountUI({
-            hubIsBound: data.hub_requires_oauth,
-            initialIsFavorited: data.subscriptions.favorites
+            hubIsBound: res.hub_requires_oauth,
+            initialIsFavorited: res.subscriptions.favorites
           });
 
           await presenceSync.promise;
