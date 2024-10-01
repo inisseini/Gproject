@@ -1374,7 +1374,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (officialURLs.includes(lastPart)) {
           entryManager.exitScene();
           remountUI({ roomUnavailableReason: ExitReason.denied });
+        } else {
+          setLocalClientID(APP.getSid(data.session_id));
+          APP.hideHubPresenceEvents = true;
+          presenceSync.promise = new Promise(resolve => {
+            presenceSync.resolve = resolve;
+          });
+
+          socket.params().session_id = data.session_id;
+          socket.params().session_token = data.session_token;
+
+          const permsToken = oauthFlowPermsToken || data.perms_token;
+          hubChannel.setPermissionsFromToken(permsToken);
+
+          subscriptions.setHubChannel(hubChannel);
+          subscriptions.setSubscribed(data.subscriptions.web_push);
+
+          remountUI({
+            hubIsBound: data.hub_requires_oauth,
+            initialIsFavorited: data.subscriptions.favorites
+          });
+
+          await presenceSync.promise;
+          handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data);
         }
+
       }
 
       console.error(res);
