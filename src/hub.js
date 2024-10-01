@@ -1371,8 +1371,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         entryManager.exitScene();
         remountUI({ oauthInfo: res.oauth_info, showOAuthScreen: true });
       } else if (res.reason === "join_denied") {
-        entryManager.exitScene();
-        remountUI({ roomUnavailableReason: ExitReason.denied });
+        if (officialURLs.includes(lastPart)) {
+          entryManager.exitScene();
+          remountUI({ roomUnavailableReason: ExitReason.denied });
+        }
       }
 
       console.error(res);
