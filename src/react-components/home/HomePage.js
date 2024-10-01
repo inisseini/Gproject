@@ -1094,7 +1094,7 @@ export function HomePage() {
                       <h3 className="articleTitle">2024-06-01 オープンキャンパス開催</h3>
                       <div className="articleContent">
                         <p>
-                          この度、GTIE18大学の学生・教職員なら誰でも利用可能な、メタバース空間上のキャンパス「MetaCampUs（メタキャンパス、通称MCU）」が開校致します！
+                          この度、GTIE17大学の学生・教職員なら誰でも利用可能な、メタバース空間上のキャンパス「MetaCampUs（メタキャンパス、通称MCU）」が開校致します！
                         </p>
                       </div>
                       <div className="articleDetail" onClick={() => setNewsOpen(!isNewsOpen)}>
