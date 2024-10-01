@@ -252,7 +252,7 @@ class UIRoot extends Component {
             }
           }
         );
-        this.setState({ adminUser: res.data.Item.isAdmin ? res.data.Item.isAdmin : false });
+        this.setState({ adminUser: res.data.Item ? res.data.Item.isAdmin : false });
       } catch (error) {
         console.error("Error getting data:", error);
         setResponse("Error getting data");
