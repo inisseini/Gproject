@@ -735,6 +735,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!myID) {
     const id = crypto.randomUUID();
     localStorage.setItem("myID", id);
+    const type = "PUT";
+    const data = `type=${type}&email=${id}&isAdmin=${false}&isTeacher=${false}&requested=${"[]"}&friends=${"[]"}`;
+    try {
+      const res = await axios.post("https://xt6bz2ybhi3tj3eu3djuuk7lzy0eabno.lambda-url.ap-northeast-1.on.aws/", data, {
+        headers: {
+          "Content-Type": "text/plain"
+        }
+      });
+      console.log("アカウント情報更新");
+    } catch (error) {
+      console.error("Error putting data:", error);
+    }
   }
 
   if (!root) {
