@@ -720,6 +720,23 @@ async function runBotMode(scene, entryManager) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const myFriends = localStorage.getItem("myFriends");
+  if (!myFriends) {
+    localStorage.setItem("myFriends", JSON.stringify([]));
+  }
+
+  const discordPermission = localStorage.getItem("discordPermission");
+  if (!discordPermission) {
+    // 生成したIDをlocalStorageに保存
+    localStorage.setItem("discordPermission", "希望しない");
+  }
+
+  const myID = localStorage.getItem("myID");
+  if (!myID) {
+    const id = crypto.randomUUID();
+    localStorage.setItem("myID", id);
+  }
+
   if (!root) {
     const container = document.getElementById("ui-root");
     root = createRoot(container);
