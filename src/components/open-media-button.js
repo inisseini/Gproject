@@ -31,6 +31,8 @@ AFRAME.registerComponent("open-media-button", {
             const url = new URL(src);
             if (url.hash && window.APP.hub.hub_id === hubId) {
               label = "go to";
+            } else if (window.APP.store.state.credentials.email) {
+              return;
             } else {
               label = "visit room";
             }

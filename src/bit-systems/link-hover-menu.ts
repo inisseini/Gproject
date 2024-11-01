@@ -112,9 +112,6 @@ function updateButtonText(world: HubsWorld, menu: EntityID, button: EntityID) {
     case LinkType.ROOM:
     case LinkType.ROOM_URL:
       label = "visit room";
-      if (!window.APP.store.state.credentials.email) {
-        textObj.visible = false;
-      }
       break;
   }
   textObj.text = label;
