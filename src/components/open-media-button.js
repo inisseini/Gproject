@@ -62,7 +62,9 @@ AFRAME.registerComponent("open-media-button", {
         this.el.sceneEl.emit("scene_media_selected", this.src);
       } else if ((hubId = await isHubsRoomUrl(this.src))) {
         if (!window.APP.store.state.credentials.email) {
-          alert("この機能はログインをしないとご利用いただけません。");
+          alert(
+            "この機能はログインしないとご利用いただけません。トップページ(https://metacampus.jp/)よりログインしてください。"
+          );
           return;
         }
         const url = new URL(this.src);

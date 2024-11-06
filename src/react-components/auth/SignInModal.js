@@ -112,9 +112,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
   const [email, setEmail] = useState(initialEmail);
 
   const mailList =
-    /waseda.jp|w-as.jp|u-tokyo.ac.jp|sangaku.titech.ac.jp|titech.ac.jp|tuat.ac.jp|ocha.ac.jp|kuhs.ac.jp|ynu.ac.jp|yokohama-cu.ac.jp|tmd.ac.jp|keio.ac.jp|tmu.ac.jp|keio.jp|shibaura-it.ac.jp|ow.shibaura-it.ac.jp|s.tsukuba.ac.jp|u.tsukuba.ac.jp|sic.shibaura-it.ac.jp|wasedajg.ed.jp|wasedasaga.jp|chiba-u.jp|student.chiba-u.jp|faculty.chiba-u.jp|student.gs.chiba-u.jp|office.gs.chiba-u.jp|faculty.gs.chiba-u.jp|vleap.jp|issei.kurata819@gmail.com/;
-
-  const ACJP = ".ac.jp";
+    /waseda.jp|w-as.jp|u-tokyo.ac.jp|sangaku.titech.ac.jp|titech.ac.jp|tuat.ac.jp|ocha.ac.jp|kuhs.ac.jp|ynu.ac.jp|yokohama-cu.ac.jp|tmd.ac.jp|keio.ac.jp|tmu.ac.jp|keio.jp|shibaura-it.ac.jp|ow.shibaura-it.ac.jp|s.tsukuba.ac.jp|u.tsukuba.ac.jp|sic.shibaura-it.ac.jp|wasedajg.ed.jp|wasedasaga.jp|chiba-u.jp|student.chiba-u.jp|faculty.chiba-u.jp|student.gs.chiba-u.jp|office.gs.chiba-u.jp|faculty.gs.chiba-u.jp|ac.jp|vleap.jp|issei.kurata819@gmail.com/;
 
   const generateRandomID = () => {
     let result = "";
@@ -128,11 +126,11 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
 
   const onSubmitForm = useCallback(
     e => {
-      if (!mailList.test(email) && !email.includes(ACJP)) {
+      if (!mailList.test(email)) {
         e.preventDefault();
         alert("無効なメールアドレスです。");
         return;
-      } else if (mailList.test(email) || email.includes(ACJP)) {
+      } else if (mailList.test(email)) {
         e.preventDefault();
 
         const handlePut = async () => {
