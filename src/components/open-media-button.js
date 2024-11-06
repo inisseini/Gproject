@@ -31,8 +31,6 @@ AFRAME.registerComponent("open-media-button", {
             const url = new URL(src);
             if (url.hash && window.APP.hub.hub_id === hubId) {
               label = "go to";
-            } else if (window.APP.store.state.credentials.email) {
-              return;
             } else {
               label = "visit room";
             }
@@ -63,6 +61,10 @@ AFRAME.registerComponent("open-media-button", {
       } else if ((await isLocalHubsSceneUrl(this.src)) && mayChangeScene) {
         this.el.sceneEl.emit("scene_media_selected", this.src);
       } else if ((hubId = await isHubsRoomUrl(this.src))) {
+        if (!window.APP.store.state.credentials.email) {
+          alert("この機能はログインをしないとご利用いただけません。");
+          return;
+        }
         const url = new URL(this.src);
         if (url.hash && window.APP.hub.hub_id === hubId) {
           // move to waypoint w/o writing to history
