@@ -399,7 +399,7 @@ export function HomePage() {
                 </div>
               ) : undefined}
             </div>
-            <a href="https://discord.gg/JvwZfUnUeV" className="Discord" target="_blank" rel="noopener noreferrer">
+            <a href="https://discord.gg/6dsEa2Zt" className="Discord" target="_blank" rel="noopener noreferrer">
               <img src={Discord} />
               <p>Discordサーバーに参加する →</p>
             </a>
