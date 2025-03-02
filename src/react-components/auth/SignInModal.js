@@ -92,6 +92,10 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
 
   const docClient = DynamoDBDocumentClient.from(DBClient);
 
+  {
+    /* 
+  const [list, setList] = useState("");
+
   const GetGeneral = async () => {
     const command = new GetCommand({
       TableName: "generalParameter",
@@ -104,15 +108,28 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
 
     console.log(response.Item);
 
-    return new RegExp(response.Item.mailList);
+    const storedPattern = response.Item.mailList;
+
+    // スラッシュを削除
+    const cleanedPattern = storedPattern.replace(/^\/|\/$/g, "");
+
+    // 正規表現オブジェクトに変換
+    const regex = new RegExp(cleanedPattern);
+
+    setList(regex);
+    console.log("test=", list.test("waseda.jp"));
   };
+
+  GetGeneral();
+  */
+  }
 
   const intl = useIntl();
 
   const [email, setEmail] = useState(initialEmail);
 
   const mailList =
-    /waseda.jp|w-as.jp|u-tokyo.ac.jp|sangaku.titech.ac.jp|titech.ac.jp|tuat.ac.jp|ocha.ac.jp|kuhs.ac.jp|ynu.ac.jp|yokohama-cu.ac.jp|tmd.ac.jp|keio.ac.jp|tmu.ac.jp|keio.jp|shibaura-it.ac.jp|ow.shibaura-it.ac.jp|s.tsukuba.ac.jp|u.tsukuba.ac.jp|sic.shibaura-it.ac.jp|wasedajg.ed.jp|wasedasaga.jp|chiba-u.jp|student.chiba-u.jp|faculty.chiba-u.jp|student.gs.chiba-u.jp|office.gs.chiba-u.jp|faculty.gs.chiba-u.jp|ac.jp|vleap.jp|issei.kurata819@gmail.com/;
+    /waseda.jp|w-as.jp|u-tokyo.ac.jp|sangaku.titech.ac.jp|titech.ac.jp|tuat.ac.jp|ocha.ac.jp|kuhs.ac.jp|ynu.ac.jp|yokohama-cu.ac.jp|tmd.ac.jp|keio.ac.jp|tmu.ac.jp|keio.jp|shibaura-it.ac.jp|ow.shibaura-it.ac.jp|s.tsukuba.ac.jp|u.tsukuba.ac.jp|sic.shibaura-it.ac.jp|wasedajg.ed.jp|wasedasaga.jp|chiba-u.jp|student.chiba-u.jp|faculty.chiba-u.jp|student.gs.chiba-u.jp|office.gs.chiba-u.jp|faculty.gs.chiba-u.jp|ac.jp|vleap.jp/;
 
   const generateRandomID = () => {
     let result = "";
@@ -125,13 +142,15 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
   };
 
   const onSubmitForm = useCallback(
-    e => {
-      if (!mailList.test(email)) {
-        e.preventDefault();
+    isUser => {
+      console.log(isUser);
+
+      if (!mailList.test(email) && !isUser) {
+        //e.preventDefault();
         alert("無効なメールアドレスです。");
         return;
-      } else if (mailList.test(email)) {
-        e.preventDefault();
+      } else if (mailList.test(email) || isUser) {
+        //e.preventDefault();
 
         const handlePut = async () => {
           const type = "PUT";
@@ -203,6 +222,32 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
     [onSubmitEmail, email]
   );
 
+  const checkEmail = e => {
+    console.log("checkemail");
+    e.preventDefault();
+
+    const xhr = new XMLHttpRequest();
+    const lambdaUrl = "https://ngocrussbibfjkxpp6avz2buta0ookyu.lambda-url.ap-northeast-1.on.aws/";
+    xhr.open("POST", lambdaUrl, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    // Lambda に送るリクエストデータ
+    const request = JSON.stringify({ email: email });
+
+    // レスポンスを受け取った後の処理
+    xhr.onreadystatechange = () => {
+      console.log("aa");
+
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        const response = JSON.parse(xhr.responseText);
+        console.log(response.exists);
+        onSubmitForm(response.exists);
+      }
+    };
+
+    xhr.send(request);
+  };
+
   const onChangeEmail = useCallback(
     e => {
       setEmail(e.target.value);
@@ -211,7 +256,7 @@ export function SubmitEmail({ onSubmitEmail, initialEmail, privacyUrl, termsUrl,
   );
 
   return (
-    <Column center padding as="form" onSubmit={onSubmitForm}>
+    <Column center padding as="form" onSubmit={e => checkEmail(e)}>
       <p>
         {message ? (
           intl.formatMessage(message)
