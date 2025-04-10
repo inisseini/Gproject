@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState, useRef } from "react";
-import libraryDataCsvPath from "../../assets/libraryData/libraryData.csv";
-console.log("Imported CSV Path:", libraryDataCsvPath);
+// import libraryDataCsvPath from '../../assets/libraryData/libraryData.csv'; // CSVインポート削除
+// console.log('Imported CSV Path:', libraryDataCsvPath); // CSVログ削除
+import libraryData from "../../assets/libraryData/libraryData.json"; // JSONファイルをインポート
 
 import { Sidebar } from "../sidebar/Sidebar";
 import { CloseButton } from "../input/CloseButton";
@@ -29,48 +30,22 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
   const [categories1, setCategories1] = useState([]);
   const [categories2, setCategories2] = useState([]);
 
-  const parseCSV = csvText => {
-    const lines = csvText.trim().split("\n");
-    if (lines.length < 2) return [];
-    const header = lines[0].split(",").map(h => h.trim());
-    const data = [];
-    for (let i = 1; i < lines.length; i++) {
-      const values = lines[i].split(",").map(v => v.trim());
-      if (values.length === header.length) {
-        const entry = {};
-        for (let j = 0; j < header.length; j++) {
-          entry[header[j]] = values[j];
-        }
-        data.push(entry);
-      } else {
-        console.warn(`Skipping line ${i + 1} due to incorrect column count.`);
-      }
-    }
-    return data;
-  };
+  // CSVをパースするヘルパー関数 parseCSV は不要になったので削除
+  // const parseCSV = (csvText) => { ... };
 
+  // コンポーネントマウント時にCSVを読み込む useEffect を修正
   useEffect(() => {
-    fetch("/libraryData.csv")
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.text();
-      })
-      .then(csvText => {
-        const parsedData = parseCSV(csvText);
-        setLibraryData(parsedData);
+    // fetch('/libraryData.csv') ... catch(...) // fetch処理全体を削除
 
-        const uniqueCategories1 = [...new Set(parsedData.map(item => item["カテゴリー1"]))];
-        setCategories1(uniqueCategories1);
-      })
-      .catch(error => {
-        console.error("Error fetching or parsing CSV:", error);
-        setLibraryData([]);
-        setCategories1([]);
-      });
-  }, []);
+    // インポートしたJSONデータを直接セット
+    setLibraryData(libraryData);
 
+    // カテゴリ1のリストを生成 (重複排除) - インポートしたデータから直接生成
+    const uniqueCategories1 = [...new Set(libraryData.map(item => item["カテゴリー1"]))];
+    setCategories1(uniqueCategories1);
+  }, []); // 空の依存配列で初回マウント時のみ実行
+
+  // カテゴリ1が変更されたときのハンドラ (libraryData を直接参照するように)
   const onChangeCategory1 = event => {
     const selectedCategory1 = event.target.value;
     setCategory1(selectedCategory1);
@@ -79,15 +54,19 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
     if (selectedCategory1 === "default") {
       setCategories2([]);
     } else {
+      // 選択されたカテゴリ1に属するカテゴリ2のリストを生成 (重複排除)
       const uniqueCategories2 = [
         ...new Set(
-          libraryData.filter(item => item["カテゴリー1"] === selectedCategory1).map(item => item["カテゴリー2"])
+          libraryData // stateではなく直接インポートしたデータを使用
+            .filter(item => item["カテゴリー1"] === selectedCategory1)
+            .map(item => item["カテゴリー2"])
         )
       ];
       setCategories2(uniqueCategories2);
     }
   };
 
+  // カテゴリ2が変更されたときのハンドラは変更なし
   const onChangeCategory2 = event => {
     setCategory2(event.target.value);
   };
@@ -284,7 +263,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
               />
             ))
           ) : (
-            <p>資料を読み込んでいます...</p>
+            <p>表示できる資料がありません。</p>
           )}
         </div>
       </div>
