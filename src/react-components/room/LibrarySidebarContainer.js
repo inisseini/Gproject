@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useState, useRef } from "rea
 // import libraryDataCsvPath from '../../assets/libraryData/libraryData.csv'; // CSVインポート削除
 // console.log('Imported CSV Path:', libraryDataCsvPath); // CSVログ削除
 import libraryData from "../../assets/libraryData/libraryData.json"; // JSONファイルをインポート
+console.log("ライブラリ：Imported libraryData:", libraryData); // ★ログ追加: インポート直後のデータ確認
 
 import { Sidebar } from "../sidebar/Sidebar";
 import { CloseButton } from "../input/CloseButton";
@@ -26,49 +27,68 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
   const [searchTag, setTag] = useState("");
   const [searchCategory1, setCategory1] = useState("default");
   const [searchCategory2, setCategory2] = useState("default");
-  const [libraryData, setLibraryData] = useState([]);
+  const [libraryDataState, setLibraryDataState] = useState([]);
   const [categories1, setCategories1] = useState([]);
   const [categories2, setCategories2] = useState([]);
 
   // CSVをパースするヘルパー関数 parseCSV は不要になったので削除
   // const parseCSV = (csvText) => { ... };
 
-  // コンポーネントマウント時にCSVを読み込む useEffect を修正
+  // コンポーネントマウント時にJSONデータを処理する useEffect
   useEffect(() => {
-    // fetch('/libraryData.csv') ... catch(...) // fetch処理全体を削除
-
+    console.log("ライブラリ：useEffect - start"); // ★ログ追加: useEffect 開始
     // インポートしたJSONデータを直接セット
-    setLibraryData(libraryData);
+    setLibraryDataState(libraryData);
+    console.log("ライブラリ：useEffect - setLibraryDataState called"); // ★ログ追加: state更新関数呼び出し確認
+    // ★注意: ここで libraryData state をログ出力しても、非同期のためすぐには反映されていない可能性があります
 
     // カテゴリ1のリストを生成 (重複排除) - インポートしたデータから直接生成
-    const uniqueCategories1 = [...new Set(libraryData.map(item => item["カテゴリー1"]))];
-    setCategories1(uniqueCategories1);
+    try {
+      // ★エラーハンドリング追加
+      const uniqueCategories1 = [...new Set(libraryData.map(item => item["カテゴリー1"]))];
+      console.log("ライブラリ：useEffect - uniqueCategories1:", uniqueCategories1); // ★ログ追加: 生成されたカテゴリリスト確認
+      setCategories1(uniqueCategories1);
+      console.log("ライブラリ：useEffect - setCategories1 called"); // ★ログ追加: state更新関数呼び出し確認
+    } catch (error) {
+      console.error("ライブラリ：useEffect - Error generating categories1:", error); // ★ログ追加: カテゴリ生成エラー
+    }
+    console.log("ライブラリ：useEffect - end"); // ★ログ追加: useEffect 終了
   }, []); // 空の依存配列で初回マウント時のみ実行
 
-  // カテゴリ1が変更されたときのハンドラ (libraryData を直接参照するように)
+  // カテゴリ1が変更されたときのハンドラ
   const onChangeCategory1 = event => {
     const selectedCategory1 = event.target.value;
+    console.log("ライブラリ：onChangeCategory1 - selected:", selectedCategory1); // ★ログ追加
     setCategory1(selectedCategory1);
     setCategory2("default");
 
     if (selectedCategory1 === "default") {
       setCategories2([]);
+      console.log("ライブラリ：onChangeCategory1 - reset categories2"); // ★ログ追加
     } else {
-      // 選択されたカテゴリ1に属するカテゴリ2のリストを生成 (重複排除)
-      const uniqueCategories2 = [
-        ...new Set(
-          libraryData // stateではなく直接インポートしたデータを使用
-            .filter(item => item["カテゴリー1"] === selectedCategory1)
-            .map(item => item["カテゴリー2"])
-        )
-      ];
-      setCategories2(uniqueCategories2);
+      try {
+        // ★エラーハンドリング追加
+        const uniqueCategories2 = [
+          ...new Set(
+            libraryData // インポートしたデータを使用
+              .filter(item => item["カテゴリー1"] === selectedCategory1)
+              .map(item => item["カテゴリー2"])
+          )
+        ];
+        console.log("ライブラリ：onChangeCategory1 - uniqueCategories2:", uniqueCategories2); // ★ログ追加
+        setCategories2(uniqueCategories2);
+        console.log("ライブラリ：onChangeCategory1 - setCategories2 called"); // ★ログ追加
+      } catch (error) {
+        console.error("ライブラリ：onChangeCategory1 - Error generating categories2:", error); // ★ログ追加
+      }
     }
   };
 
-  // カテゴリ2が変更されたときのハンドラは変更なし
+  // カテゴリ2が変更されたときのハンドラ
   const onChangeCategory2 = event => {
-    setCategory2(event.target.value);
+    const selectedCategory2 = event.target.value;
+    console.log("ライブラリ：onChangeCategory2 - selected:", selectedCategory2); // ★ログ追加
+    setCategory2(selectedCategory2);
   };
 
   if (!localStorage.getItem("progressScore")) {
@@ -180,6 +200,13 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
 
   return (
     <Sidebar title="ライブラリ" beforeTitle={<CloseButton onClick={onClose} />} disableOverflowScroll>
+      {/* ★ログ追加: レンダリング時の state 確認 */}
+      {console.log("ライブラリ：Rendering - categories1 state:", categories1)}
+      {console.log("ライブラリ：Rendering - categories2 state:", categories2)}
+      {console.log("ライブラリ：Rendering - libraryDataState length:", libraryDataState.length)}{" "}
+      {/* データ件数もログ */}
+      {console.log("ライブラリ：Rendering - searchCategory1:", searchCategory1)}
+      {console.log("ライブラリ：Rendering - searchCategory2:", searchCategory2)}
       <div
         style={{
           padding: "8px 16px",
@@ -215,12 +242,18 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
           className={styles.categorySelecter}
         >
           <option value="default">カテゴリ1を選択</option>
-          {categories1.map((cat1, index) => (
-            <option key={index} value={cat1}>
-              {cat1}
-            </option>
-          ))}
+          {/* categories1 state を使用 (useEffectで設定される) */}
+          {categories1.map((cat1, index) => {
+            // ★ログ追加: mapループ内の確認
+            console.log(`ライブラリ：Rendering category1 map - index: ${index}, value: ${cat1}`);
+            return (
+              <option key={index} value={cat1}>
+                {cat1}
+              </option>
+            );
+          })}
         </select>
+        {/* カテゴリ1が選択されている場合のみカテゴリ2の選択肢を表示 */}
         {searchCategory1 !== "default" && categories2.length > 0 && (
           <select
             name="category2"
@@ -230,11 +263,16 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
             style={{ marginTop: "8px" }}
           >
             <option value="default">カテゴリ2を選択 (全て)</option>
-            {categories2.map((cat2, index) => (
-              <option key={index} value={cat2}>
-                {cat2}
-              </option>
-            ))}
+            {/* categories2 state を使用 (onChangeCategory1で設定される) */}
+            {categories2.map((cat2, index) => {
+              // ★ログ追加: mapループ内の確認 (カテゴリ2)
+              console.log(`ライブラリ：Rendering category2 map - index: ${index}, value: ${cat2}`);
+              return (
+                <option key={index} value={cat2}>
+                  {cat2}
+                </option>
+              );
+            })}
           </select>
         )}
         <div
@@ -249,8 +287,9 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
           }}
           className={styles.hiddenScrollBar}
         >
-          {libraryData.length > 0 ? (
-            libraryData.map((item, index) => (
+          {/* Documentリスト */}
+          {libraryDataState.length > 0 ? (
+            libraryDataState.map((item, index) => (
               <Document
                 key={index}
                 title={item["タイトル"]}
