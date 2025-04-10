@@ -99,24 +99,9 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
 
   // Documentコンポーネント定義
   const Document = ({ title, text, img, tag, id, category1, category2, url, author, affiliation, rating, type }) => {
-    // 検索条件の判定ロジック
-    if (searchWord.length <= 0 && searchTag.length <= 0 && searchCategory1 === "default") return null;
-
-    if (searchWord.length > 0) {
-      if (title.indexOf(searchWord) === -1 && text.indexOf(searchWord) === -1) return null;
-    }
-    if (searchTag.length > 0) {
-      // タグ検索: 区切り文字(、,スペース)で分割し、いずれか一つでもマッチすればOK
-      const tagList = tag
-        .split(/[、,\s]+/)
-        .map(t => t.trim())
-        .filter(t => t);
-      if (!tagList.some(t => t.includes(searchTag))) return null;
-    }
-    if (searchCategory1 !== "default") {
-      if (category1 !== searchCategory1) return null;
-      if (searchCategory2 !== "default" && category2 !== searchCategory2) return null;
-    }
+    // ★★★ 検索/フィルタリングロジックはこのコンポーネントから削除 ★★★
+    // if (searchWord.length <= 0 ...) {
+    // }
 
     // 評価（星）の生成
     const renderStars = () => {
@@ -129,16 +114,12 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
       return (
         <div
           style={{
-            // position: 'absolute', // 絶対配置をやめ、Flexアイテムとして配置
-            // top: '4px',
-            // left: '4px',
             backgroundColor: "rgba(0, 0, 0, 0.6)",
             color: "gold",
-            padding: "2px 4px",
+            padding: "2px 6px", // 少しパディング調整
             borderRadius: "4px",
-            fontSize: "10px",
-            // zIndex: 1
-            textAlign: "center" // 中央揃えに
+            fontSize: "12px", // 少し大きく
+            textAlign: "center"
           }}
         >
           {stars}
@@ -146,7 +127,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
       );
     };
 
-    // タグの分割と整形 (スペースも区切り文字に)
+    // タグの分割と整形
     const tagsArray = tag
       .split(/[、,\s]+/)
       .map(t => t.trim())
@@ -163,32 +144,34 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
           }
         }}
         style={{
-          display: "flex", // 横並びに戻す
-          // flexDirection: "column",
-          boxShadow: "2px 2px 4px #dfdfdf",
+          display: "flex",
+          background: "linear-gradient(to bottom, #fdfdfd, #f0f0f0)", // 薄いグラデーション背景
+          // boxShadow: "2px 2px 4px #dfdfdf", // 影は削除または調整
+          border: "1px solid #eee", // 細い境界線を追加
           borderRadius: "10px",
-          padding: "12px 16px", // 少しパディング増やす
+          padding: "12px 16px",
           cursor: "pointer",
-          gap: "16px", // 要素間のスペース
-          minHeight: "180px" // 最低の高さを指定
+          gap: "16px",
+          minHeight: "200px" // 最小高さを増やす
         }}
       >
         {/* 左側: アイコン、評価、タイプ、著者情報エリア */}
         <div
           style={{
-            width: "100px", // 幅を固定
+            width: "80px", // 幅を少し調整
             flexShrink: "0",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between", // 縦方向の均等配置
-            alignItems: "center", // 中央揃え
-            textAlign: "center"
+            justifyContent: "space-between",
+            alignItems: "center",
+            textAlign: "center",
+            gap: "5px" // 左側要素間のギャップ
           }}
         >
           {renderStars()} {/* 星評価 */}
           {/* アイコンコンテナ */}
           <div
-            style={{ width: "100%", height: "100px", display: "flex", alignItems: "center", justifyContent: "center" }}
+            style={{ width: "50px", height: "50px", display: "flex", alignItems: "center", justifyContent: "center" }}
           >
             <img
               src={img}
@@ -196,13 +179,23 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
               style={{
                 maxWidth: "100%",
                 maxHeight: "100%",
-                objectFit: "contain", // アスペクト比を保って枠内に収める
+                objectFit: "contain",
                 display: "block"
               }}
             />
           </div>
           {/* 記事/動画タイプ */}
-          <div style={{ fontSize: "11px", fontWeight: "bold" }}>{type}</div>
+          <div
+            style={{
+              fontSize: "10px",
+              fontWeight: "bold",
+              padding: "2px 5px",
+              backgroundColor: "#e0e0e0", // 地味な背景色
+              borderRadius: "4px" // 角丸
+            }}
+          >
+            {type}
+          </div>
           {/* 著者情報 */}
           <div style={{ fontSize: "9px", color: "#555", lineHeight: "1.1" }}>
             {author && <div>{author}</div>}
@@ -213,11 +206,11 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
         {/* 右側: タイトル、説明、タグエリア */}
         <div style={{ flexGrow: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
           <h4>{title}</h4>
-          {/* 説明文: 高さ制限とスクロール */}
+          {/* 説明文 */}
           <p
             style={{
               overflowY: "auto",
-              maxHeight: "70px", // 少し高さを増やす
+              maxHeight: "70px",
               margin: "8px 0",
               fontSize: "12px",
               lineHeight: "1.4"
@@ -226,15 +219,15 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
           >
             {text}
           </p>
-          {/* タグ: 右寄せ、個別楕円、スクロール */}
+          {/* タグ */}
           <div
             style={{
-              textAlign: "right",
+              textAlign: "justify", // 両端揃え
               marginTop: "auto",
-              maxHeight: "42px", // 2行分程度の高さに制限
-              overflowY: "auto" // スクロールを有効に
+              maxHeight: "42px",
+              overflowY: "auto"
             }}
-            className={styles.hiddenScrollBar} // スクロールバーを隠すスタイルを適用
+            className={styles.hiddenScrollBar}
           >
             {tagsArray.map((t, index) => (
               <span
@@ -246,7 +239,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
                   display: "inline-block",
                   padding: "4px 8px",
                   fontSize: "10px",
-                  margin: "2px 4px 2px 0"
+                  margin: "2px 2px 2px 0" // マージン微調整
                 }}
               >
                 {t}
@@ -257,6 +250,33 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
       </div>
     );
   };
+
+  // ★★★ フィルタリングロジックをレンダリング前に移動 ★★★
+  const filteredData = libraryDataState.filter(item => {
+    const title = item["タイトル"] || "";
+    const text = item["説明文"] || "";
+    const tag = item["検索用キーワード"] || "";
+    const category1 = item["カテゴリー1"] || "";
+    const category2 = item["カテゴリー2"] || "";
+
+    if (searchWord.length <= 0 && searchTag.length <= 0 && searchCategory1 === "default") return false; // デフォルトでは何も表示しない
+
+    if (searchWord.length > 0) {
+      if (title.indexOf(searchWord) === -1 && text.indexOf(searchWord) === -1) return false;
+    }
+    if (searchTag.length > 0) {
+      const tagList = tag
+        .split(/[、,\s]+/)
+        .map(t => t.trim())
+        .filter(t => t);
+      if (!tagList.some(t => t.includes(searchTag))) return false;
+    }
+    if (searchCategory1 !== "default") {
+      if (category1 !== searchCategory1) return false;
+      if (searchCategory2 !== "default" && category2 !== searchCategory2) return false;
+    }
+    return true; // すべての条件を通過したら表示
+  });
 
   const searchDocuments = event => {
     if (event.target.value.indexOf("タグ検索：") !== -1) {
@@ -277,11 +297,10 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
 
   return (
     <Sidebar title="ライブラリ" beforeTitle={<CloseButton onClick={onClose} />} disableOverflowScroll>
-      {/* ★ログ追加: レンダリング時の state 確認 */}
+      {/* ★ログ追加: レンダリング時の state 確認 (変更なし) */}
       {console.log("ライブラリ：Rendering - categories1 state:", categories1)}
       {console.log("ライブラリ：Rendering - categories2 state:", categories2)}
-      {console.log("ライブラリ：Rendering - libraryDataState length:", libraryDataState.length)}{" "}
-      {/* データ件数もログ */}
+      {console.log("ライブラリ：Rendering - libraryDataState length:", libraryDataState.length)}
       {console.log("ライブラリ：Rendering - searchCategory1:", searchCategory1)}
       {console.log("ライブラリ：Rendering - searchCategory2:", searchCategory2)}
       <div
@@ -293,80 +312,93 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
           justifyContent: "space-between"
         }}
       >
-        <h3
-          style={{
-            textAlign: "right",
-            margin: "16px 0",
-            color: "#ffffff",
-            borderRadius: "10px",
-            backgroundColor: "#007ab8",
-            display: "inline-block",
-            padding: "8px 16px"
-          }}
-        >
-          学習の進捗ポイント: {localStorage.getItem("progressScore")} pt
-        </h3>
-        <TextAreaInput
-          ref={ref}
-          textInputStyles={styles.libraryInputTextAreaStyles}
-          placeholder="資料をキーワードやタグで検索する"
-          onChange={e => searchDocuments(e)}
-        />
-        <select
-          name="category1"
-          value={searchCategory1}
-          onChange={onChangeCategory1}
-          className={styles.categorySelecter}
-        >
-          <option value="default">カテゴリ1を選択</option>
-          {/* categories1 state を使用 (useEffectで設定される) */}
-          {categories1.map((cat1, index) => {
-            // ★ログ追加: mapループ内の確認
-            console.log(`ライブラリ：Rendering category1 map - index: ${index}, value: ${cat1}`);
-            return (
-              <option key={index} value={cat1}>
-                {cat1}
-              </option>
-            );
-          })}
-        </select>
-        {/* カテゴリ1が選択されている場合のみカテゴリ2の選択肢を表示 */}
-        {searchCategory1 !== "default" && categories2.length > 0 && (
-          <select
-            name="category2"
-            value={searchCategory2}
-            onChange={onChangeCategory2}
-            className={styles.categorySelecter}
-            style={{ marginTop: "8px" }}
+        <div>
+          {" "}
+          {/* 上部エリア (ポイント、検索、カテゴリ) */}
+          <h3
+            style={{
+              textAlign: "right",
+              margin: "16px 0",
+              color: "#ffffff",
+              borderRadius: "10px",
+              backgroundColor: "#007ab8",
+              display: "inline-block",
+              padding: "8px 16px"
+            }}
           >
-            <option value="default">カテゴリ2を選択 (全て)</option>
-            {/* categories2 state を使用 (onChangeCategory1で設定される) */}
-            {categories2.map((cat2, index) => {
-              // ★ログ追加: mapループ内の確認 (カテゴリ2)
-              console.log(`ライブラリ：Rendering category2 map - index: ${index}, value: ${cat2}`);
+            学習の進捗ポイント: {localStorage.getItem("progressScore")} pt
+          </h3>
+          <TextAreaInput
+            ref={ref}
+            textInputStyles={styles.libraryInputTextAreaStyles}
+            placeholder="資料をキーワードやタグで検索する"
+            onChange={e => searchDocuments(e)}
+          />
+          {/* カテゴリ選択1 */}
+          <select
+            name="category1"
+            value={searchCategory1}
+            onChange={onChangeCategory1}
+            className={styles.categorySelecter}
+            style={{ marginBottom: "8px" }}
+          >
+            {" "}
+            {/* マージン調整 */}
+            <option value="default">カテゴリ1を選択</option>
+            {categories1.map((cat1, index) => {
+              console.log(`ライブラリ：Rendering category1 map - index: ${index}, value: ${cat1}`);
               return (
-                <option key={index} value={cat2}>
-                  {cat2}
+                <option key={index} value={cat1}>
+                  {cat1}
                 </option>
               );
             })}
           </select>
-        )}
+          {/* カテゴリ選択2 */}
+          {searchCategory1 !== "default" && categories2.length > 0 && (
+            <select
+              name="category2"
+              value={searchCategory2}
+              onChange={onChangeCategory2}
+              className={styles.categorySelecter}
+            >
+              <option value="default">カテゴリ2を選択 (全て)</option>
+              {categories2.map((cat2, index) => {
+                console.log(`ライブラリ：Rendering category2 map - index: ${index}, value: ${cat2}`);
+                return (
+                  <option key={index} value={cat2}>
+                    {cat2}
+                  </option>
+                );
+              })}
+            </select>
+          )}
+        </div>
+
+        {/* ★★★ 項目数表示とリスト表示エリア ★★★ */}
         <div
           style={{
-            marginTop: searchCategory1 !== "default" && categories2.length > 0 ? "8px" : "16px",
-            overflowY: "auto",
-            height: `calc(100% - ${160 + (searchCategory1 !== "default" && categories2.length > 0 ? 40 : 0)}px)`,
-            padding: "8px 16px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px 0"
+            flexGrow: 1, // 残りの高さを埋める
+            overflowY: "auto", // ★ スクロールバー表示
+            paddingTop: "10px", // 上部に少し余白
+            marginTop: "10px" // 上部エリアとのマージン
           }}
-          className={styles.hiddenScrollBar}
+          // className={styles.hiddenScrollBar} // ★ hiddenScrollBar 削除
         >
+          {/* 項目数表示 */}
+          <div style={{ marginBottom: "10px", fontSize: "12px", color: "#555" }}>
+            {filteredData.length > 0 ? `${filteredData.length} 件の資料が見つかりました` : "該当する資料はありません"}
+          </div>
+
           {/* Documentリスト */}
-          {libraryDataState.length > 0 ? (
-            libraryDataState.map((item, index) => (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "15px" // ★ 項目間の余白を増やす
+            }}
+          >
+            {filteredData.map((item, index) => (
               <Document
                 key={index}
                 title={item["タイトル"]}
@@ -382,10 +414,8 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
                 rating={item["おすすめ（◎〇））"]}
                 type={item["記事/動画・音声"]}
               />
-            ))
-          ) : (
-            <p>表示できる資料がありません。</p>
-          )}
+            ))}
+          </div>
         </div>
       </div>
     </Sidebar>
