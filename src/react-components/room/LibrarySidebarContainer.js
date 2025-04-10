@@ -98,17 +98,17 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
   }
 
   // Documentコンポーネント定義
-  const Document = ({ title, text, img, tag, id, category1, category2, url, author, affiliation, rating }) => {
-    // 検索条件の判定ロジック (変更なし)
+  const Document = ({ title, text, img, tag, id, category1, category2, url, author, affiliation, rating, type }) => {
+    // 検索条件の判定ロジック
     if (searchWord.length <= 0 && searchTag.length <= 0 && searchCategory1 === "default") return null;
 
     if (searchWord.length > 0) {
       if (title.indexOf(searchWord) === -1 && text.indexOf(searchWord) === -1) return null;
     }
     if (searchTag.length > 0) {
-      // タグ検索: 区切り文字で分割し、いずれか一つでもマッチすればOK
+      // タグ検索: 区切り文字(、,スペース)で分割し、いずれか一つでもマッチすればOK
       const tagList = tag
-        .split(/[、,]/)
+        .split(/[、,\s]+/)
         .map(t => t.trim())
         .filter(t => t);
       if (!tagList.some(t => t.includes(searchTag))) return null;
@@ -120,7 +120,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
 
     // 評価（星）の生成
     const renderStars = () => {
-      let stars = "★☆☆"; // デフォルトは星1つ
+      let stars = "★☆☆";
       if (rating === "◎") {
         stars = "★★★";
       } else if (rating === "〇") {
@@ -129,15 +129,16 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
       return (
         <div
           style={{
-            position: "absolute",
-            top: "4px",
-            left: "4px",
+            // position: 'absolute', // 絶対配置をやめ、Flexアイテムとして配置
+            // top: '4px',
+            // left: '4px',
             backgroundColor: "rgba(0, 0, 0, 0.6)",
             color: "gold",
             padding: "2px 4px",
             borderRadius: "4px",
             fontSize: "10px",
-            zIndex: 1 // 画像の上に表示
+            // zIndex: 1
+            textAlign: "center" // 中央揃えに
           }}
         >
           {stars}
@@ -145,9 +146,9 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
       );
     };
 
-    // タグの分割と整形
+    // タグの分割と整形 (スペースも区切り文字に)
     const tagsArray = tag
-      .split(/[、,]/)
+      .split(/[、,\s]+/)
       .map(t => t.trim())
       .filter(t => t);
 
@@ -155,100 +156,102 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
       <div
         onClick={e => {
           e.preventDefault();
-          // URLを新しいタブで開く
           if (url) {
             window.open(url, "_blank", "noopener,noreferrer");
           } else {
             console.warn("ライブラリ：URLが見つかりません。", title);
           }
-          // 既存の処理は削除
-          // scene.emit("add_media", img);
-          // if (!sessionStorage.getItem("objectTutorial")) { ... }
-          // setQuestion(id);
         }}
         style={{
-          display: "flex",
-          flexDirection: "column", // 縦並びに変更
+          display: "flex", // 横並びに戻す
+          // flexDirection: "column",
           boxShadow: "2px 2px 4px #dfdfdf",
           borderRadius: "10px",
-          padding: "8px 16px",
+          padding: "12px 16px", // 少しパディング増やす
           cursor: "pointer",
-          gap: "8px" // 要素間のスペース
+          gap: "16px", // 要素間のスペース
+          minHeight: "180px" // 最低の高さを指定
         }}
       >
-        <div style={{ display: "flex", gap: "16px" }}>
-          {" "}
-          {/* 画像とテキスト情報エリア */}
-          {/* 画像と著者情報エリア */}
+        {/* 左側: アイコン、評価、タイプ、著者情報エリア */}
+        <div
+          style={{
+            width: "100px", // 幅を固定
+            flexShrink: "0",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between", // 縦方向の均等配置
+            alignItems: "center", // 中央揃え
+            textAlign: "center"
+          }}
+        >
+          {renderStars()} {/* 星評価 */}
+          {/* アイコンコンテナ */}
+          <div
+            style={{ width: "100%", height: "100px", display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
+            <img
+              src={img}
+              alt={title}
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+                objectFit: "contain", // アスペクト比を保って枠内に収める
+                display: "block"
+              }}
+            />
+          </div>
+          {/* 記事/動画タイプ */}
+          <div style={{ fontSize: "11px", fontWeight: "bold" }}>{type}</div>
+          {/* 著者情報 */}
+          <div style={{ fontSize: "9px", color: "#555", lineHeight: "1.1" }}>
+            {author && <div>{author}</div>}
+            {affiliation && <div>{affiliation}</div>}
+          </div>
+        </div>
+
+        {/* 右側: タイトル、説明、タグエリア */}
+        <div style={{ flexGrow: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+          <h4>{title}</h4>
+          {/* 説明文: 高さ制限とスクロール */}
+          <p
+            style={{
+              overflowY: "auto",
+              maxHeight: "70px", // 少し高さを増やす
+              margin: "8px 0",
+              fontSize: "12px",
+              lineHeight: "1.4"
+            }}
+            className={styles.hiddenScrollBar}
+          >
+            {text}
+          </p>
+          {/* タグ: 右寄せ、個別楕円、スクロール */}
           <div
             style={{
-              width: "120px", // 幅を固定
-              flexShrink: "0",
-              display: "flex",
-              flexDirection: "column",
-              gap: "4px" // 画像と著者情報の間のスペース
+              textAlign: "right",
+              marginTop: "auto",
+              maxHeight: "42px", // 2行分程度の高さに制限
+              overflowY: "auto" // スクロールを有効に
             }}
+            className={styles.hiddenScrollBar} // スクロールバーを隠すスタイルを適用
           >
-            <div style={{ position: "relative", width: "100%", height: "80px" }}>
-              {" "}
-              {/* 画像コンテナ */}
-              {renderStars()} {/* 星評価を表示 */}
-              <img
-                src={img}
-                alt={title}
+            {tagsArray.map((t, index) => (
+              <span
+                key={index}
                 style={{
-                  width: "100%", // 幅を100%に
-                  height: "100%", // 高さを100%に
-                  objectFit: "cover",
-                  display: "block" // 下部の余白削除
+                  color: "#ffffff",
+                  borderRadius: "15px",
+                  backgroundColor: "#007ab8",
+                  display: "inline-block",
+                  padding: "4px 8px",
+                  fontSize: "10px",
+                  margin: "2px 4px 2px 0"
                 }}
-              />
-            </div>
-            {/* 著者情報 */}
-            <div style={{ fontSize: "10px", color: "#555", lineHeight: "1.2" }}>
-              {author && <div>{author}</div>}
-              {affiliation && <div>{affiliation}</div>}
-            </div>
-          </div>
-          {/* タイトル、説明、タグエリア */}
-          <div style={{ overflow: "hidden", display: "flex", flexDirection: "column" }}>
-            <h4>{title}</h4>
-            {/* 説明文: 高さ制限とスクロール */}
-            <p
-              style={{
-                overflowY: "auto",
-                maxHeight: "60px", // 高さを制限 (調整可能)
-                margin: "8px 0", // 上下のマージン調整
-                fontSize: "12px",
-                lineHeight: "1.4"
-              }}
-              className={styles.hiddenScrollBar}
-            >
-              {text}
-            </p>
-            {/* タグ: 右寄せ、個別楕円 */}
-            <div style={{ textAlign: "right", marginTop: "auto" }}>
-              {" "}
-              {/* 右寄せ、下部に配置 */}
-              {tagsArray.map((t, index) => (
-                <span
-                  key={index}
-                  style={{
-                    color: "#ffffff",
-                    borderRadius: "15px",
-                    backgroundColor: "#007ab8",
-                    display: "inline-block",
-                    padding: "4px 8px", // 少し小さく
-                    fontSize: "10px",
-                    margin: "2px 4px 2px 0" // タグ間のマージン
-                    // cursor: "pointer" // タグクリックは削除
-                  }}
-                  // onClick={e => onClickTags(e)} // タグクリックイベント削除
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
+              >
+                {t}
+              </span>
+            ))}
           </div>
         </div>
       </div>
@@ -373,11 +376,11 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
                 id={index}
                 category1={item["カテゴリー1"]}
                 category2={item["カテゴリー2"]}
-                // Document に渡す props を追加
                 url={item["URL"]}
                 author={item["著者"]}
                 affiliation={item["著者所属"]}
                 rating={item["おすすめ（◎〇））"]}
+                type={item["記事/動画・音声"]}
               />
             ))
           ) : (
