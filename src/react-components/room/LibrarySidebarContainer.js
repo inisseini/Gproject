@@ -1,4 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState, useRef } from "react";
+import libraryDataCsvPath from "../../assets/libraryData/libraryData.csv";
+console.log("Imported CSV Path:", libraryDataCsvPath);
 
 import { Sidebar } from "../sidebar/Sidebar";
 import { CloseButton } from "../input/CloseButton";
@@ -13,13 +15,82 @@ import GTIE5 from "../../assets/images/GTIE5.png";
 import GTIE6 from "../../assets/images/GTIE6.png";
 import GTIE7 from "../../assets/images/GTIE7.png";
 import GTIE8 from "../../assets/images/GTIE8.png";
+import Article from "../../assets/images/library-article.png";
+import Video from "../../assets/images/library-video.png";
 
 // NOTE: context and related functions moved to ChatContext
 export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
   const ref = useRef();
   const [searchWord, setWord] = useState("");
   const [searchTag, setTag] = useState("");
-  const [searchCategory, setCategory] = useState("default");
+  const [searchCategory1, setCategory1] = useState("default");
+  const [searchCategory2, setCategory2] = useState("default");
+  const [libraryData, setLibraryData] = useState([]);
+  const [categories1, setCategories1] = useState([]);
+  const [categories2, setCategories2] = useState([]);
+
+  const parseCSV = csvText => {
+    const lines = csvText.trim().split("\n");
+    if (lines.length < 2) return [];
+    const header = lines[0].split(",").map(h => h.trim());
+    const data = [];
+    for (let i = 1; i < lines.length; i++) {
+      const values = lines[i].split(",").map(v => v.trim());
+      if (values.length === header.length) {
+        const entry = {};
+        for (let j = 0; j < header.length; j++) {
+          entry[header[j]] = values[j];
+        }
+        data.push(entry);
+      } else {
+        console.warn(`Skipping line ${i + 1} due to incorrect column count.`);
+      }
+    }
+    return data;
+  };
+
+  useEffect(() => {
+    fetch("/libraryData.csv")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.text();
+      })
+      .then(csvText => {
+        const parsedData = parseCSV(csvText);
+        setLibraryData(parsedData);
+
+        const uniqueCategories1 = [...new Set(parsedData.map(item => item["カテゴリー1"]))];
+        setCategories1(uniqueCategories1);
+      })
+      .catch(error => {
+        console.error("Error fetching or parsing CSV:", error);
+        setLibraryData([]);
+        setCategories1([]);
+      });
+  }, []);
+
+  const onChangeCategory1 = event => {
+    const selectedCategory1 = event.target.value;
+    setCategory1(selectedCategory1);
+    setCategory2("default");
+
+    if (selectedCategory1 === "default") {
+      setCategories2([]);
+    } else {
+      const uniqueCategories2 = [
+        ...new Set(
+          libraryData.filter(item => item["カテゴリー1"] === selectedCategory1).map(item => item["カテゴリー2"])
+        )
+      ];
+      setCategories2(uniqueCategories2);
+    }
+  };
+
+  const onChangeCategory2 = event => {
+    setCategory2(event.target.value);
+  };
 
   if (!localStorage.getItem("progressScore")) {
     localStorage.setItem("progressScore", 0);
@@ -27,22 +98,23 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
     localStorage.setItem("checkedQuestion", JSON.stringify(list));
   }
 
-  const Document = ({ title, text, img, tag, id, category }) => {
-    if (searchWord.length <= 0 && searchTag <= 0 && searchCategory === "default") return;
+  const Document = ({ title, text, img, tag, id, category1, category2 }) => {
+    if (searchWord.length <= 0 && searchTag.length <= 0 && searchCategory1 === "default") return null;
+
     if (searchWord.length > 0) {
-      if (title.indexOf(searchWord) === -1 && text.indexOf(searchWord) === -1) return;
+      if (title.indexOf(searchWord) === -1 && text.indexOf(searchWord) === -1) return null;
     }
     if (searchTag.length > 0) {
-      console.log("test", searchTag);
-      if (tag.indexOf(searchTag) === -1) return;
+      if (tag.indexOf(searchTag) === -1) return null;
     }
-    if (searchCategory.length > 0) {
-      if (searchCategory !== "default" && category !== searchCategory) return;
+    if (searchCategory1 !== "default") {
+      if (category1 !== searchCategory1) return null;
+      if (searchCategory2 !== "default" && category2 !== searchCategory2) return null;
     }
+
     return (
       <div
         onClick={e => {
-          console.log("onclick img", img);
           e.preventDefault();
           scene.emit("add_media", img);
           if (!sessionStorage.getItem("objectTutorial")) {
@@ -75,6 +147,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
         >
           <img
             src={img}
+            alt={title}
             style={{
               width: "120px",
               height: "80px",
@@ -118,13 +191,12 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
     }
   };
 
-  const onChangeCategory = event => {
-    setCategory(event.target.value);
-  };
-
   const onClickTags = tag => {
-    ref.current.innerText = "タグ検索：" + tag.target.innerText;
+    if (ref.current) {
+      ref.current.value = "タグ検索：" + tag.target.innerText;
+    }
     setTag(tag.target.innerText);
+    setWord("");
   };
 
   return (
@@ -157,18 +229,40 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
           placeholder="資料をキーワードやタグで検索する"
           onChange={e => searchDocuments(e)}
         />
-        <select name="category" onChange={e => onChangeCategory(e)} className={styles.categorySelecter}>
-          <option value="default" selected>
-            カテゴリで検索する
-          </option>
-          <option value="GTIE Startup School">GTIE Startup School</option>
-          <option value="Academic Entrepreneurs'カフェ">Academic Entrepreneurs'カフェ</option>
-          <option value="その他">その他</option>
+        <select
+          name="category1"
+          value={searchCategory1}
+          onChange={onChangeCategory1}
+          className={styles.categorySelecter}
+        >
+          <option value="default">カテゴリ1を選択</option>
+          {categories1.map((cat1, index) => (
+            <option key={index} value={cat1}>
+              {cat1}
+            </option>
+          ))}
         </select>
+        {searchCategory1 !== "default" && categories2.length > 0 && (
+          <select
+            name="category2"
+            value={searchCategory2}
+            onChange={onChangeCategory2}
+            className={styles.categorySelecter}
+            style={{ marginTop: "8px" }}
+          >
+            <option value="default">カテゴリ2を選択 (全て)</option>
+            {categories2.map((cat2, index) => (
+              <option key={index} value={cat2}>
+                {cat2}
+              </option>
+            ))}
+          </select>
+        )}
         <div
           style={{
+            marginTop: searchCategory1 !== "default" && categories2.length > 0 ? "8px" : "16px",
             overflowY: "auto",
-            height: "calc(100% - 60px)",
+            height: `calc(100% - ${160 + (searchCategory1 !== "default" && categories2.length > 0 ? 40 : 0)}px)`,
             padding: "8px 16px",
             display: "flex",
             flexDirection: "column",
@@ -176,94 +270,22 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
           }}
           className={styles.hiddenScrollBar}
         >
-          <Document
-            title="アントレプレナーシップとは？必要な心構え・スキルを解説"
-            text="
-              講師/石倉 大樹 Ishikura Daiki
-              株式会社Logomix 代表取締役CEO
-            "
-            img={GTIE1}
-            tag="アントレプレナーシップ"
-            id={0}
-            category="GTIE Startup School"
-          />
-          <Document
-            title="起業検討をする研究者向けのファンドについてー グラント、エクイティ、デッドの使い分けー"
-            text="
-              講師/名倉 勝 Nagura Masaru
-              CIC Tokyo ゼネラル・マネージャー
-            "
-            img={GTIE2}
-            tag="ファイナンス"
-            id={1}
-            category="GTIE Startup School"
-          />
-          <Document
-            title="エクイティ調達におけるベンチャーキャピタルの選定方法について"
-            text="
-              講師/古城 巧 Kojo Takumi
-              Strive マネージャー
-            "
-            img={GTIE3}
-            tag="VCからのエクイティ調達"
-            id={2}
-            category="GTIE Startup School"
-          />
-          <Document
-            title="技術系スタートアップの事業計画作成の基礎について"
-            text="
-              講師/高橋 遼平 Takahashi Ryohei
-              みらい創造機構 執行役員
-            "
-            img={GTIE4}
-            tag="事業計画"
-            id={3}
-            category="GTIE Startup School"
-          />
-          <Document
-            title="大学発ベンチャーの知財戦略の重要性について"
-            text="
-              講師/清野 千秋 Seino Chiaki
-              東京科学大学 特任教授
-            "
-            img={GTIE5}
-            tag="特許・知財戦略"
-            id={4}
-            category="GTIE Startup School"
-          />
-          <Document
-            title="PMF(プロダクト・マーケット・フィット)とは？達成までの手順について"
-            text="
-              講師/原 健一郎 Hara Kenichiro
-              DCM プリンシパル
-            "
-            img={GTIE6}
-            tag="プロダクト開発"
-            id={5}
-            category="GTIE Startup School"
-          />
-          <Document
-            title="創業期におけるスタートアップの人材採用の考え方について"
-            text="
-              講師/河合 総一郎 Kawai Souichiro
-              ReBoost 代表取締役社長
-            "
-            img={GTIE7}
-            tag="創業期の人材採用"
-            id={6}
-            category="GTIE Startup School"
-          />
-          <Document
-            title="事例で学ぶ資本政策について"
-            text="
-              講師/山岡 佑 yamaoka Task
-              株式会社シクミヤ 代表取締役社長
-            "
-            img={GTIE8}
-            tag="スタートアップの資本政策"
-            id={7}
-            category="GTIE Startup School"
-          />
+          {libraryData.length > 0 ? (
+            libraryData.map((item, index) => (
+              <Document
+                key={index}
+                title={item["タイトル"]}
+                text={item["説明文"]}
+                img={item["記事/動画・音声"] === "記事" ? Article : Video}
+                tag={item["検索用キーワード"]}
+                id={index}
+                category1={item["カテゴリー1"]}
+                category2={item["カテゴリー2"]}
+              />
+            ))
+          ) : (
+            <p>資料を読み込んでいます...</p>
+          )}
         </div>
       </div>
     </Sidebar>
