@@ -340,7 +340,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
             value={searchCategory1}
             onChange={onChangeCategory1}
             className={styles.categorySelecter}
-            style={{ marginBottom: "8px" }}
+            style={{ marginBottom: "8px", width: "100%" }}
           >
             {" "}
             {/* マージン調整 */}
@@ -361,6 +361,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
               value={searchCategory2}
               onChange={onChangeCategory2}
               className={styles.categorySelecter}
+              style={{ width: "100%" }}
             >
               <option value="default">カテゴリ2を選択 (全て)</option>
               {categories2.map((cat2, index) => {
