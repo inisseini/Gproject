@@ -97,6 +97,17 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
     localStorage.setItem("checkedQuestion", JSON.stringify(list));
   }
 
+  // ★★★ 新しいハンドラを追加 ★★★
+  const handleTagClick = (tagText, e) => {
+    e.stopPropagation(); // 親要素(Document全体)のonClickが発火しないようにする
+    console.log("ライブラリ：Tag clicked:", tagText);
+    setTag(tagText);
+    setWord(""); // キーワード検索はクリア
+    if (ref.current) {
+      ref.current.value = "タグ検索：" + tagText; // 検索欄の表示を更新
+    }
+  };
+
   // Documentコンポーネント定義
   const Document = ({ title, text, img, tag, id, category1, category2, url, author, affiliation, rating, type }) => {
     // ★★★ 検索/フィルタリングロジックはこのコンポーネントから削除 ★★★
@@ -239,8 +250,10 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
                   display: "inline-block",
                   padding: "4px 8px",
                   fontSize: "10px",
-                  margin: "2px 2px 2px 0" // マージン微調整
+                  margin: "2px 2px 2px 0", // マージン微調整
+                  cursor: "pointer" // ★ クリック可能を示すカーソルに変更
                 }}
+                onClick={e => handleTagClick(t, e)} // ★ onClick ハンドラを追加
               >
                 {t}
               </span>
