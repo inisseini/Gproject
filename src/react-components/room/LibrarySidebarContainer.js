@@ -11,7 +11,7 @@ import styles from "./LibrarySidebarContainer.scss";
 
 import GTIE1 from "../../assets/images/GTIE1.png";
 import GTIE2 from "../../assets/images/GTIE2.png";
-import GTIE3 from "../../assets/images/GTIE3.png";
+import GTIE3 from "../../assets/images/3.png";
 import GTIE4 from "../../assets/images/GTIE4.png";
 import GTIE5 from "../../assets/images/GTIE5.png";
 import GTIE6 from "../../assets/images/GTIE6.png";
@@ -30,6 +30,9 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
   const [libraryDataState, setLibraryDataState] = useState([]);
   const [categories1, setCategories1] = useState([]);
   const [categories2, setCategories2] = useState([]);
+  // ★★★ 動画再生用の State を追加 ★★★
+  const [playingVideoUrl, setPlayingVideoUrl] = useState(null);
+  const [isVideoPlayerVisible, setIsVideoPlayerVisible] = useState(false);
 
   // CSVをパースするヘルパー関数 parseCSV は不要になったので削除
   // const parseCSV = (csvText) => { ... };
@@ -106,6 +109,14 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
     if (ref.current) {
       ref.current.value = "タグ検索：" + tagText; // 検索欄の表示を更新
     }
+    setIsVideoPlayerVisible(false); // タグ検索時は動画プレイヤーを閉じる
+    setPlayingVideoUrl(null);
+  };
+
+  // ★★★ 動画プレイヤーを閉じる関数 ★★★
+  const closeVideoPlayer = () => {
+    setIsVideoPlayerVisible(false);
+    setPlayingVideoUrl(null);
   };
 
   // Documentコンポーネント定義
@@ -138,22 +149,33 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
       );
     };
 
+    // ★★★ クリックハンドラのロジックを変更 ★★★
+    const handleClick = e => {
+      e.preventDefault();
+      // GTIEカテゴリの動画・音声の場合
+      if (category1 === "GTIE" && type === "動画・音声" && url) {
+        console.log("ライブラリ：Play internal video:", url);
+        setPlayingVideoUrl(url);
+        setIsVideoPlayerVisible(true);
+      } else if (url) {
+        // それ以外でURLがある場合 (外部リンク)
+        console.log("ライブラリ：Open external URL:", url);
+        window.open(url, "_blank", "noopener,noreferrer");
+      } else {
+        console.warn("ライブラリ：URLが見つかりません。", title);
+      }
+    };
+
     // タグの分割と整形
     const tagsArray = tag
-      .split(/[、,\s]+/)
+      .split(/[、,\\s]+/)
       .map(t => t.trim())
       .filter(t => t);
 
     return (
       <div
-        onClick={e => {
-          e.preventDefault();
-          if (url) {
-            window.open(url, "_blank", "noopener,noreferrer");
-          } else {
-            console.warn("ライブラリ：URLが見つかりません。", title);
-          }
-        }}
+        // onClick を handleClick に変更
+        onClick={handleClick}
         style={{
           display: "flex",
           background: "linear-gradient(to bottom, #fdfdfd, #f0f0f0)", // 薄いグラデーション背景
@@ -279,7 +301,7 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
     }
     if (searchTag.length > 0) {
       const tagList = tag
-        .split(/[、,\s]+/)
+        .split(/[、,\\s]+/)
         .map(t => t.trim())
         .filter(t => t);
       if (!tagList.some(t => t.includes(searchTag))) return false;
@@ -298,6 +320,9 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
       setWord(event.target.value);
       setTag("");
     }
+    // 検索時もプレイヤーを閉じる
+    setIsVideoPlayerVisible(false);
+    setPlayingVideoUrl(null);
   };
 
   const onClickTags = tag => {
@@ -306,132 +331,195 @@ export function LibrarySidebarContainer({ onClose, scene, setQuestion }) {
     }
     setTag(tag.target.innerText);
     setWord("");
+    // タグクリック時もプレイヤーを閉じる
+    setIsVideoPlayerVisible(false);
+    setPlayingVideoUrl(null);
   };
 
   return (
-    <Sidebar title="ライブラリ" beforeTitle={<CloseButton onClick={onClose} />} disableOverflowScroll>
-      {/* ★ログ追加: レンダリング時の state 確認 (変更なし) */}
+    // ★★★ isVideoPlayerVisibleに応じてクラスを追加 ★★★
+    <Sidebar
+      title="ライブラリ"
+      beforeTitle={<CloseButton onClick={onClose} />}
+      disableOverflowScroll
+      // Sidebarコンポーネント自体、またはその親にクラスを適用する必要がある場合がある
+      // ここでは Sidebar コンポーネントに直接クラスを渡せると仮定
+      // className={isVideoPlayerVisible ? styles.expanded : ""} // SidebarがclassNameを受け取る場合
+      // もしSidebarが直接クラスを受け取らない場合、ラップするdivを追加するなどの対応が必要
+      // 例: <div className={isVideoPlayerVisible ? styles.expanded : ""}> <Sidebar ... /> </div>
+    >
+      {/* ... (ログ出力の既存コードは省略) */}
       {console.log("ライブラリ：Rendering - categories1 state:", categories1)}
       {console.log("ライブラリ：Rendering - categories2 state:", categories2)}
       {console.log("ライブラリ：Rendering - libraryDataState length:", libraryDataState.length)}
       {console.log("ライブラリ：Rendering - searchCategory1:", searchCategory1)}
       {console.log("ライブラリ：Rendering - searchCategory2:", searchCategory2)}
+      {/* ★★★ Sidebarコンテナにクラスを追加する必要がある可能性を考慮 */}
       <div
+        // className 属性に styles.libraryContainer を追加し、条件に応じて styles.expanded を追加
+        className={`${styles.libraryContainer} ${isVideoPlayerVisible ? styles.expanded : ""}`}
         style={{
-          padding: "8px 16px",
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between"
+          position: "relative" // 動画プレイヤーを重ねるために relative を設定
         }}
       >
-        <div>
-          {" "}
+        {/* ★★★ 動画プレイヤー領域 ★★★ */}
+        {isVideoPlayerVisible && (
+          <div className={styles.videoPlayerOverlay}>
+            <div className={styles.videoPlayerContent}>
+              {/* クローズボタンに絶対配置と zIndex を適用 */}
+              <CloseButton
+                onClick={closeVideoPlayer}
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  zIndex: 1,
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                  borderRadius: "50%"
+                }}
+              />
+              {/* video タグにスタイルを適用 */}
+              <video
+                src={playingVideoUrl}
+                controls
+                autoPlay
+                style={{ display: "block", width: "100%", height: "auto", maxHeight: "80vh", objectFit: "contain" }}
+              >
+                ご利用のブラウザはvideoタグをサポートしていません。
+              </video>
+            </div>
+          </div>
+        )}
+        {/* 既存のコンテンツエリア */}
+        {/* 動画表示中は背景を少し暗く（opacityを調整）し、操作を無効にする */}
+        <div
+          style={{
+            padding: "8px 16px",
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            opacity: isVideoPlayerVisible ? 0.1 : 1,
+            transition: "opacity 0.3s ease",
+            pointerEvents: isVideoPlayerVisible ? "none" : "auto"
+          }}
+        >
           {/* 上部エリア (ポイント、検索、カテゴリ) */}
-          <h3
-            style={{
-              textAlign: "right",
-              margin: "16px 0",
-              color: "#ffffff",
-              borderRadius: "10px",
-              backgroundColor: "#007ab8",
-              display: "inline-block",
-              padding: "8px 16px"
-            }}
-          >
-            学習の進捗ポイント: {localStorage.getItem("progressScore")} pt
-          </h3>
-          <TextAreaInput
-            ref={ref}
-            textInputStyles={styles.libraryInputTextAreaStyles}
-            placeholder="資料をキーワードやタグで検索する"
-            onChange={e => searchDocuments(e)}
-          />
-          {/* カテゴリ選択1 */}
-          <select
-            name="category1"
-            value={searchCategory1}
-            onChange={onChangeCategory1}
-            className={styles.categorySelecter}
-            style={{ marginBottom: "8px", width: "100%" }}
-          >
+          <div style={{ flexShrink: 0 }}>
             {" "}
-            {/* マージン調整 */}
-            <option value="default">カテゴリ1を選択</option>
-            {categories1.map((cat1, index) => {
-              console.log(`ライブラリ：Rendering category1 map - index: ${index}, value: ${cat1}`);
-              return (
-                <option key={index} value={cat1}>
-                  {cat1}
-                </option>
-              );
-            })}
-          </select>
-          {/* カテゴリ選択2 */}
-          {searchCategory1 !== "default" && categories2.length > 0 && (
-            <select
-              name="category2"
-              value={searchCategory2}
-              onChange={onChangeCategory2}
-              className={styles.categorySelecter}
-              style={{ width: "100%" }}
+            {/* この div を追加して上部エリアの高さを固定 */}
+            <h3
+              style={{
+                textAlign: "right",
+                margin: "16px 0",
+                color: "#ffffff",
+                borderRadius: "10px",
+                backgroundColor: "#007ab8",
+                display: "inline-block",
+                padding: "8px 16px"
+              }}
             >
-              <option value="default">カテゴリ2を選択 (全て)</option>
-              {categories2.map((cat2, index) => {
-                console.log(`ライブラリ：Rendering category2 map - index: ${index}, value: ${cat2}`);
+              学習の進捗ポイント: {localStorage.getItem("progressScore")} pt
+            </h3>
+            <TextAreaInput
+              ref={ref}
+              textInputStyles={styles.libraryInputTextAreaStyles}
+              placeholder="資料をキーワードやタグで検索する"
+              onChange={e => searchDocuments(e)}
+              // disabled 属性は不要 (pointerEventsで制御)
+            />
+            {/* カテゴリ選択1 */}
+            <select
+              name="category1"
+              value={searchCategory1}
+              onChange={onChangeCategory1}
+              className={styles.categorySelecter}
+              style={{ marginBottom: "8px", width: "100%" }}
+              // disabled 属性は不要
+            >
+              <option value="default">カテゴリ1を選択</option>
+              {categories1.map((cat1, index) => {
+                // console.log を削除またはコメントアウト
+                // console.log(`ライブラリ：Rendering category1 map - index: ${index}, value: ${cat1}`);
                 return (
-                  <option key={index} value={cat2}>
-                    {cat2}
+                  <option key={index} value={cat1}>
+                    {cat1}
                   </option>
                 );
               })}
             </select>
-          )}
-        </div>
-
-        {/* ★★★ 項目数表示とリスト表示エリア ★★★ */}
-        <div
-          style={{
-            flexGrow: 1, // 残りの高さを埋める
-            overflowY: "auto", // ★ スクロールバー表示
-            paddingTop: "10px", // 上部に少し余白
-            marginTop: "10px" // 上部エリアとのマージン
-          }}
-          // className={styles.hiddenScrollBar} // ★ hiddenScrollBar 削除
-        >
-          {/* 項目数表示 */}
-          <div style={{ marginBottom: "10px", fontSize: "12px", color: "#555" }}>
-            {filteredData.length > 0 ? `${filteredData.length} 件の資料が見つかりました` : "該当する資料はありません"}
+            {/* カテゴリ選択2 */}
+            {searchCategory1 !== "default" && categories2.length > 0 && (
+              <select
+                name="category2"
+                value={searchCategory2}
+                onChange={onChangeCategory2}
+                className={styles.categorySelecter}
+                style={{ width: "100%" }}
+                // disabled 属性は不要
+              >
+                <option value="default">カテゴリ2を選択 (全て)</option>
+                {categories2.map((cat2, index) => {
+                  // console.log を削除またはコメントアウト
+                  // console.log(`ライブラリ：Rendering category2 map - index: ${index}, value: ${cat2}`);
+                  return (
+                    <option key={index} value={cat2}>
+                      {cat2}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
           </div>
 
-          {/* Documentリスト */}
+          {/* リスト表示エリア */}
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "15px" // ★ 項目間の余白を増やす
+              flexGrow: 1,
+              overflowY: "auto", // スクロールバー表示
+              paddingTop: "10px", // 上部に少し余白
+              marginTop: "10px" // 上部エリアとのマージン
             }}
+            // className={styles.hiddenScrollBar} // hiddenScrollBar 削除
           >
-            {filteredData.map((item, index) => (
-              <Document
-                key={index}
-                title={item["タイトル"]}
-                text={item["説明文"]}
-                img={item["記事/動画・音声"] === "記事" ? Article : Video}
-                tag={item["検索用キーワード"]}
-                id={index}
-                category1={item["カテゴリー1"]}
-                category2={item["カテゴリー2"]}
-                url={item["URL"]}
-                author={item["著者"]}
-                affiliation={item["著者所属"]}
-                rating={item["おすすめ（◎〇））"]}
-                type={item["記事/動画・音声"]}
-              />
-            ))}
+            {/* 項目数表示 */}
+            <div style={{ marginBottom: "10px", fontSize: "12px", color: "#555" }}>
+              {filteredData.length > 0 ? `${filteredData.length} 件の資料が見つかりました` : "該当する資料はありません"}
+            </div>
+
+            {/* Documentリスト */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "15px" // 項目間の余白を増やす
+              }}
+            >
+              {filteredData.map((item, index) => (
+                <Document
+                  key={index}
+                  title={item["タイトル"]}
+                  text={item["説明文"]}
+                  img={item["記事/動画・音声"] === "記事" ? Article : Video}
+                  tag={item["検索用キーワード"]}
+                  id={index}
+                  category1={item["カテゴリー1"]}
+                  category2={item["カテゴリー2"]}
+                  url={item["URL"]}
+                  author={item["著者"]}
+                  affiliation={item["著者所属"]}
+                  rating={item["おすすめ（◎〇））"]}
+                  type={item["記事/動画・音声"]}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      </div>
+        </div>{" "}
+        {/* 既存のコンテンツエリア終了 */}
+      </div>{" "}
+      {/* libraryContainer 終了 */}
     </Sidebar>
   );
 }
