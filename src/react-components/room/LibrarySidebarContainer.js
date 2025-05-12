@@ -11,7 +11,7 @@ import styles from "./LibrarySidebarContainer.scss";
 
 import GTIE1 from "../../assets/images/GTIE1.png";
 import GTIE2 from "../../assets/images/GTIE2.png";
-import GTIE3 from "../../assets/images/3.png";
+import GTIE3 from "../../assets/images/GTIE3.png";
 import GTIE4 from "../../assets/images/GTIE4.png";
 import GTIE5 from "../../assets/images/GTIE5.png";
 import GTIE6 from "../../assets/images/GTIE6.png";
